@@ -12,13 +12,16 @@ pub type OptStr = Option<String>;
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UiParseNode {
    #[serde(skip_serializing_if = "Option::is_none")]
+   pub alignment: OptStr,
+   pub asset_path: OptStr,
    pub color: OptStr,
    pub background_color: OptStr,
    pub border: OptStr,
    pub border_color: OptStr,
    pub border_radius: OptStr,
    pub col_between: OptStr,
-   pub cursor: OptStr,
+   pub content: OptStr,
+   pub cursor: OptStr,   
    pub layout_type: OptStr,
    pub max_height: OptStr,
    pub max_width: OptStr,
@@ -30,6 +33,12 @@ pub struct UiParseNode {
    pub padding_bottom: OptStr,
    pub padding_left: OptStr,
    pub padding_right: OptStr,
+   pub row_between: OptStr,
+   pub z_index: OptStr,
+   pub posx: OptStr,
+   pub posy: OptStr,
+   pub render_command: OptStr,
+   pub word_wrap: OptStr,
     
    // corner
    pub top_left: OptStr,

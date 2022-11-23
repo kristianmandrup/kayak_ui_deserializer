@@ -1,7 +1,7 @@
 use std::any::Any;
 
 use bevy::prelude::Color;
-use kayak_ui::prelude::{Edge, KStyle, Corner, KCursorIcon};
+use kayak_ui::prelude::{Edge, KStyle, Corner, KCursorIcon, RenderCommand};
 use morphorm::{Units, LayoutType};
 
 use crate::{json_deserializer::UiParseNode, ui_parser::{Conv, UiParser}, ui_color::parse_color, ui_edge::{UiEdge, to_edge_units}, ui_corner::UiCorner, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type};
@@ -140,6 +140,47 @@ impl UiStyle {
         let prop = &self.node.padding_right.clone();
         UiUnit::new(prop.clone()).parse().unwrap()
     }
+
+    // fn pointer_events(&self) -> PointerEvents {
+    //     let prop = &self.node.padding_right.clone();
+    //     UiPointerEvents::new(prop.clone()).parse().unwrap()
+    // }
+    
+    
+    // fn position_type(&self) -> KPositionType {
+    //     let prop = &self.node.position_type.clone();
+    //     UiPositionType::new(prop.clone()).parse().unwrap()
+    // }
+
+    // fn render_command(&self) -> RenderCommand {
+    //     let prop = &self.node.position_type.clone();
+    //     UiRenderCommand::new(prop.clone()).parse().unwrap()
+    // }
+
+    fn right(&self) -> Units {
+        let prop = &self.node.right.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+
+    fn row_between(&self) -> Units {
+        let prop = &self.node.row_between.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+
+    fn top(&self) -> Units {
+        let prop = &self.node.top.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+
+    fn width(&self) -> Units {
+        let prop = &self.node.width.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+
+    fn z_index(&self) -> i32 {
+        let prop = &self.node.z_index.clone();
+        Conv(Conv::get_prop(prop)).to_type::<i32>()
+    }
 }
 
 impl UiParser for UiStyle {
@@ -168,7 +209,12 @@ impl UiParser for UiStyle {
         let padding_bottom = self.padding_bottom();        
         let padding_left = self.padding_left();
         let padding_right = self.padding_right();
-        
+        let right = self.right();
+        let row_between = self.row_between();
+        let top = self.top();
+        let width = self.width();        
+        let z_index = self.z_index();
+
         let widget = KStyle {
             background_color: background_color.into(),
             border: border.into(),
@@ -194,13 +240,59 @@ impl UiParser for UiStyle {
             padding_bottom: padding_bottom.into(),
             padding_left: padding_left.into(),
             padding_right: padding_right.into(),
+            right: right.into(),
+            row_between: row_between.into(),
+            top: top.into(),
+            width: width.into(),
+            z_index: z_index.into(),
             ..Default::default()
         };
         Ok(Box::new(widget))
     }
 }
 
-
+// impl KStyle {
+//     /// Returns a `Style` object where all fields are set to their own initial values
+//     ///
+//     /// This is the actual "default" to apply over any field marked as [`StyleProp::Unset`] before
+//     /// resolving the style.
+//     pub fn initial() -> Self {
+//         Self {
+//             background_color: StyleProp::Default,
+//             border: StyleProp::Default,
+//             border_color: StyleProp::Default,
+//             border_radius: StyleProp::Default,
+//             bottom: StyleProp::Default,
+//             color: StyleProp::Inherit,
+//             cursor: StyleProp::Inherit,
+//             col_between: StyleProp::Default,
+//             font: StyleProp::Inherit,
+//             font_size: StyleProp::Inherit,
+//             height: StyleProp::Default,
+//             layout_type: StyleProp::Default,
+//             line_height: StyleProp::Inherit,
+//             left: StyleProp::Default,
+//             max_height: StyleProp::Default,
+//             max_width: StyleProp::Default,
+//             min_height: StyleProp::Default,
+//             min_width: StyleProp::Default,
+//             offset: StyleProp::Default,
+//             padding: StyleProp::Default,
+//             padding_bottom: StyleProp::Default,
+//             padding_left: StyleProp::Default,
+//             padding_right: StyleProp::Default,
+//             padding_top: StyleProp::Default,
+//             pointer_events: StyleProp::Default,
+//             position_type: StyleProp::Default,
+//             render_command: StyleProp::Value(RenderCommand::Layout),
+//             right: StyleProp::Default,
+//             row_between: StyleProp::Default,
+//             top: StyleProp::Default,
+//             width: StyleProp::Default,
+//             z_index: StyleProp::Default,
+//         }
+//     }
+// }
 
 // pub struct KStyle {
 //     /// The background color of this widget

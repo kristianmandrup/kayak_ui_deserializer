@@ -10,6 +10,8 @@ mod ui_corner;
 mod ui_cursor_icon;
 mod ui_layout_type;
 mod ui_alignment;
+mod ui_render_command;
+mod ui_rect;
 
 fn main() {
     // The type of `john` is `serde_json::Value`

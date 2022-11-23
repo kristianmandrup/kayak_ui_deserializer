@@ -7,7 +7,7 @@
 // }
 use std::any::Any;
 
-use kayak_ui::prelude::Edge;
+use kayak_ui::prelude::{Edge, Rect};
 
 use crate::{json_deserializer::UiParseNode, ui_parser::Conv};
 
@@ -49,13 +49,13 @@ impl UiEdge {
         self.to_f32(&self.node.z_index.clone(), "height")
     }
 
-    pub fn parse(&self) -> Result<Edge<f32>, &'static str> {        
+    pub fn parse(&self) -> Result<Rect, &'static str> {        
         let posx = self.posx();
         let posy = self.posy();
         let width = self.width();
         let height = self.height();
         let z_index = self.z_index();
-        let edge = Rect {
+        let rect = Rect {
             posy,
             posx,
             width,
@@ -63,7 +63,7 @@ impl UiEdge {
             z_index,
             ..Default::default()
         };
-        Ok(edge)            
+        Ok(rect)            
     }
     // top: node.top
 }

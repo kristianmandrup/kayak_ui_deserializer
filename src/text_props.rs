@@ -44,15 +44,6 @@ impl UiTextProps {
     }
 }
 
-fn to_alignment(align: String) {
-    match align.to_lowercase().as_str() {
-        "start" => Alignment::Start,
-        "middle" => Alignment::Middle,
-        "end" => Alignment::End,
-        _ => Alignment::Start
-    }
-}
-
 
 impl UiParser for UiTextProps {
     fn parse(&self) -> Result<Box<dyn Any>, &'static str> {        

@@ -19,6 +19,11 @@ pub struct UiParseNode {
    pub border_radius: OptStr,
    pub col_between: OptStr,
    pub cursor: OptStr,
+   pub layout_type: OptStr,
+   pub max_height: OptStr,
+   pub max_width: OptStr,
+   pub min_height: OptStr,
+   pub min_width: OptStr,
     
    // corner
    pub top_left: OptStr,
@@ -34,6 +39,7 @@ pub struct UiParseNode {
 
    pub text: OptStr,
    pub font: OptStr,
+   pub font_size: OptStr,
    pub line_height: OptStr,
    pub show_cursor: OptStr,
    pub size: OptStr,

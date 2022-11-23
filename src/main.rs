@@ -2,11 +2,12 @@ use json_deserializer::parse_ui;
 use serde_json::json;
 mod json_deserializer;
 mod ui_parser;
-mod unit;
-mod style;
-mod color;
-mod edge;
-mod corner;
+mod ui_unit;
+mod ui_style;
+mod ui_color;
+mod ui_edge;
+mod ui_corner;
+mod ui_cursor_icon;
 
 fn main() {
     // The type of `john` is `serde_json::Value`

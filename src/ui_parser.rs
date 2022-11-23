@@ -1,9 +1,10 @@
-use std::default;
 use std::fmt::Debug;
 use std::str::FromStr;
 use std::{any::Any};
-use crate::json_deserializer::{UiParseNode, }; // use morphorm::Cache;
-use crate::unit::*;
+use morphorm::Units;
+
+use crate::json_deserializer::{UiParseNode, };
+use crate::ui_unit::UiUnit; // use morphorm::Cache;
 
 pub trait UiParser {
     fn parse(&self) -> Result<Box<dyn Any>, &'static str>;
@@ -228,7 +229,7 @@ impl Conv {
 
 
 pub struct UiNode {
-    pub width: UiNodeUnit
+    pub width: Units
 }
 impl UiNode {
     // fn new(width: UiNodeUnit) -> Self {
@@ -239,7 +240,7 @@ impl UiNode {
 }
 
 pub fn build_text_widget(ui: UiParseNode) -> Result<UiNode, &'static str>  {
-    if let Ok(unit) = parse_unit(ui.width) {
+    if let Ok(unit) = UiUnit::new(ui.width).parse() {
         Ok(UiNode {
             width: unit
         })

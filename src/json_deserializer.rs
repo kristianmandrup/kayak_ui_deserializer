@@ -17,6 +17,8 @@ pub struct UiParseNode {
    pub border: OptStr,
    pub border_color: OptStr,
    pub border_radius: OptStr,
+   pub col_between: OptStr,
+   pub cursor: OptStr,
     
    // corner
    pub top_left: OptStr,

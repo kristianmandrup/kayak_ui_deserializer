@@ -1,15 +1,16 @@
 use std::any::Any;
 
 use bevy::prelude::Color;
-use kayak_ui::prelude::{Edge, KStyle, Corner};
+use kayak_ui::prelude::{Edge, KStyle, Corner, KCursorIcon};
+use morphorm::Units;
 
-use crate::{json_deserializer::UiParseNode, ui_parser::{Conv, UiParser}, color::parse_color, edge::UiEdge, corner::UiCorner};
+use crate::{json_deserializer::UiParseNode, ui_parser::{Conv, UiParser}, ui_color::parse_color, ui_edge::UiEdge, ui_corner::UiCorner, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon};
 
-pub struct UiStyles {
+pub struct UiStyle {
     node: UiParseNode
 }
-impl UiStyles {
-    fn new(node: UiParseNode) -> Self {
+impl UiStyle {
+    pub fn new(node: UiParseNode) -> Self {
         Self {
             node
         }
@@ -23,7 +24,7 @@ impl UiStyles {
 
     fn background_color(&self) -> Color {
         let prop = &self.node.background_color.clone();
-        UiStyles::prop_color(prop)
+        UiStyle::prop_color(prop)
     }
 
     fn border(&self) -> Edge<f32> {
@@ -35,29 +36,55 @@ impl UiStyles {
 
     fn border_color(&self) -> Color {
         let prop = &self.node.border_color.clone();
-        UiStyles::prop_color(prop)
+        UiStyle::prop_color(prop)
     }
 
     fn border_radius(&self) -> Corner<f32> {
-        let prop = &self.node.border_color.clone();
         UiCorner::new(self.node.clone()).parse().unwrap()
     }
 
-    // bottom
+    fn bottom(&self) -> Units {
+        let prop = &self.node.border_color.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+    
+    fn color(&self) -> Color {
+        let prop = &self.node.color.clone();
+        UiStyle::prop_color(prop)
+    }
 
+    fn col_between(&self) -> Units {
+        let prop = &self.node.col_between.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+    
+    fn cursor(&self) -> KCursorIcon {
+        let prop = &self.node.cursor.clone();
+        let icon = to_cursor_icon(prop.clone().unwrap());
+        KCursorIcon(icon)
+    }
 }
 
-impl UiParser for UiStyles {
+impl UiParser for UiStyle {
     fn parse(&self) -> Result<Box<dyn Any>, &'static str> {
-        let color = self.background_color();
+        let background_color = self.background_color();
         let border = self.border();
         let border_color = self.border_color();
         let border_radius = self.border_radius();
+        let bottom = self.bottom();
+        let color = self.color();
+        let col_between = self.col_between();
+        let cursor = self.cursor();
+        
         let widget = KStyle {
-            background_color: color.into(),
+            background_color: background_color.into(),
             border: border.into(),
             border_color: border_color.into(),
             border_radius: border_radius.into(),
+            bottom: bottom.into(),
+            color: color.into(),
+            col_between: col_between.into(),
+            cursor: cursor.into(),
             ..Default::default()
         };
         Ok(Box::new(widget))

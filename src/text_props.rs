@@ -37,17 +37,23 @@ impl UiTextProps {
         let prop = &self.node.size.clone();
         match prop {
             Some(align) => {
-                match align.to_string().to_lowercase().as_str() {
-                    "start" => Alignment::Start,
-                    "middle" => Alignment::Middle,
-                    "end" => Alignment::End,
-                    _ => Alignment::Start
-                }
+                to_alignment(align)
             },
             None => Alignment::Start
         }
     }
 }
+
+fn to_alignment(align: String) {
+    match align.to_lowercase().as_str() {
+        "start" => Alignment::Start,
+        "middle" => Alignment::Middle,
+        "end" => Alignment::End,
+        _ => Alignment::Start
+    }
+}
+
+
 impl UiParser for UiTextProps {
     fn parse(&self) -> Result<Box<dyn Any>, &'static str> {        
         let font = self.font();

@@ -1,44 +1,59 @@
-use std::any::Any;
+use std::{marker::PhantomData, str::FromStr, fmt::Debug};
 
 use kayak_ui::prelude::Edge;
+use morphorm::Units;
+use crate::{json_deserializer::{UiParseNode, OptStr}, ui_parser::Conv, ui_unit::UiUnit};
 
-use crate::{json_deserializer::UiParseNode, ui_parser::Conv};
 
-pub struct UiEdge {
-    node: UiParseNode,
+pub fn to_edge_units(prop: OptStr) -> Edge<Units> {
+    let unit= UiUnit::new(prop).parse().unwrap();
+    Edge {
+        top: unit,
+        left: unit,
+        right: unit,
+        bottom: unit 
+    }    
 }
-impl UiEdge {
+
+
+pub struct UiEdge<T> {
+    node: UiParseNode,
+    phantom: PhantomData<T>,
+}
+impl<T> UiEdge<T> where T: Copy + Default + PartialEq + FromStr + Debug {
     pub fn new(node: UiParseNode) -> Self {
         Self {
-            node
+            node,
+            phantom: PhantomData
+
         }
     }
 
-    fn to_f32(&self, prop: &Option<String>, label: &str) -> f32 {
+    fn to_type(&self, prop: &Option<String>, label: &str) -> T {
         if let str = Conv::get_prop(prop) {
-            Conv(str).to_f32()
+            Conv(str).to_type::<T>()
         } else {
             panic!("missing {}", label)
         }                    
     }
 
-    fn top(&self) -> f32 {
-        self.to_f32(&self.node.top.clone(), "top")
+    fn top(&self) -> T {
+        self.to_type(&self.node.top.clone(), "top")
     }
 
-    fn left(&self) -> f32 {
-        self.to_f32(&self.node.left.clone(), "left")
+    fn left(&self) -> T {
+        self.to_type(&self.node.left.clone(), "left")
     }
 
-    fn right(&self) -> f32 {
-        self.to_f32(&self.node.right.clone(), "right")
+    fn right(&self) -> T {
+        self.to_type(&self.node.right.clone(), "right")
     }
 
-    fn bottom(&self) -> f32 {
-        self.to_f32(&self.node.bottom.clone(), "bottom")
+    fn bottom(&self) -> T {
+        self.to_type(&self.node.bottom.clone(), "bottom")
     }
 
-    pub fn parse(&self) -> Result<Edge<f32>, &'static str> {        
+    pub fn parse(&self) -> Result<Edge<T>, &'static str> {        
         let top = self.top();
         let left = self.left();
         let right = self.right();

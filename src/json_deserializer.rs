@@ -24,6 +24,12 @@ pub struct UiParseNode {
    pub max_width: OptStr,
    pub min_height: OptStr,
    pub min_width: OptStr,
+   pub offset: OptStr,
+   pub padding: OptStr,
+   pub padding_top: OptStr,
+   pub padding_bottom: OptStr,
+   pub padding_left: OptStr,
+   pub padding_right: OptStr,
     
    // corner
    pub top_left: OptStr,

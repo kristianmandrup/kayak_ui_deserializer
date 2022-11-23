@@ -4,7 +4,7 @@ use bevy::prelude::Color;
 use kayak_ui::prelude::{Edge, KStyle, Corner, KCursorIcon};
 use morphorm::{Units, LayoutType};
 
-use crate::{json_deserializer::UiParseNode, ui_parser::{Conv, UiParser}, ui_color::parse_color, ui_edge::UiEdge, ui_corner::UiCorner, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type};
+use crate::{json_deserializer::UiParseNode, ui_parser::{Conv, UiParser}, ui_color::parse_color, ui_edge::{UiEdge, to_edge_units}, ui_corner::UiCorner, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type};
 
 pub struct UiStyle {
     node: UiParseNode
@@ -111,20 +111,35 @@ impl UiStyle {
         UiUnit::new(prop.clone()).parse().unwrap()
     }
 
-//     pub left: StyleProp<Units>,
-//     /// The line height for this widget, in pixels
-//     ///
-//     /// Only applies to [`RenderCommand::Text`]
-//     pub line_height: StyleProp<f32>,
-//     /// The maximum height of this widget
-//     pub max_height: StyleProp<Units>,
-//     /// The maximum width of this widget
-//     pub max_width: StyleProp<Units>,
-//     /// The minimum height of this widget
-//     pub min_height: StyleProp<Units>,
-//     /// The minimum width of this widget
-//     pub min_width: StyleProp<Units>,
+    fn offset(&self) -> Edge<Units> {
+        let prop = &self.node.offset.clone();
+        to_edge_units(prop.clone())
+    }
 
+    fn padding(&self) -> Edge<Units> {
+        let prop = &self.node.padding.clone();
+        to_edge_units(prop.clone())
+    }
+
+    fn padding_top(&self) -> Units {
+        let prop = &self.node.padding_top.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+
+    fn padding_bottom(&self) -> Units {
+        let prop = &self.node.padding_bottom.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+
+    fn padding_left(&self) -> Units {
+        let prop = &self.node.padding_left.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
+
+    fn padding_right(&self) -> Units {
+        let prop = &self.node.padding_right.clone();
+        UiUnit::new(prop.clone()).parse().unwrap()
+    }
 }
 
 impl UiParser for UiStyle {
@@ -147,6 +162,12 @@ impl UiParser for UiStyle {
         let max_width = self.max_width();
         let min_height = self.min_height();
         let min_width = self.min_width();
+        let offset = self.offset();
+        let padding = self.padding();
+        let padding_top = self.padding_top();        
+        let padding_bottom = self.padding_bottom();        
+        let padding_left = self.padding_left();
+        let padding_right = self.padding_right();
         
         let widget = KStyle {
             background_color: background_color.into(),
@@ -167,6 +188,12 @@ impl UiParser for UiStyle {
             max_width: max_width.into(),
             min_height: min_height.into(),
             min_width: min_width.into(),
+            offset: offset.into(),
+            padding: padding.into(),
+            padding_top: padding_top.into(),
+            padding_bottom: padding_bottom.into(),
+            padding_left: padding_left.into(),
+            padding_right: padding_right.into(),
             ..Default::default()
         };
         Ok(Box::new(widget))

@@ -62,8 +62,12 @@ pub struct Style {
 
 #[derive(DeJson, Clone)]
 pub struct Text {
-    content: String,
-    size: OptStr,
+    pub alignment: OptStr,
+    pub content: OptStr,
+    pub font: OptStr,
+    pub line_height: OptStr,
+    pub show_cursor: OptStr,
+    pub size: OptStr,
 }    
 
 #[derive(DeJson, Clone)]
@@ -167,8 +171,7 @@ impl KayakBuilder {
         if let Some(items) = self.data.styles.to_owned() {
             for item in items {
                 let name = item.clone().name;
-                let kstyle = StyleBuilder::new(item).parse().unwrap();
-                
+                let kstyle = StyleBuilder::new(item).parse().unwrap();                
                 self.store.styles.to_owned().insert(name, kstyle);
             }
         }
@@ -176,11 +179,18 @@ impl KayakBuilder {
 
     pub fn build_widgets(&self) -> () {
         if let Some(items) = self.data.widgets.to_owned() {
-            self.build_buttons(items); 
+            if let Some(buttons) = items.buttons {
+                self.build_buttons(buttons);     
+            }            
         }
     }
 
-    pub fn build_buttons(&self, buttons: Widgets) -> () { 
+    pub fn build_buttons(&self, buttons: Vec<Button>) -> () { 
+        for item in buttons {
+            let name = item.clone().name;
+            // let text_widget = build_text_widget(item).unwrap();
+            // self.store.widgets.text_widgets.to_owned().insert(name, text_widget);
+        }
     }
 
     pub fn text_widgets(&self, text_widgets: Vec<TextWidget>) { 

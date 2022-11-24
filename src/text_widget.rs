@@ -1,3 +1,5 @@
+// use kayak_ui::widgets::{TextWidgetBundle, TextProps};
+
 // use crate::json_deserializer::TextWidget;
 
 // pub struct UiTextWidget {
@@ -11,7 +13,7 @@
 //                 text: *content,
 //                 ..Default::default()
 //             };        
-//             Ok(Box::new(widget))
+//             Ok(widget)
 //         } else {
 //             Err("bad TextProps")
 //         }
@@ -22,13 +24,6 @@
 //     pub width: Units
 // }
 // pub fn build_text_widget(ui: TextWidget) -> Result<UiNode, &'static str>  {
-//     if let Ok(unit) = UiUnit::new(ui.width).parse() {
-//         Ok(UiNode {
-//             width: unit
-//         })
-//     } else {
-//         Err("bad Text Widget")        
-//     }
     
 // }
 

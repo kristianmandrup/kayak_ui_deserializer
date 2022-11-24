@@ -13,3 +13,4 @@ mod ui_alignment;
 mod ui_render_command;
 mod ui_rect;
 mod text_widget;
+mod text_props;

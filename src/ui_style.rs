@@ -226,7 +226,7 @@ impl StyleBuilder {
 }
 
 impl StyleBuilder {
-    fn parse(&self) -> Result<KStyle, &'static str> {
+    pub fn parse(&self) -> Result<KStyle, &'static str> {
         let background_color = self.background_color();
         let border = self.border();
         let border_color = self.border_color();

@@ -47,7 +47,44 @@ fn parse_rgba(color_str: &str) -> Option<Vec<Option<f32>>>  {
 
 pub fn parse_color_alias(color: &str) -> Color {    
     match color {
+        "alice-blue" => Color::ALICE_BLUE,
+        "antique-white" => Color::ANTIQUE_WHITE,
+        "aquamarine" => Color::AQUAMARINE,
+        "azure" => Color::AZURE,
+        "beige" => Color::BEIGE,
+        "bisque" => Color::BISQUE,
+        "black" => Color::BLACK,
+        "blue" => Color::BLUE,
         "white" => Color::WHITE,
+        "crimson" => Color::CRIMSON,
+        "cyan" => Color::CYAN,
+        "dark-gray" => Color::DARK_GRAY,
+        "dark-green" => Color::DARK_GREEN,
+        "fuchsia" => Color::FUCHSIA,
+        "gold" => Color::GOLD,
+        "gray" => Color::GRAY,
+        "green" => Color::GREEN,
+        "indigo" => Color::INDIGO,
+        "lime-green" => Color::LIME_GREEN,
+        "maroon" => Color::MAROON,
+        "midnight-blue" => Color::MIDNIGHT_BLUE,
+        "navy" => Color::NAVY,
+        "none" => Color::NONE,
+        "olive" => Color::OLIVE,
+        "orange" => Color::ORANGE,
+        "organge-red" => Color::ORANGE_RED,
+        "pink" => Color::PINK,
+        "purple" => Color::PURPLE,
+        "red" => Color::RED,
+        "salmon" => Color::SALMON,
+        "sea-green" => Color::SEA_GREEN,
+        "silver" => Color::SILVER,
+        "teal" => Color::TEAL,
+        "tomato" => Color::TOMATO,
+        "turquoise" => Color::TURQUOISE,
+        "violet" => Color::VIOLET,
+        "yellow" => Color::YELLOW,
+        "yellow-green" => Color::YELLOW_GREEN,
         _ => Color::WHITE
     }
 }
@@ -58,7 +95,7 @@ pub fn parse_color(color_str: &str) -> Option<Color> {
     } else if let Some(col) = parse_hsla_color(color_str) {
         Some(col)
     } else {
-        None
+        Some(parse_color_alias(color_str))
     }
 }
 

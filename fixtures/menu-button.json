@@ -1,0 +1,12 @@
+{
+  "buttons": [
+    {
+      "name": "menu-button",
+      "type": "button",
+      "style": {
+        "bottom": "20 px",
+        "cursor": "hand"
+      }
+    }
+  ]
+}

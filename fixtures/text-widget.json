@@ -1,0 +1,10 @@
+{
+  "text-widgets": {
+    "name": "game-title",
+    "widget": "text-widget",
+    "text": {
+      "content": "hello",
+      "size": 20
+    }
+  }
+}

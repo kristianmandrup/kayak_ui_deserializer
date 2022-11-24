@@ -4,141 +4,181 @@ use bevy::prelude::Color;
 use kayak_ui::prelude::{Edge, KStyle, Corner, KCursorIcon, RenderCommand};
 use morphorm::{Units, LayoutType};
 
-use crate::{json_deserializer::UiParseNode, ui_parser::{Conv, UiParser}, ui_color::parse_color, ui_edge::{UiEdge, to_edge_units}, ui_corner::UiCorner, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type};
+use crate::{json_deserializer::{Style}, ui_parser::{Conv, UiParser}, ui_color::parse_color, ui_edge::{EdgeBuilder, to_edge_units}, ui_corner::CornerBuilder, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type};
 
-pub struct UiStyle {
-    node: UiParseNode
+pub struct StyleBuilder {
+    node: Style
 }
-impl UiStyle {
-    pub fn new(node: UiParseNode) -> Self {
+impl StyleBuilder {
+    pub fn new(node: Style) -> Self {
         Self {
             node
         }
     }
 
-    fn prop_color(prop: &Option<String>) -> Color {
+    fn prop_color(prop: &Option<String>) -> Option<Color> {
         let str = Conv::get_prop(prop);
-        parse_color(str.as_str())    
+        if let Some(val) = str {
+            parse_color(val.as_str())    
+        } else {
+            None
+        }        
     }
 
 
-    fn background_color(&self) -> Color {
+    fn background_color(&self) -> Option<Color> {
         let prop = &self.node.background_color.clone();
-        UiStyle::prop_color(prop)
+        StyleBuilder::prop_color(prop)
     }
 
-    fn border(&self) -> Edge<f32> {
-        UiEdge::new(self.node.clone()).parse().unwrap()
+    fn border(&self) -> Option<Edge<f32>> {
+        if let Some(val) = self.node.border.clone() {
+            let edge = val.clone();
+            EdgeBuilder::create_from_str(edge).parse().ok()    
+        } else {
+            None
+        }
     }
 
-    fn border_color(&self) -> Color {
+    fn border_color(&self) -> Option<Color> {
         let prop = &self.node.border_color.clone();
-        UiStyle::prop_color(prop)
+        StyleBuilder::prop_color(prop)
     }
 
-    fn border_radius(&self) -> Corner<f32> {
-        UiCorner::new(self.node.clone()).parse().unwrap()
+    fn border_radius(&self) -> Option<Corner<f32>> {
+        if let Some(val) = self.node.border_radius.clone() {
+            let corner = val.clone();
+            CornerBuilder::create_from_str(corner).parse().ok()    
+        } else {
+            None
+        }
     }
 
-    fn bottom(&self) -> Units {
+    fn bottom(&self) -> Option<Units> {
         let prop = &self.node.border_color.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
     
-    fn color(&self) -> Color {
+    fn color(&self) -> Option<Color> {
         let prop = &self.node.color.clone();
-        UiStyle::prop_color(prop)
+        StyleBuilder::prop_color(prop)
     }
 
-    fn col_between(&self) -> Units {
+    fn col_between(&self) -> Option<Units> {
         let prop = &self.node.col_between.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
     
-    fn cursor(&self) -> KCursorIcon {
+    fn cursor(&self) -> Option<KCursorIcon> {
         let prop = &self.node.cursor.clone();
-        let icon = to_cursor_icon(prop.clone().unwrap());
-        KCursorIcon(icon)
+        if let Some(val) = prop {
+            let icon = to_cursor_icon(val.clone());
+            Some(KCursorIcon(icon))
+        } else {
+            None
+        }
     }
     
-    fn font(&self) -> String {
+    fn font(&self) -> Option<String> {
         let prop = &self.node.font.clone();
         Conv::get_prop(prop)
     }
 
-    fn font_size(&self) -> f32 {
+    fn font_size(&self) -> Option<f32> {
         let prop = &self.node.font_size.clone();
-        Conv(Conv::get_prop(prop)).to_f32()
+        if let Some(val) = prop {
+            Conv(val.clone()).to_f32()
+        } else {
+            None
+        }        
     }
 
-    fn height(&self) -> Units {
+    fn height(&self) -> Option<Units> {
         let prop = &self.node.height.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn layout_type(&self) -> LayoutType {
+    fn layout_type(&self) -> Option<LayoutType> {
         let prop = &self.node.layout_type.clone();
-        to_layout_type(prop.clone().unwrap())
+        if let Some(val) = prop {
+            Some(to_layout_type(val.clone()))
+        } else {
+            None
+        }        
+
+        
     }    
 
-    fn left(&self) -> Units {
+    fn left(&self) -> Option<Units> {
         let prop = &self.node.left.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn line_height(&self) -> f32 {
+    fn line_height(&self) -> Option<f32> {
         let prop = &self.node.line_height.clone();
-        Conv(Conv::get_prop(prop)).to_f32()
+        if let Some(val) = prop {
+            Conv(val.clone()).to_f32()
+        } else {
+            None
+        }        
     }
 
-    fn max_height(&self) -> Units {
+    fn max_height(&self) -> Option<Units> {
         let prop = &self.node.max_height.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn max_width(&self) -> Units {
+    fn max_width(&self) -> Option<Units> {
         let prop = &self.node.max_width.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn min_height(&self) -> Units {
+    fn min_height(&self) -> Option<Units> {
         let prop = &self.node.min_height.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn min_width(&self) -> Units {
+    fn min_width(&self) -> Option<Units> {
         let prop = &self.node.min_width.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn offset(&self) -> Edge<Units> {
+    fn offset(&self) -> Option<Edge<Units>> {
         let prop = &self.node.offset.clone();
-        to_edge_units(prop.clone())
+        if let Some(_) = prop {
+            Some(to_edge_units(prop.clone()))
+        } else {
+            None
+        }        
     }
 
-    fn padding(&self) -> Edge<Units> {
+    fn padding(&self) -> Option<Edge<Units>> {
         let prop = &self.node.padding.clone();
-        to_edge_units(prop.clone())
+        if let Some(_) = prop {
+            Some(to_edge_units(prop.clone()))
+        } else {
+            None
+        }
     }
 
-    fn padding_top(&self) -> Units {
+    fn padding_top(&self) -> Option<Units> {
         let prop = &self.node.padding_top.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn padding_bottom(&self) -> Units {
+    fn padding_bottom(&self) -> Option<Units> {
         let prop = &self.node.padding_bottom.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn padding_left(&self) -> Units {
+    fn padding_left(&self) -> Option<Units> {
         let prop = &self.node.padding_left.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn padding_right(&self) -> Units {
+    fn padding_right(&self) -> Option<Units> {
         let prop = &self.node.padding_right.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
     // fn pointer_events(&self) -> PointerEvents {
@@ -157,33 +197,37 @@ impl UiStyle {
     //     UiRenderCommand::new(prop.clone()).parse().unwrap()
     // }
 
-    fn right(&self) -> Units {
+    fn right(&self) -> Option<Units> {
         let prop = &self.node.right.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn row_between(&self) -> Units {
+    fn row_between(&self) -> Option<Units> {
         let prop = &self.node.row_between.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn top(&self) -> Units {
+    fn top(&self) -> Option<Units> {
         let prop = &self.node.top.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn width(&self) -> Units {
+    fn width(&self) -> Option<Units> {
         let prop = &self.node.width.clone();
-        UiUnit::new(prop.clone()).parse().unwrap()
+        UiUnit::new(prop.clone()).parse().ok()
     }
 
-    fn z_index(&self) -> i32 {
+    fn z_index(&self) -> Option<i32> {
         let prop = &self.node.z_index.clone();
-        Conv(Conv::get_prop(prop)).to_type::<i32>()
+        if let Some(val) = prop {
+            Conv(val.clone()).to_type::<i32>()
+        } else {
+            None
+        }        
     }
 }
 
-impl UiParser for UiStyle {
+impl UiParser for StyleBuilder {
     fn parse(&self) -> Result<Box<dyn Any>, &'static str> {
         let background_color = self.background_color();
         let border = self.border();
@@ -216,35 +260,35 @@ impl UiParser for UiStyle {
         let z_index = self.z_index();
 
         let widget = KStyle {
-            background_color: background_color.into(),
-            border: border.into(),
-            border_color: border_color.into(),
-            border_radius: border_radius.into(),
-            bottom: bottom.into(),
-            color: color.into(),
-            col_between: col_between.into(),
-            cursor: cursor.into(),
-            font: font.into(),
-            font_size: font_size.into(),
-            height: height.into(),
-            layout_type: layout_type.into(),
-            left: left.into(),
-            line_height: line_height.into(),
-            max_height: max_height.into(),
-            max_width: max_width.into(),
-            min_height: min_height.into(),
-            min_width: min_width.into(),
-            offset: offset.into(),
-            padding: padding.into(),
-            padding_top: padding_top.into(),
-            padding_bottom: padding_bottom.into(),
-            padding_left: padding_left.into(),
-            padding_right: padding_right.into(),
-            right: right.into(),
-            row_between: row_between.into(),
-            top: top.into(),
-            width: width.into(),
-            z_index: z_index.into(),
+            // background_color: background_color.into(),
+            // border: border.into(),
+            // border_color: border_color.into(),
+            // border_radius: border_radius.into(),
+            // bottom: bottom.into(),
+            // color: color.into(),
+            // col_between: col_between.into(),
+            // cursor: cursor.into(),
+            // font: font.into(),
+            // font_size: font_size.into(),
+            // height: height.into(),
+            // layout_type: layout_type.into(),
+            // left: left.into(),
+            // line_height: line_height.into(),
+            // max_height: max_height.into(),
+            // max_width: max_width.into(),
+            // min_height: min_height.into(),
+            // min_width: min_width.into(),
+            // offset: offset.into(),
+            // padding: padding.into(),
+            // padding_top: padding_top.into(),
+            // padding_bottom: padding_bottom.into(),
+            // padding_left: padding_left.into(),
+            // padding_right: padding_right.into(),
+            // right: right.into(),
+            // row_between: row_between.into(),
+            // top: top.into(),
+            // width: width.into(),
+            // z_index: z_index.into(),
             ..Default::default()
         };
         Ok(Box::new(widget))

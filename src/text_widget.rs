@@ -1,5 +1,5 @@
 pub struct UiTextWidget {
-    node: UiParseNode
+    node: TextWidget
 }
 impl UiParser for UiTextWidget {
     fn parse(&self) -> Result<Box<dyn Any>, &'static str> {
@@ -15,3 +15,26 @@ impl UiParser for UiTextWidget {
         }
     }
 }
+
+pub struct UiNode {
+    pub width: Units
+}
+impl UiNode {
+    // fn new(width: UiNodeUnit) -> Self {
+    //     Self {
+    //         width
+    //     }
+    // }
+}
+
+pub fn build_text_widget(ui: TextWidget) -> Result<UiNode, &'static str>  {
+    if let Ok(unit) = UiUnit::new(ui.width).parse() {
+        Ok(UiNode {
+            width: unit
+        })
+    } else {
+        Err("bad Text Widget")        
+    }
+    
+}
+

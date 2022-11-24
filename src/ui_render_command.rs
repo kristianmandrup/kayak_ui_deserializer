@@ -1,24 +1,33 @@
+use std::any::Any;
+
 use kayak_ui::prelude::RenderCommand;
 use bevy::prelude::*;
 
-use crate::{ui_alignment::to_alignment, json_deserializer::UiParseNode};
+use crate::{ui_alignment::to_alignment, json_deserializer::OptStr};
 
-pub struct UiRenderCommand {
-    node: UiParseNode,
-    asset_server: AssetServer
+pub struct UiRenderCommandText {
+    pub content: OptStr,
+    pub alignment: OptStr,
+    pub word_wrap: OptStr,
 }
-impl UiRenderCommand {
-    pub fn new(node: UiParseNode, asset_server: AssetServer ) -> Self {
+
+pub struct RenderCommandBuilder {
+    pub node: Box<dyn Any + 'static>,
+    // asset_server: AssetServer
+}
+impl RenderCommandBuilder {
+    // asset_server: AssetServer
+    pub fn new(node: Box<dyn Any> ) -> Self {
         Self {
             node,
-            asset_server
+            // asset_server
         }
     }
 
-    pub fn parse(&self) -> Result<RenderCommand, &'static str> {        
-        let command = self.node.render_command.clone();    
-        Ok(self.to_render_command(command.unwrap()))
-    }
+    // pub fn parse(&self) -> Result<RenderCommand, &'static str> {        
+    //     let command = self.node.render_command.clone();    
+    //     Ok(self.to_render_command(command.unwrap()))
+    // }
 
     pub fn to_render_command(&self, command: String) -> RenderCommand {
         match command.to_lowercase().as_str() {
@@ -27,22 +36,24 @@ impl UiRenderCommand {
             "clip" => RenderCommand::Clip,
             "quad" => RenderCommand::Quad,
             "text" => {
-                let content = self.node.content.clone().unwrap();
-                let alignment = to_alignment(self.node.alignment.clone().unwrap());
-                let word_wrap = self.node.word_wrap.clone().unwrap().trim().parse().unwrap();
+                let component_ref: &dyn Any = &*self.node;
+                let node = component_ref.downcast_ref::<UiRenderCommandText>().unwrap();
+                let content = node.content.clone().unwrap();
+                let alignment = to_alignment(node.alignment.clone().unwrap());
+                let word_wrap = node.word_wrap.clone().unwrap().trim().parse().unwrap();
                 RenderCommand::Text {
                     content,
                     alignment,
                     word_wrap
                 }
             },
-            "image" => {
-                let asset_path = self.node.asset_path.clone().unwrap();
-                let handle = self.asset_server.load(asset_path);
-                RenderCommand::Image {
-                    handle
-                }
-            },
+            // "image" => {
+            //     let asset_path = self.node.asset_path.clone().unwrap();
+            //     let handle = self.asset_server.load(asset_path);
+            //     RenderCommand::Image {
+            //         handle
+            //     }
+            // },
             _ => RenderCommand::Empty,
         }        
     }

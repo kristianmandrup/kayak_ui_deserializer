@@ -1,0 +1,19 @@
+{
+  "image-bundles": [
+    {
+      "name": "my-image",
+      "type": "image-bundle",
+      "image": {
+        "path": "path/to/image.png"
+      },
+      "styles": {
+        "position_type": "self-directed",
+        "left": "10 px",
+        "top": "10 px",
+        "border-radius": "500",
+        "width": "200 px",
+        "height": "182 px"
+      }
+    }
+  ]
+}

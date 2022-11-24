@@ -11,8 +11,12 @@ pub fn parse_rgba(color_str: &str) -> Option<(f32, f32, f32, f32)>  {
     }
 }
 
-pub fn parse_color(color_str: &str) -> Color {    
+pub fn parse_color(color_str: &str) -> Option<Color> {    
     let rgba = parse_rgba(color_str);
-    let (red, green, blue, alpha) = rgba.unwrap_or((0.,0.,0.,0.));
-    Color::rgba(red, green, blue, alpha)
+    if let Some(colors) = rgba {
+        let (red, green, blue, alpha) = rgba.unwrap_or((0.,0.,0.,0.));
+        Some(Color::rgba(red, green, blue, alpha))
+    } else {
+        None
+    }
 }

@@ -1,0 +1,69 @@
+{
+  "assets": {
+    "images": [
+      {
+        "name": "profile-image",
+        "type": "image",
+        "path": "path/to/profile.png"
+      }
+    ],
+    "fonts": [
+      {
+        "name": "roboto",
+        "type": "font",
+        "path": "path/to/roboto.tff"
+      }
+    ]
+  },
+  "styles": [
+    {
+      "name": "base",
+      "color": "white",
+      "background-color": "darkgray"
+    },
+    {
+      "name": "base-image",
+      "border-radius": "500",
+      "position-type": "self-directed"
+    }
+  ],
+  "widgets": {
+    "buttons": [
+      {
+        "name": "menu-button",
+        "type": "button",
+        "style": {
+          "extends": "base",
+          "bottom": "20 px",
+          "cursor": "hand"
+        }
+      }
+    ],
+    "text-widgets": [
+      {
+        "name": "game-title",
+        "type": "text-widget",
+        "text": {
+          "extends": "base",
+          "content": "hello",
+          "size": 20,
+          "font-ref": "roboto"
+        }
+      }
+    ],
+    "image-bundles": [
+      {
+        "name": "my-image",
+        "type": "image-bundle",
+        "image-ref": "profile-image",
+        "styles": {
+          "extends": "base-image",
+          "left": "10 px",
+          "top": "10 px",
+          "width": "200 px",
+          "height": "182 px"
+        }
+      }
+    ]
+  }
+}

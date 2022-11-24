@@ -10,13 +10,3 @@ pub fn to_layout_type(str: String) -> LayoutType {
         _ => panic!("Invalid layout type")
     }
 }
-
-
-// pub enum LayoutType {
-//     /// Stack child elements horizontally
-//     Row,
-//     /// Stack child elements vertically
-//     Column,
-//     /// Position child elements into specified rows and columns
-//     Grid,
-// }

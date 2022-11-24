@@ -6,82 +6,39 @@ pub fn to_cursor_icon(str: String) -> CursorIcon {
     match str.as_str() {
         "default" => CursorIcon::Default,
         "crosshair" => CursorIcon::Crosshair,
+        "hand" => CursorIcon::Hand,
+        "arrow" => CursorIcon::Arrow,
+        "move" => CursorIcon::Move,
+        "text" => CursorIcon::Text,
+        "wait" => CursorIcon::Wait,
+        "help" => CursorIcon::Help,
+        "progress" => CursorIcon::Progress,
+        "not-allowed" => CursorIcon::NotAllowed,
+        "context-menu" => CursorIcon::ContextMenu,
+        "cell" => CursorIcon::Cell,
+        "vertical-text" => CursorIcon::VerticalText,
+        "alias" => CursorIcon::Alias,
+        "copy" => CursorIcon::Copy,
+        "no-drop" => CursorIcon::NoDrop,
+        "grab" => CursorIcon::Grab,
+        "grabbing" => CursorIcon::Grabbing,
+        "all-scroll" => CursorIcon::AllScroll,
+        "zoom-in" => CursorIcon::ZoomIn,
+        "zoom-out" => CursorIcon::ZoomOut,
+        "e-resize" => CursorIcon::EResize,
+        "n-resize" => CursorIcon::NResize,
+        "ne-resize" => CursorIcon::NeResize,
+        "nw-resize" => CursorIcon::NwResize,
+        "s-resize" => CursorIcon::SResize,
+        "se-resize" => CursorIcon::SeResize,
+        "sw-resize" => CursorIcon::SwResize,
+        "w-resize" => CursorIcon::WResize,
+        "ew-resize" => CursorIcon::EwResize,
+        "ns-resize" => CursorIcon::NsResize,
+        "nesw-resize" => CursorIcon::NeswResize,
+        "nwse-resize" => CursorIcon::NwseResize,
+        "col-resize" => CursorIcon::ColResize,
+        "row-resize" => CursorIcon::RowResize,
         _ => CursorIcon::Default,
     }
 }
-
-// pub enum CursorIcon {
-//     /// The platform-dependent default cursor.
-//     Default,
-//     /// A simple crosshair.   
-//     Crosshair,
-//     /// A hand (often used to indicate links in web browsers).    
-//     Hand,
-//     /// An arrow. This is the default cursor on most systems.    
-//     Arrow,
-//     /// Indicates something is to be moved.    
-//     Move,
-//     /// Indicates text that may be selected or edited.    
-//     Text,
-//     /// Program busy indicator.    
-//     Wait,
-//     /// Help indicator (often rendered as a "?")    
-//     Help,
-//     /// Progress indicator. Shows that processing is being done.
-//     ///
-//     /// But in contrast with "Wait" the user may still interact with the program.
-//     /// Often rendered as a spinning beach ball, or an arrow with a watch or hourglass.    
-//     Progress,
-//     /// Cursor showing that something cannot be done.    
-//     NotAllowed,
-//     /// Indicates that a context menu is available.
-//     ContextMenu,
-//     /// Indicates that a cell (or set of cells) may be selected.
-//     Cell,
-//     /// Indicates vertical text that may be selected or edited.
-//     VerticalText,
-//     /// Indicates that an alias of something is to be created.
-//     Alias,
-//     /// Indicates something is to be copied.
-//     Copy,
-//     /// Indicates that the dragged item cannot be dropped here.
-//     NoDrop,
-//     /// Indicates that something can be grabbed.
-//     Grab,
-//     /// Indicates that something is grabbed.
-//     Grabbing,
-//     /// Indicates that the user can scroll by dragging the mouse.
-//     AllScroll,
-//     /// Indicates that the user can zoom in.
-//     ZoomIn,
-//     /// Indicates that the user can zoom out.
-//     ZoomOut,
-//     /// Indicates that an edge of a box is to be moved right (east).
-//     EResize,
-//     /// Indicates that an edge of a box is to be moved up (north).
-//     NResize,
-//     /// Indicates that an edge of a box is to be moved up and right (north/east).
-//     NeResize,
-//     /// indicates that an edge of a box is to be moved up and left (north/west).
-//     NwResize,
-//     /// Indicates that an edge of a box is to be moved down (south).
-//     SResize,
-//     /// The cursor indicates that an edge of a box is to be moved down and right (south/east).
-//     SeResize,
-//     /// The cursor indicates that an edge of a box is to be moved down and left (south/west).
-//     SwResize,
-//     /// Indicates that an edge of a box is to be moved left (west).
-//     WResize,
-//     /// Indicates a bidirectional resize cursor.
-//     EwResize,
-//     /// Indicates a bidirectional resize cursor.
-//     NsResize,
-//     /// Indicates a bidirectional resize cursor.
-//     NeswResize,
-//     /// Indicates a bidirectional resize cursor.
-//     NwseResize,
-//     /// Indicates that a column can be resized horizontally.
-//     ColResize,
-//     /// Indicates that the row can be resized vertically.
-//     RowResize,
-// }

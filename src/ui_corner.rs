@@ -76,25 +76,19 @@ impl CornerBuilder {
         let top_right = self.top_right();
         let bottom_left = self.bottom_left();
         let bottom_right = self.bottom_right();
-        let corner = Corner {
-            // top_left,
-            // top_right,
-            // bottom_left,
-            // bottom_right,
-            ..Default::default()
-        };
-        // if let Some(val) = top_left {
-        //     corner.top_left = val;    
-        // }
-        // if let Some(val) = top_right {
-        //     corner.top_right = val;    
-        // }
-        // if let Some(val) = bottom_left {
-        //     corner.bottom_left = val;    
-        // }
-        // if let Some(val) = bottom_right {
-        //     corner.bottom_right = val;    
-        // }
+        let mut corner = Corner::default();
+        if let Some(val) = top_left {
+            corner.top_left = val;    
+        }
+        if let Some(val) = top_right {
+            corner.top_right = val;    
+        }
+        if let Some(val) = bottom_left {
+            corner.bottom_left = val;    
+        }
+        if let Some(val) = bottom_right {
+            corner.bottom_right = val;    
+        }
         Ok(corner)            
     }
     // top: node.top

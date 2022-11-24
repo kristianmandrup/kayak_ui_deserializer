@@ -8,7 +8,7 @@ impl UiTextProps {
         }
     }
 
-    fn content(&self) -> String {
+    fn content(&self) -> Option<String> {
         let prop = &self.node.text.clone();
         Conv::get_prop(prop)
     }
@@ -45,24 +45,37 @@ impl UiTextProps {
 }
 
 
-impl UiParser for UiTextProps {
-    fn parse(&self) -> Result<Box<dyn Any>, &'static str> {        
+impl UiTextProps {
+    fn parse(&self) -> Result<TextProps, &'static str> {        
         let font = self.font();
         let line_height = self.line_height();
         let show_cursor = self.show_cursor();
         let size = self.size();
         let alignment = self.alignment();
         let content = self.content();
-        let widget = TextProps {
-            content,
-            font,      
-            line_height,
-            show_cursor,      
-            size,
-            alignment,
-            ..Default::default()
-        };
-        Ok(Box::new(widget))            
+        let mut text_props = TextProps::default();
+        if let Some(val) = content {
+            text_props.content = val;    
+        }
+        if let Some(val) = content {
+            text_props.content = val;    
+        }
+        if let Some(val) = font {
+            text_props.font = val;    
+        }
+        if let Some(val) = line_height {
+            text_props.line_height = val;    
+        }
+        if let Some(val) = show_cursor {
+            text_props.content = val;    
+        }
+        if let Some(val) = size {
+            text_props.size = val;    
+        }
+        if let Some(val) = alignment {
+            text_props.alignment = val;    
+        }
+        Ok(text_props)            
     }
 
 }

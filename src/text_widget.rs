@@ -1,9 +1,9 @@
 pub struct UiTextWidget {
     node: TextWidget
 }
-impl UiParser for UiTextWidget {
-    fn parse(&self) -> Result<Box<dyn Any>, &'static str> {
-        let text = UiTextProps::new(self.node.to_owned()).parse()?;
+impl UiTextWidget {
+    fn parse(&self) -> Result<TextWidgetBundle, &'static str> {
+        let text = UiTextProps::new(self.node).parse()?;
         if let Ok(content) = text.downcast::<TextProps>() {
             let widget = TextWidgetBundle {
                 text: *content,
@@ -19,14 +19,6 @@ impl UiParser for UiTextWidget {
 pub struct UiNode {
     pub width: Units
 }
-impl UiNode {
-    // fn new(width: UiNodeUnit) -> Self {
-    //     Self {
-    //         width
-    //     }
-    // }
-}
-
 pub fn build_text_widget(ui: TextWidget) -> Result<UiNode, &'static str>  {
     if let Ok(unit) = UiUnit::new(ui.width).parse() {
         Ok(UiNode {

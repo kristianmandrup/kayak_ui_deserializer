@@ -1,7 +1,7 @@
 // use serde_json;
 // use std::{result::Result};
 // use serde::{Deserialize, Serialize};
-use nanoserde::{DeJson, SerJson};
+use nanoserde::{DeJson};
 
 pub type OptStr = Option<String>;
 

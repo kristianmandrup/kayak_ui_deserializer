@@ -67,29 +67,22 @@ impl RectBuilder {
         let width = self.width();
         let height = self.height();
         let z_index = self.z_index();
-        let rect = Rect {
-            // posy,
-            // posx,
-            // width,
-            // height,
-            // z_index,
-            ..Default::default()
-        };
-        // if let Some(val) = posx {
-        //     rect.posx = val;    
-        // }
-        // if let Some(val) = posy {
-        //     rect.posy = val;    
-        // }
-        // if let Some(val) = width {
-        //     rect.width = val;    
-        // }
-        // if let Some(val) = height {
-        //     rect.height = val;    
-        // }
-        // if let Some(val) = z_index {
-        //     rect.z_index = val;    
-        // }
+        let mut rect = Rect::default();
+        if let Some(val) = posx {
+            rect.posx = val;    
+        }
+        if let Some(val) = posy {
+            rect.posy = val;    
+        }
+        if let Some(val) = width {
+            rect.width = val;    
+        }
+        if let Some(val) = height {
+            rect.height = val;    
+        }
+        if let Some(val) = z_index {
+            rect.z_index = val;    
+        }
         Ok(rect)            
     }
     // top: node.top

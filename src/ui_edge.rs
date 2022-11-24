@@ -94,21 +94,19 @@ impl<T> EdgeBuilder<T> where T: Copy + Default + PartialEq + FromStr + Debug {
         let left = self.left();
         let right = self.right();
         let bottom = self.bottom();
-        let edge = Edge {
-            ..Default::default()
-        };
-        // if let Some(val) = top {
-        //     edge.top = val;    
-        // }
-        // if let Some(val) = left {
-        //     edge.left = val;    
-        // }
-        // if let Some(val) = bottom {
-        //     edge.bottom = val;    
-        // }
-        // if let Some(val) = right {
-        //     edge.right = val;    
-        // }
+        let mut edge = Edge::default();
+        if let Some(val) = top {
+            edge.top = val;    
+        }
+        if let Some(val) = left {
+            edge.left = val;    
+        }
+        if let Some(val) = bottom {
+            edge.bottom = val;    
+        }
+        if let Some(val) = right {
+            edge.right = val;    
+        }
 
         Ok(edge)            
     }

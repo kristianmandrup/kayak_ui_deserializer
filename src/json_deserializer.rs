@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-use kayak_ui::prelude::KStyle;
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton}};
 // use serde_json;
 // use std::{result::Result};
 // use serde::{Deserialize, Serialize};
 use nanoserde::{DeJson};
 
-use crate::{ui_style::StyleBuilder};
+use crate::{ui_style::StyleBuilder, ui_text_widget::build_text_widget, ui_button::build_button};
 
 pub type OptStr = Option<String>;
 
@@ -79,8 +79,8 @@ pub struct Image {
 
 #[derive(DeJson, Clone)]
 pub struct Button {
-    name: String,
-    style: Style,
+    pub name: String,
+    pub style: Style,
 }
 
 #[derive(DeJson, Clone)]
@@ -92,9 +92,9 @@ pub struct ImageBundle {
 
 #[derive(DeJson, Clone)]
 pub struct TextWidget {
-    name: String,
-    text: Text,
-    style: Style,
+    pub name: String,
+    pub text: Text,
+    pub style: Style,
 }
 
 #[derive(DeJson, Clone)]
@@ -105,13 +105,12 @@ pub struct Widgets {
 }
 
 pub struct KWidgets {
-    text: HashMap<String, TextWidget>
+    pub text: HashMap<String, TextWidget>
 }
 
-
 pub struct StoredWidgets {
-    pub buttons: HashMap<String, KWidgets>,
-    pub text_widgets: HashMap<String, TextWidget>
+    pub buttons: HashMap<String, KButton>,
+    pub text_widgets: HashMap<String, TextWidgetBundle>
 }
 impl StoredWidgets {
     pub fn new() -> Self {
@@ -162,7 +161,7 @@ impl KayakBuilder {
         }        
     }
 
-    pub fn build(&self) -> () {
+    pub fn build(&mut self) -> () {
         self.build_styles();
         self.build_widgets();
     }
@@ -177,7 +176,7 @@ impl KayakBuilder {
         }
     }
 
-    pub fn build_widgets(&self) -> () {
+    pub fn build_widgets(&mut self) -> () {
         if let Some(items) = self.data.widgets.to_owned() {
             if let Some(buttons) = items.buttons {
                 self.build_buttons(buttons);     
@@ -185,19 +184,19 @@ impl KayakBuilder {
         }
     }
 
-    pub fn build_buttons(&self, buttons: Vec<Button>) -> () { 
+    pub fn build_buttons(&mut self, buttons: Vec<Button>) -> () { 
         for item in buttons {
             let name = item.clone().name;
-            // let text_widget = build_text_widget(item).unwrap();
-            // self.store.widgets.text_widgets.to_owned().insert(name, text_widget);
+            let button = build_button(item).unwrap();
+            self.store.widgets.buttons.insert(name, button);
         }
     }
 
-    pub fn text_widgets(&self, text_widgets: Vec<TextWidget>) { 
+    pub fn text_widgets(&mut self, text_widgets: Vec<TextWidget>) { 
         for item in text_widgets {
-            let name = item.clone().name;
-            // let text_widget = build_text_widget(item).unwrap();
-            // self.store.widgets.text_widgets.to_owned().insert(name, text_widget);
+            let name = item.to_owned().name;
+            let text_widget_bundle = build_text_widget(item).unwrap();
+            self.store.widgets.text_widgets.insert(name, text_widget_bundle);
         }
     }
 }
@@ -234,7 +233,7 @@ fn array() {
       "#;
 
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
-    let builder = KayakBuilder::new(data);
+    let mut builder = KayakBuilder::new(data);
     builder.build()
 
     // 

@@ -12,5 +12,6 @@ mod ui_layout_type;
 mod ui_alignment;
 mod ui_render_command;
 mod ui_rect;
-mod text_widget;
-mod text_props;
+mod ui_text_widget;
+mod ui_text_props;
+mod ui_button;

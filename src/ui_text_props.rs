@@ -6,7 +6,7 @@ pub struct UiTextProps {
     node: Text
 }
 impl UiTextProps {
-    fn new(node: Text) -> Self {
+    pub fn new(node: Text) -> Self {
         Self {
             node
         }
@@ -62,7 +62,7 @@ impl UiTextProps {
 
 
 impl UiTextProps {
-    fn parse(&self) -> Result<TextProps, &'static str> {        
+    pub fn parse(&self) -> Result<TextProps, &'static str> {        
         let content = self.content();
         let font = self.font();
         let line_height = self.line_height();

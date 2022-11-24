@@ -124,8 +124,8 @@ impl StoredWidgets {
 
 pub struct KayakStore {
     // pub assets: HashMap<String, Asset>,
-    styles: HashMap<String, KStyle>,
-    widgets: StoredWidgets
+    pub styles: HashMap<String, KStyle>,
+    pub widgets: StoredWidgets
 }
 impl KayakStore {
     pub fn new() -> Self {
@@ -161,9 +161,10 @@ impl KayakBuilder {
         }        
     }
 
-    pub fn build(&mut self) -> () {
+    pub fn build(&mut self) -> & mut KayakBuilder {
         self.build_styles();
         self.build_widgets();
+        self
     }
 
     pub fn build_styles(&self) -> () {
@@ -233,9 +234,7 @@ fn array() {
       "#;
 
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
-    let mut builder = KayakBuilder::new(data);
-    builder.build()
-
+    let builder = KayakBuilder::new(data).build();
     // 
     // assert_eq!(data.styles.unwrap().len(), 0);
     // assert_eq!(kayak.assets.unwrap().images.unwrap().len(), 1);

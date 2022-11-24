@@ -6,9 +6,28 @@ Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui), a Bevy ECS U
 
 The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in a Hashmap for reference. This allows the Game UI designer to externalize some UI decisions as Game "assets" that can be loaded from file.
 
+## API
+
+Currently this library can be used to load and build the following Kayak UI constructs:
+
+- `KStyle`
+- `KButton`
+- `TextWidgetBundle`
+
+```rust
+    let data: KayakData = DeJson::deserialize_json(json).unwrap();
+    let mut builder = KayakBuilder::new(data).build();
+    let store = builder.store
+    let styles = store.styles // HashMap<String, KStyle>
+    let widgets = store.widgets
+    let buttons = widgets.buttons // HashMap<String, KButton>
+    let text_widgets = widgets.text_widgets // HashMap<String, TextWidgetBundle>
+
+```
+
 ## Status
 
-Still fleshing out the internal functioning and structures. The focus so far is on parsing and building up Kayak UI structs.
+Still fleshing out the internal functioning and structures. The focus so far is on parsing and building up Kayak UI structures.
 
 The essential builders should now be working.
 
@@ -19,7 +38,7 @@ Currently missing:
 
 ## Serialization formats
 
-Currently targeting JSON format as a POC. It should be easy to support additional structued formats like [YAML](https://yaml.org/), [KDL](https://kdl.dev/) etc. later on.
+Currently targeting JSON format as a POC. It should be easy to support additional structured formats like [YAML](https://yaml.org/), [KDL](https://kdl.dev/) etc. later on.
 
 ## JSON structure
 

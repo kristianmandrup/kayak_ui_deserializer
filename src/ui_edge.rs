@@ -20,6 +20,7 @@ pub struct UiEdge {
     left: OptStr,
     right: OptStr,
     bottom: OptStr,
+    all: OptStr,
 }
 
 fn part_to_string(part: &str) -> Option<String> {
@@ -29,6 +30,19 @@ fn part_to_string(part: &str) -> Option<String> {
 
 fn edge_from_str(str: String) -> UiEdge {
     let parts = str.split(' ').collect::<Vec<&str>>();
+    if parts.len() <= 1 {
+        return UiEdge {
+            top: None,
+            right: None,
+            bottom: None,
+            left: None,
+            all: Some(str)
+        }    
+    }
+    if parts.len() < 4 {
+        panic!("bad edge")
+    }
+
     let top = part_to_string(parts[0]);
     let right = part_to_string(parts[1]);
     let bottom = part_to_string(parts[2]);
@@ -37,7 +51,8 @@ fn edge_from_str(str: String) -> UiEdge {
         top,
         right,
         bottom,
-        left
+        left,
+        all: None
     }
 }
 
@@ -61,32 +76,28 @@ impl<T> EdgeBuilder<T> where T: Copy + Default + PartialEq + FromStr + Debug {
         }
     }
 
-    fn to_type(&self, prop: &Option<String>, label: &str) -> Option<T> {
-        if let str = Conv::get_prop(prop) {
-            if let Some(val) = str {
-                Conv(val).to_type::<T>()
-            } else {
-                None
-            }
+    fn to_type(&self, prop: &Option<String>) -> Option<T> {
+        if let Some(str) = Conv::get_prop(prop) {
+            Conv(str).to_type::<T>()
         } else {
             None
         }                    
     }
 
     fn top(&self) -> Option<T> {
-        self.to_type(&self.node.top.clone(), "top")
+        self.to_type(&self.node.top.clone())
     }
 
     fn left(&self) -> Option<T> {
-        self.to_type(&self.node.left.clone(), "left")
+        self.to_type(&self.node.left.clone())
     }
 
     fn right(&self) -> Option<T> {
-        self.to_type(&self.node.right.clone(), "right")
+        self.to_type(&self.node.right.clone())
     }
 
     fn bottom(&self) -> Option<T> {
-        self.to_type(&self.node.bottom.clone(), "bottom")
+        self.to_type(&self.node.bottom.clone())
     }
 
     pub fn parse(&self) -> Result<Edge<T>, &'static str> {        

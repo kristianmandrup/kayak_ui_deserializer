@@ -1,14 +1,5 @@
-// pub struct Rect {
-//     pub posx: f32,
-//     pub posy: f32,
-//     pub width: f32,
-//     pub height: f32,
-//     pub z_index: f32,
-// }
-use std::any::Any;
 
-use kayak_ui::prelude::{Edge, Rect};
-
+use kayak_ui::prelude::{Rect};
 use crate::{ui_parser::Conv, json_deserializer::OptStr};
 
 pub struct UiRect {
@@ -29,36 +20,32 @@ impl RectBuilder {
         }
     }
 
-    fn to_f32(&self, prop: &Option<String>, label: &str) -> Option<f32> {
-        if let str = Conv::get_prop(prop) {
-            if let Some(val) = str {
-                Conv(val).to_f32()
-            } else {
-                None
-            }
+    fn to_f32(&self, prop: &Option<String>) -> Option<f32> {
+        if let Some(str) = Conv::get_prop(prop) {
+            Conv(str).to_f32()
         } else {
             None
         }                    
     }
 
     fn posx(&self) -> Option<f32> {
-        self.to_f32(&self.node.posx.clone(), "posx")
+        self.to_f32(&self.node.posx.clone())
     }
 
     fn posy(&self) -> Option<f32> {
-        self.to_f32(&self.node.posy.clone(), "posy")
+        self.to_f32(&self.node.posy.clone())
     }
 
     fn width(&self) -> Option<f32> {
-        self.to_f32(&self.node.width.clone(), "width")
+        self.to_f32(&self.node.width.clone())
     }
 
     fn height(&self) -> Option<f32> {
-        self.to_f32(&self.node.height.clone(), "height")
+        self.to_f32(&self.node.height.clone())
     }
 
     fn z_index(&self) -> Option<f32> {
-        self.to_f32(&self.node.z_index.clone(), "height")
+        self.to_f32(&self.node.z_index.clone())
     }
 
     pub fn parse(&self) -> Result<Rect, &'static str> {        

@@ -45,6 +45,13 @@ fn parse_rgba(color_str: &str) -> Option<Vec<Option<f32>>>  {
     }
 }
 
+pub fn parse_color_alias(color: &str) -> Color {    
+    match color {
+        "white" => Color::WHITE,
+        _ => Color::WHITE
+    }
+}
+
 pub fn parse_color(color_str: &str) -> Option<Color> {    
     if let Some(col) = parse_rgba_color(color_str) {
         Some(col)

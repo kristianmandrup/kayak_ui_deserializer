@@ -43,32 +43,28 @@ impl CornerBuilder {
         }
     }
 
-    fn to_f32(&self, prop: &Option<String>, label: &str) -> Option<f32> {
-        if let str = Conv::get_prop(prop) {
-            if let Some(val) = str {
-                Conv(val).to_f32()
-            } else {
-                None
-            }
+    fn to_f32(&self, prop: &Option<String>) -> Option<f32> {
+        if let Some(str) = Conv::get_prop(prop) {
+            Conv(str).to_f32()
         } else {
             None
         }                    
     }
 
     fn top_left(&self) -> Option<f32> {
-        self.to_f32(&self.node.top_left.clone(), "top")
+        self.to_f32(&self.node.top_left.clone())
     }
 
     fn top_right(&self) -> Option<f32> {
-        self.to_f32(&self.node.top_right.clone(), "left")
+        self.to_f32(&self.node.top_right.clone())
     }
 
     fn bottom_left(&self) -> Option<f32> {
-        self.to_f32(&self.node.bottom_left.clone(), "right")
+        self.to_f32(&self.node.bottom_left.clone())
     }
 
     fn bottom_right(&self) -> Option<f32> {
-        self.to_f32(&self.node.bottom_right.clone(), "bottom")
+        self.to_f32(&self.node.bottom_right.clone())
     }
 
     pub fn parse(&self) -> Result<Corner<f32>, &'static str> {        

@@ -23,7 +23,7 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, KChildren, WidgetName}};
 
-use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_style::StyleBuilder, ui_button::build_button};
+use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_style::StyleBuilder};
 
 
 pub struct WindowBuilder {
@@ -143,7 +143,6 @@ impl WindowBundleBuilder {
         let prop = &self.node.name.clone();
         prop.to_owned()
     }
-
 
     fn children(&self) -> Option<KChildren> {
         let prop = &self.node.children.clone();

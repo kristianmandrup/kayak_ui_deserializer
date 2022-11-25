@@ -15,4 +15,5 @@ mod ui_rect;
 mod ui_text_widget;
 mod ui_text_props;
 mod ui_button;
+mod ui_texture_atlas;
 mod ui_window;

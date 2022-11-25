@@ -28,6 +28,7 @@ Currently this library can be used to load and build the following Kayak UI cons
     let menu_button = store.button("menu_button");
     let title = store.text_widget("title");
     let sub_title = store.text_widget("sub_title");
+    let window = store.window("main window");
 ```
 
 ## Status
@@ -82,6 +83,18 @@ The HashMap can then be referenced when building the Kayak UI to reduce the code
     }
   ],
   "widgets": {
+    "windows": [
+      {
+        "name": "main window",
+        "window": {
+          "draggable": true,
+          "initial_position": [50, 100],
+          "size": [40, 40]
+          "title": "Game menu"
+        },
+        "styles": "base"
+      }
+    ],
     "buttons": [
       {
         "name": "menu-button",

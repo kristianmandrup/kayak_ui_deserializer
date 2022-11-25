@@ -1,6 +1,6 @@
 use std::{collections::HashMap};
 
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle}};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle}};
 use nanoserde::{DeJson};
 
 use crate::{ui_style::StyleBuilder, ui_text_widget::build_text_widget, ui_button::build_button};
@@ -10,6 +10,24 @@ pub type OptStr = Option<String>;
 #[derive(DeJson, Clone)]
 pub struct SChildren {
     pub widgets: Option<SWidgets>
+}
+
+#[derive(DeJson, Clone)]
+pub struct STextureAtlasProps {
+    /// The handle to image
+    pub handle: SImage,
+    /// The position of the tile (in pixels)
+    pub position: Option<Vec<OptStr>>,
+    /// The size of the tile (in pixels)
+    pub tile_size: Option<Vec<OptStr>>,
+}
+
+
+#[derive(DeJson, Clone)]
+pub struct STextureAtlasBundle {
+    pub atlas: STextureAtlasProps,
+    pub styles: SStyle,
+    pub name: OptStr,
 }
 
 #[derive(DeJson, Clone)]
@@ -102,7 +120,6 @@ pub struct SImage {
     image_ref: OptStr,
 }    
 
-
 #[derive(DeJson, Clone)]
 pub struct SButton {
     pub name: String,
@@ -129,12 +146,14 @@ pub struct SWidgets {
     pub text_widgets: Option<Vec<STextWidget>>,
     pub image_bundles: Option<Vec<SImageBundle>>,
     pub window_bundles: Option<Vec<SWindow>>,
+    pub texture_atlases: Option<Vec<STextureAtlasBundle>>,
 }
 
 pub struct StoredWidgets {
     pub buttons: HashMap<String, KButton>,
     pub text_widgets: HashMap<String, TextWidgetBundle>,
-    pub windows: HashMap<String, WindowBundle>
+    pub windows: HashMap<String, WindowBundle>,
+    pub texture_atlases: HashMap<String, TextureAtlasBundle>
 }
 impl StoredWidgets {
     pub fn new() -> Self {
@@ -142,6 +161,7 @@ impl StoredWidgets {
             buttons: HashMap::new(),
             text_widgets: HashMap::new(),
             windows: HashMap::new(),
+            texture_atlases: HashMap::new()
         }                    
     }
 
@@ -156,6 +176,10 @@ impl StoredWidgets {
     pub fn window(&self, id: &str) -> &WindowBundle {
         self.windows.get(id).unwrap()
     }
+
+    pub fn texture_atlas(&self, id: &str) -> &TextureAtlasBundle {
+        self.texture_atlases.get(id).unwrap()
+    }    
 }
 
 
@@ -186,6 +210,10 @@ impl KayakStore {
 
     pub fn window(&self, id: &str) -> &WindowBundle {
         self.widgets.window(id)
+    }
+
+    pub fn texture_atlas(&self, id: &str) -> &TextureAtlasBundle {
+        self.widgets.texture_atlas(id)
     }
 }
 

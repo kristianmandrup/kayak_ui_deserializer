@@ -146,7 +146,7 @@ pub struct SWidgets {
     pub text_widget_bundles: Option<Vec<STextWidgetBundle>>,
     pub image_bundles: Option<Vec<SImageBundle>>,
     pub window_bundles: Option<Vec<SWindowBundle>>,
-    pub texture_atlases: Option<Vec<STextureAtlasBundle>>,
+    pub texture_atlas_bundles: Option<Vec<STextureAtlasBundle>>,
 }
 
 pub struct StoredWidgets {

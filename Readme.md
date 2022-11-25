@@ -2,6 +2,8 @@
 
 Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui), a Bevy ECS UI engine.
 
+## What is inside
+
 ## Goal
 
 The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in a Hashmap for reference. This allows the Game UI designer to externalize some UI decisions as Game "assets" that can be loaded from file.
@@ -13,6 +15,8 @@ Currently this library can be used to load and build the following Kayak UI cons
 - `KStyle`
 - `KButton`
 - `TextWidgetBundle`
+- `WindowBundle`
+- `TextureAtlasBundle`
 
 ```rust
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
@@ -22,8 +26,9 @@ Currently this library can be used to load and build the following Kayak UI cons
     let styles = store.styles;// HashMap<String, KStyle>
     let widgets = store.widgets;
     let buttons = widgets.buttons; // HashMap<String, KButton>
-    let text_widgets = widgets.text_widgets; // HashMap<String, TextWidgetBundle>
-    // get widgets and styles from store
+    let tw_bundles = widgets.text_widget_bundles; // HashMap<String, TextWidgetBundle>
+
+// get widgets and styles from store
     let base_image = store.style("base-image");
     let menu_button = store.button("menu_button");
     let title = store.text_widget_bundle("title");
@@ -84,7 +89,21 @@ The HashMap can then be referenced when building the Kayak UI to reduce the code
     }
   ],
   "widgets": {
-    "windows": [
+    "texture_atlas_bundles": [{
+      "name": "my-atlas",
+      "atlas": {
+        "handle": {
+          "path": "path/to/atlas"
+        },
+        "position": [20, 40],
+        "tile_size": [16, 16]
+      },
+      "styles": {
+          "extends": "base",
+          "bottom": "20 px"
+      }
+    }],
+    "window_bundles": [
       {
         "name": "main window",
         "window": {
@@ -99,7 +118,6 @@ The HashMap can then be referenced when building the Kayak UI to reduce the code
     "buttons": [
       {
         "name": "menu-button",
-        "type": "button",
         "style": {
           "extends": "base",
           "bottom": "20 px",
@@ -107,10 +125,9 @@ The HashMap can then be referenced when building the Kayak UI to reduce the code
         }
       }
     ],
-    "text-widgets": [
+    "text_widget_bundles": [
       {
         "name": "game-title",
-        "type": "text-widget",
         "text": {
           "extends": "base",
           "content": "hello",
@@ -119,10 +136,9 @@ The HashMap can then be referenced when building the Kayak UI to reduce the code
         }
       }
     ],
-    "image-bundles": [
+    "image_bundles": [
       {
         "name": "my-image",
-        "type": "image-bundle",
         "image-ref": "profile-image",
         "styles": {
           "extends": "base-image",

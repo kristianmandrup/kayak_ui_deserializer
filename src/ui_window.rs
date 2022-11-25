@@ -21,9 +21,9 @@
 // }
 
 use bevy::prelude::Vec2;
-use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::KStyle};
+use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, KChildren, WidgetName}};
 
-use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_style::StyleBuilder};
+use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_style::StyleBuilder, ui_button::build_button};
 
 
 pub struct WindowBuilder {
@@ -129,35 +129,45 @@ impl WindowBundleBuilder {
         }
     }
 
-    fn to_f32(&self, prop: &Option<String>) -> Option<f32> {
-        if let Some(str) = Conv::get_prop(prop) {
-            Conv(str).to_f32()
-        } else {
-            None
-        }                    
+    fn window(&self) -> Option<KWindow> {
+        let prop = &self.node.window.clone();
+        WindowBuilder::new(prop.to_owned()).parse().ok()
     }
 
-    pub fn parse(&self) -> Result<WindowBundle, &'static str> {                
-        
-        // let posy = self.posy();
-        // let width = self.width();
-        // let height = self.height();
-        // let z_index = self.z_index();
-        // let mut rect = Rect::default();
+    fn styles(&self) -> Option<KStyle> {
+        let prop = &self.node.styles.clone();
+        StyleBuilder::new(prop.to_owned()).parse().ok()
+    }
+
+    fn widget_name(&self) -> Option<String> {
+        let prop = &self.node.name.clone();
+        prop.to_owned()
+    }
+
+
+    fn children(&self) -> Option<KChildren> {
+        let prop = &self.node.children.clone();
+        // let widgets = prop.widgets;
+        // let children = KChildren::new();            
+        None                
+    }
+
+
+    pub fn parse(&self) -> Result<WindowBundle, &'static str> {                        
+        let window = self.window();
+        let styles = self.styles();
+        let widget_name = self.widget_name();
+        // let children = self.children();
         let mut window_bundle = WindowBundle::default();
-        // if let Some(val) = posy {
-        //     rect.posy = val;    
-        // }
-        // if let Some(val) = width {
-        //     rect.width = val;    
-        // }
-        // if let Some(val) = height {
-        //     rect.height = val;    
-        // }
-        // if let Some(val) = z_index {
-        //     rect.z_index = val;    
-        // }
-        // Ok(rect)     
+        if let Some(val) = window {
+            window_bundle.window = val;    
+        }
+        if let Some(val) = styles {
+            window_bundle.styles = val;    
+        }
+        if let Some(val) = widget_name {
+            window_bundle.widget_name = WidgetName(val);    
+        }
         Ok(window_bundle)       
     }    
 }

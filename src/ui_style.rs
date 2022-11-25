@@ -23,7 +23,6 @@ impl StyleBuilder {
         }        
     }
 
-
     fn background_color(&self) -> Option<Color> {
         let prop = &self.node.background_color.clone();
         StyleBuilder::prop_color(prop)

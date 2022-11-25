@@ -144,6 +144,14 @@ impl StoredWidgets {
             windows: HashMap::new(),
         }                    
     }
+
+    pub fn button(&self, id: &str) -> &KButton {
+        self.buttons.get(id).unwrap()
+    }
+
+    pub fn text_widget(&self, id: &str) -> &TextWidgetBundle {
+        self.text_widgets.get(id).unwrap()
+    }
 }
 
 
@@ -158,6 +166,18 @@ impl KayakStore {
             styles: HashMap::new(),
             widgets: StoredWidgets::new()
         }        
+    }
+
+    pub fn style(&self, id: &str) -> &KStyle {
+        self.styles.get(id).unwrap()
+    }
+
+    pub fn button(&self, id: &str) -> &KButton {
+        self.widgets.button(id)
+    }
+
+    pub fn text_widget(&self, id: &str) -> &TextWidgetBundle {
+        self.widgets.text_widget(id)
     }
 }
 

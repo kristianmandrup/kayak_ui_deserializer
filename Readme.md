@@ -17,12 +17,17 @@ Currently this library can be used to load and build the following Kayak UI cons
 ```rust
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
     let mut builder = KayakBuilder::new(data).build();
-    let store = builder.store
-    let styles = store.styles // HashMap<String, KStyle>
-    let widgets = store.widgets
-    let buttons = widgets.buttons // HashMap<String, KButton>
-    let text_widgets = widgets.text_widgets // HashMap<String, TextWidgetBundle>
-
+    let store = builder.store;
+    // accessing hashmaps
+    let styles = store.styles;// HashMap<String, KStyle>
+    let widgets = store.widgets;
+    let buttons = widgets.buttons; // HashMap<String, KButton>
+    let text_widgets = widgets.text_widgets; // HashMap<String, TextWidgetBundle>
+    // get widgets and styles from store
+    let base_image = store.style("base-image");
+    let menu_button = store.button("menu_button");
+    let title = store.text_widget("title");
+    let sub_title = store.text_widget("sub_title");
 ```
 
 ## Status

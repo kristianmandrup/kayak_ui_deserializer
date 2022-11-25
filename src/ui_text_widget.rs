@@ -2,7 +2,7 @@
 
 use kayak_ui::{widgets::{TextWidgetBundle}, prelude::WidgetName};
 
-use crate::{json_deserializer::STextWidget, ui_text_props::UiTextProps, ui_style::StyleBuilder};
+use crate::{json_deserializer::STextWidgetBundle, ui_text_props::UiTextProps, ui_style::StyleBuilder};
 
 // pub struct UiTextWidget {
 //     node: TextWidget
@@ -25,7 +25,7 @@ use crate::{json_deserializer::STextWidget, ui_text_props::UiTextProps, ui_style
 // pub struct UiNode {
 //     pub width: Units
 // }
-pub fn build_text_widget(tw: STextWidget) -> Result<TextWidgetBundle, &'static str>  {
+pub fn build_text_widget_bundle(tw: STextWidgetBundle) -> Result<TextWidgetBundle, &'static str>  {
     let text = UiTextProps::new(tw.text).parse().unwrap();
     let styles = StyleBuilder::new(tw.style).parse().unwrap();
     let widget_name = WidgetName(tw.name);

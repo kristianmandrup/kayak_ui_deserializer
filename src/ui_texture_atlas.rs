@@ -1,5 +1,5 @@
 use bevy::prelude::Vec2;
-use kayak_ui::{widgets::TextureAtlasProps, prelude::KStyle};
+use kayak_ui::{widgets::{TextureAtlasProps, TextureAtlasBundle}, prelude::{KStyle, WidgetName}};
 
 use crate::{json_deserializer::{STextureAtlasBundle, STextureAtlasProps}, ui_style::StyleBuilder, ui_parser::Conv};
 
@@ -78,6 +78,13 @@ impl TextureAtlasPropsBuilder {
 //     pub styles: KStyle,
 //     pub widget_name: WidgetName,
 // }
+
+
+pub fn build_texture_atlas_bundle(tab: STextureAtlasBundle) -> Result<TextureAtlasBundle, &'static str>  {
+    TextureAtlasBundleBuilder::new(tab).parse()
+}
+
+
 pub struct TextureAtlasBundleBuilder {
     node: STextureAtlasBundle,
 }
@@ -98,13 +105,25 @@ impl TextureAtlasBundleBuilder {
         StyleBuilder::new(prop.to_owned()).parse().ok()
     }
 
-    fn widget_name(&self) -> Option<String> {
+    fn widget_name(&self) -> String {
         let prop = &self.node.name.clone();
         prop.to_owned()
     }
 
-//     pub atlas: TextureAtlasProps,
-//     pub styles: KStyle,
-//     pub widget_name: WidgetName,
 
+    pub fn parse(&self) -> Result<TextureAtlasBundle, &'static str> {                        
+        let atlas = self.atlas();
+        let styles = self.styles();
+        let name = self.widget_name();
+        // let children = self.children();
+        let mut atlas_bundle = TextureAtlasBundle::default();
+        if let Some(val) = atlas {
+            atlas_bundle.atlas = val;    
+        }
+        if let Some(val) = styles {
+            atlas_bundle.styles = val;    
+        }
+        atlas_bundle.widget_name = WidgetName(name);            
+        Ok(atlas_bundle)       
+    }       
 }

@@ -3,7 +3,7 @@ use std::{collections::HashMap};
 use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle}};
 use nanoserde::{DeJson};
 
-use crate::{ui_style::StyleBuilder, ui_text_widget::build_text_widget, ui_button::build_button};
+use crate::{ui_style::StyleBuilder, ui_button::build_button, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle};
 
 pub type OptStr = Option<String>;
 
@@ -27,7 +27,7 @@ pub struct STextureAtlasProps {
 pub struct STextureAtlasBundle {
     pub atlas: STextureAtlasProps,
     pub styles: SStyle,
-    pub name: OptStr,
+    pub name: String,
 }
 
 #[derive(DeJson, Clone)]
@@ -51,7 +51,7 @@ pub struct SWindowBundle {
     pub window: SWindow,
     pub styles: SStyle,
     pub children: SChildren,
-    pub name: OptStr,
+    pub name: String
 }
 
 #[derive(DeJson, Clone)]
@@ -134,7 +134,7 @@ pub struct SImageBundle {
 }    
 
 #[derive(DeJson, Clone)]
-pub struct STextWidget {
+pub struct STextWidgetBundle {
     pub name: String,
     pub text: SText,
     pub style: SStyle,
@@ -143,25 +143,25 @@ pub struct STextWidget {
 #[derive(DeJson, Clone)]
 pub struct SWidgets {
     pub buttons: Option<Vec<SButton>>,
-    pub text_widgets: Option<Vec<STextWidget>>,
+    pub text_widget_bundles: Option<Vec<STextWidgetBundle>>,
     pub image_bundles: Option<Vec<SImageBundle>>,
-    pub window_bundles: Option<Vec<SWindow>>,
+    pub window_bundles: Option<Vec<SWindowBundle>>,
     pub texture_atlases: Option<Vec<STextureAtlasBundle>>,
 }
 
 pub struct StoredWidgets {
     pub buttons: HashMap<String, KButton>,
-    pub text_widgets: HashMap<String, TextWidgetBundle>,
-    pub windows: HashMap<String, WindowBundle>,
-    pub texture_atlases: HashMap<String, TextureAtlasBundle>
+    pub text_widget_bundles: HashMap<String, TextWidgetBundle>,
+    pub window_bundles: HashMap<String, WindowBundle>,
+    pub texture_atlas_bundles: HashMap<String, TextureAtlasBundle>
 }
 impl StoredWidgets {
     pub fn new() -> Self {
         Self {
             buttons: HashMap::new(),
-            text_widgets: HashMap::new(),
-            windows: HashMap::new(),
-            texture_atlases: HashMap::new()
+            text_widget_bundles: HashMap::new(),
+            window_bundles: HashMap::new(),
+            texture_atlas_bundles: HashMap::new()
         }                    
     }
 
@@ -169,16 +169,16 @@ impl StoredWidgets {
         self.buttons.get(id).unwrap()
     }
 
-    pub fn text_widget(&self, id: &str) -> &TextWidgetBundle {
-        self.text_widgets.get(id).unwrap()
+    pub fn text_widget_bundle(&self, id: &str) -> &TextWidgetBundle {
+        self.text_widget_bundles.get(id).unwrap()
     }
 
-    pub fn window(&self, id: &str) -> &WindowBundle {
-        self.windows.get(id).unwrap()
+    pub fn window_bundle(&self, id: &str) -> &WindowBundle {
+        self.window_bundles.get(id).unwrap()
     }
 
-    pub fn texture_atlas(&self, id: &str) -> &TextureAtlasBundle {
-        self.texture_atlases.get(id).unwrap()
+    pub fn texture_atlas_bundle(&self, id: &str) -> &TextureAtlasBundle {
+        self.texture_atlas_bundles.get(id).unwrap()
     }    
 }
 
@@ -204,16 +204,16 @@ impl KayakStore {
         self.widgets.button(id)
     }
 
-    pub fn text_widget(&self, id: &str) -> &TextWidgetBundle {
-        self.widgets.text_widget(id)
+    pub fn text_widget_bundle(&self, id: &str) -> &TextWidgetBundle {
+        self.widgets.text_widget_bundle(id)
     }
 
-    pub fn window(&self, id: &str) -> &WindowBundle {
-        self.widgets.window(id)
+    pub fn window_bundle(&self, id: &str) -> &WindowBundle {
+        self.widgets.window_bundle(id)
     }
 
-    pub fn texture_atlas(&self, id: &str) -> &TextureAtlasBundle {
-        self.widgets.texture_atlas(id)
+    pub fn texture_atlas_bundle(&self, id: &str) -> &TextureAtlasBundle {
+        self.widgets.texture_atlas_bundle(id)
     }
 }
 
@@ -263,6 +263,12 @@ impl KayakBuilder {
             if let Some(buttons) = items.buttons {
                 self.build_buttons(buttons);     
             }            
+            if let Some(text_widgets) = items.text_widget_bundles {
+                self.build_text_widget_bundles(text_widgets);     
+            }            
+            if let Some(window_bundles) = items.window_bundles {
+                self.build_window_bundles(window_bundles);     
+            }            
         }
     }
 
@@ -274,11 +280,27 @@ impl KayakBuilder {
         }
     }
 
-    pub fn text_widgets(&mut self, text_widgets: Vec<STextWidget>) { 
-        for item in text_widgets {
+    pub fn build_text_widget_bundles(&mut self, text_widget_bundles: Vec<STextWidgetBundle>) { 
+        for item in text_widget_bundles {
             let name = item.to_owned().name;
-            let text_widget_bundle = build_text_widget(item).unwrap();
-            self.store.widgets.text_widgets.insert(name, text_widget_bundle);
+            let text_widget_bundle = build_text_widget_bundle(item).unwrap();
+            self.store.widgets.text_widget_bundles.insert(name, text_widget_bundle);
+        }
+    }
+
+    pub fn build_window_bundles(&mut self, windows: Vec<SWindowBundle>) { 
+        for item in windows {
+            let name = item.to_owned().name;
+            let window_bundle = build_window_bundle(item).unwrap();
+            self.store.widgets.window_bundles.insert(name, window_bundle);
+        }
+    }
+
+    pub fn build_texture_atlas_bundles(&mut self, tabs: Vec<STextureAtlasBundle>) { 
+        for item in tabs {
+            let name = item.to_owned().name;
+            let tab = build_texture_atlas_bundle(item).unwrap();
+            self.store.widgets.texture_atlas_bundles.insert(name, tab);
         }
     }
 }

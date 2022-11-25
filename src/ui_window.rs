@@ -119,6 +119,10 @@ impl WindowBuilder {
     }
 }
 
+pub fn build_window_bundle(wb: SWindowBundle) -> Result<WindowBundle, &'static str>  {
+    WindowBundleBuilder::new(wb).parse()
+}
+
 pub struct WindowBundleBuilder {
     node: SWindowBundle,
 }
@@ -139,7 +143,7 @@ impl WindowBundleBuilder {
         StyleBuilder::new(prop.to_owned()).parse().ok()
     }
 
-    fn widget_name(&self) -> Option<String> {
+    fn widget_name(&self) -> String {
         let prop = &self.node.name.clone();
         prop.to_owned()
     }
@@ -155,7 +159,7 @@ impl WindowBundleBuilder {
     pub fn parse(&self) -> Result<WindowBundle, &'static str> {                        
         let window = self.window();
         let styles = self.styles();
-        let widget_name = self.widget_name();
+        let name = self.widget_name();
         // let children = self.children();
         let mut window_bundle = WindowBundle::default();
         if let Some(val) = window {
@@ -164,9 +168,7 @@ impl WindowBundleBuilder {
         if let Some(val) = styles {
             window_bundle.styles = val;    
         }
-        if let Some(val) = widget_name {
-            window_bundle.widget_name = WidgetName(val);    
-        }
+        window_bundle.widget_name = WidgetName(name);            
         Ok(window_bundle)       
     }    
 }

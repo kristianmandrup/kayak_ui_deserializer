@@ -26,9 +26,10 @@ Currently this library can be used to load and build the following Kayak UI cons
     // get widgets and styles from store
     let base_image = store.style("base-image");
     let menu_button = store.button("menu_button");
-    let title = store.text_widget("title");
-    let sub_title = store.text_widget("sub_title");
-    let window = store.window("main window");
+    let title = store.text_widget_bundle("title");
+    let sub_title = store.text_widget_bundle("sub_title");
+    let wb = store.window_bundle("main window");
+    let tab = store.texture_atlas_bundle("my tab");
 ```
 
 ## Status

@@ -1,7 +1,7 @@
 use bevy::{prelude::{AssetServer, Handle, Image, ImageBundle}, ui::{UiImage, Style}};
-use kayak_ui::{widgets::KImage, prelude::{KStyle, WidgetName}};
+use kayak_ui::{widgets::KImage};
 
-use crate::{json_deserializer::{SImageBundle, SImage}, ui_parser::Conv, ui_kstyle::KStyleBuilder};
+use crate::{json_deserializer::{SImageBundle, SImage}, ui_parser::Conv, ui_bevy_style::BevyStyleBuilder};
 
 
 // pub struct KImage(pub Handle<bevy::prelude::Image>);
@@ -73,10 +73,10 @@ impl ImageBundleBuilder {
         ImageBuilder::new(self.asset_server.clone(), prop.to_owned()).parse_ui().ok()
     }
 
-    // fn style(&self) -> Option<Style> {
-    //     let prop = &self.node.style.clone();
-    //     BevyStyleBuilder::new(prop.to_owned()).parse().ok()
-    // }
+    fn style(&self) -> Option<Style> {
+        let prop = &self.node.style.clone();
+        BevyStyleBuilder::new(prop.to_owned()).parse().ok()
+    }
 
     fn widget_name(&self) -> String {
         let prop = &self.node.name.clone();

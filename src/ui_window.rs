@@ -21,7 +21,7 @@
 // }
 
 use bevy::prelude::Vec2;
-use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, KChildren, WidgetName}};
+use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, WidgetName}};
 
 use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_kstyle::KStyleBuilder};
 
@@ -148,12 +148,12 @@ impl WindowBundleBuilder {
         prop.to_owned()
     }
 
-    fn children(&self) -> Option<KChildren> {
-        let prop = &self.node.children.clone();
-        // let widgets = prop.widgets;
-        // let children = KChildren::new();            
-        None                
-    }
+    // fn children(&self) -> Option<KChildren> {
+    //     let prop = &self.node.children.clone();
+    //     // let widgets = prop.widgets;
+    //     // let children = KChildren::new();            
+    //     None                
+    // }
 
 
     pub fn parse(&self) -> Result<WindowBundle, &'static str> {                        

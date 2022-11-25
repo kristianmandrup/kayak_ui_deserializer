@@ -1,11 +1,21 @@
 {
   "cSpell.words": [
+    "colreverse",
     "Conv",
+    "flexbox",
+    "flexend",
+    "flexstart",
+    "kimage",
     "kstyle",
     "morphorm",
     "optx",
     "opty",
     "posx",
-    "roboto"
+    "roboto",
+    "rowreverse",
+    "spacearound",
+    "spacebetween",
+    "spaceevenly",
+    "wrapreverse"
   ]
 }

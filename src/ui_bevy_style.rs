@@ -1,6 +1,6 @@
-use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf};
+use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, UiRect};
 
-use crate::json_deserializer::SBevyStyle;
+use crate::{json_deserializer::SBevyStyle, ui_rect::{UiRectBuilder}};
 
 // Style
 pub struct BevyStyleBuilder {
@@ -58,8 +58,8 @@ impl BevyStyleBuilder {
             match val.as_str() {
                 "row" => Some(FlexDirection::Row),
                 "col" => Some(FlexDirection::Column),
-                "rowrev" => Some(FlexDirection::RowReverse),
-                "colrev" => Some(FlexDirection::ColumnReverse),
+                "rowreverse" => Some(FlexDirection::RowReverse),
+                "colreverse" => Some(FlexDirection::ColumnReverse),
                 _ => None
             }
         } else {
@@ -73,7 +73,7 @@ impl BevyStyleBuilder {
             match val.as_str() {
                 "nowrap" => Some(FlexWrap::NoWrap),
                 "wrap" => Some(FlexWrap::Wrap),
-                "wraprev" => Some(FlexWrap::WrapReverse),
+                "wrapreverse" => Some(FlexWrap::WrapReverse),
                 _ => None
             }
         } else {
@@ -114,6 +114,60 @@ impl BevyStyleBuilder {
         }
     }
 
+    fn align_content(&self) -> Option<AlignContent> {
+        let prop = &self.node.display.clone();
+        if let Some(val) = prop.to_owned() {
+            match val.as_str() {
+                "flexstart" => Some(AlignContent::FlexStart),
+                "flexend" => Some(AlignContent::FlexEnd),
+                "center" => Some(AlignContent::Center),
+                "stretch" => Some(AlignContent::Stretch),
+                "spacebetween" => Some(AlignContent::SpaceBetween),                
+                "spacearound" => Some(AlignContent::SpaceAround),                
+                _ => None
+            }
+        } else {
+            None
+        }
+    }
+
+    fn justify_content(&self) -> Option<JustifyContent> {
+        let prop = &self.node.display.clone();
+        if let Some(val) = prop.to_owned() {
+            match val.as_str() {
+                "flexstart" => Some(JustifyContent::FlexStart),
+                "flexend" => Some(JustifyContent::FlexEnd),
+                "center" => Some(JustifyContent::Center),
+                "spacebetween" => Some(JustifyContent::SpaceBetween),                
+                "spacearound" => Some(JustifyContent::SpaceAround),                
+                "spaceevenly" => Some(JustifyContent::SpaceEvenly),                
+                _ => None
+            }
+        } else {
+            None
+        }
+    }
+
+    fn position(&self) -> Option<UiRect> {
+        let prop = &self.node.position.clone();
+        UiRectBuilder::new(prop.clone()).parse().ok()
+    }
+    
+    fn margin(&self) -> Option<UiRect> {
+        let prop = &self.node.margin.clone();
+        UiRectBuilder::new(prop.clone()).parse().ok()
+    }
+
+    fn padding(&self) -> Option<UiRect> {
+        let prop = &self.node.padding.clone();
+        UiRectBuilder::new(prop.clone()).parse().ok()
+    }
+
+    fn border(&self) -> Option<UiRect> {
+        let prop = &self.node.border.clone();
+        UiRectBuilder::new(prop.clone()).parse().ok()
+    }
+
     pub fn parse(&self) -> Result<Style, &'static str> {                        
         let display = self.display();
         let position_type = self.position_type();
@@ -122,6 +176,12 @@ impl BevyStyleBuilder {
         let flex_wrap = self.flex_wrap();
         let align_items = self.align_items();
         let align_self = self.align_self();
+        let align_content = self.align_content();
+        let justify_content = self.justify_content();
+        let position = self.position();
+        let margin = self.margin();
+        let padding = self.padding();        
+        let border = self.border();                
         let mut style = Style::default();
         if let Some(val) = display {
             style.display = val;    
@@ -144,16 +204,29 @@ impl BevyStyleBuilder {
         if let Some(val) = align_self {
             style.align_self = val;    
         }
+        if let Some(val) = align_content {
+            style.align_content = val;    
+        }
+        if let Some(val) = justify_content {
+            style.justify_content = val;    
+        }
+        if let Some(val) = position {
+            style.position = val;    
+        }
+        if let Some(val) = margin {
+            style.margin = val;    
+        }
+        if let Some(val) = border {
+            style.border = val;    
+        }
+        if let Some(val) = padding {
+            style.padding = val;    
+        }
         Ok(style)       
     }    
 
 }
 
-// /// How to align each line, only applies if flex_wrap is set to
-// /// [`FlexWrap::Wrap`] and there are multiple lines of items
-// pub align_content: AlignContent,
-// /// How items align according to the main axis
-// pub justify_content: JustifyContent,
 // /// The position of the node as described by its Rect
 // pub position: UiRect,
 // /// The margin of the node

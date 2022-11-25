@@ -1,12 +1,33 @@
 use std::{collections::HashMap};
 
 use bevy::{prelude::{AssetServer, ImageBundle}, asset::FileAssetIo};
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KImageBundle}};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle}};
 use nanoserde::{DeJson};
 
 use crate::{ui_kstyle::KStyleBuilder, ui_button::build_button, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle};
 
 pub type OptStr = Option<String>;
+
+#[derive(DeJson, Clone)]
+pub struct SUiRect {
+    pub left: OptStr,
+    /// The value corresponding to the right side of the UI rect.
+    pub right: OptStr,
+    /// The value corresponding to the top side of the UI rect.
+    pub top: OptStr,
+    /// The value corresponding to the bottom side of the UI rect.
+    pub bottom: OptStr,
+}
+
+
+#[derive(DeJson, Clone)]
+pub struct SRect {
+    pub posy: OptStr,
+    pub posx: OptStr,
+    pub width: OptStr,
+    pub height: OptStr,
+    pub z_index: OptStr,
+}
 
 #[derive(DeJson, Clone)]
 pub struct SChildren {
@@ -82,35 +103,20 @@ pub struct SBevyStyle {
     pub flex_wrap: OptStr,
     pub align_items: OptStr,
     pub align_self: OptStr,
-    // /// How to align each line, only applies if flex_wrap is set to
-    // /// [`FlexWrap::Wrap`] and there are multiple lines of items
-    // pub align_content: AlignContent,
-    // /// How items align according to the main axis
-    // pub justify_content: JustifyContent,
-    // /// The position of the node as described by its Rect
-    // pub position: UiRect,
-    // /// The margin of the node
-    // pub margin: UiRect,
-    // /// The padding of the node
-    // pub padding: UiRect,
-    // /// The border of the node
-    // pub border: UiRect,
-    // /// Defines how much a flexbox item should grow if there's space available
-    // pub flex_grow: f32,
-    // /// How to shrink if there's not enough space available
-    // pub flex_shrink: f32,
-    // /// The initial size of the item
-    // pub flex_basis: Val,
-    // /// The size of the flexbox
-    // pub size: Size,
-    // /// The minimum size of the flexbox
-    // pub min_size: Size,
-    // /// The maximum size of the flexbox
-    // pub max_size: Size,
-    // /// The aspect ratio of the flexbox
-    // pub aspect_ratio: Option<f32>,
-    // /// How to handle overflow
-    // pub overflow: Overflow,    
+    pub align_content: OptStr,
+    pub justify_content: OptStr,
+    pub position: SUiRect,
+    pub margin: SUiRect,
+    pub padding: SUiRect,
+    pub border: SUiRect,
+    pub flex_grow: OptStr,
+    pub flex_shrink: OptStr,
+    pub flex_basis: OptStr,    
+    pub size: OptStr,    
+    pub min_size: OptStr,        
+    pub max_size: OptStr,        
+    pub aspect_ratio: OptStr,    
+    pub overflow: OptStr,                
 }
 
 #[derive(DeJson, Clone)]
@@ -174,7 +180,7 @@ pub struct SButton {
 pub struct SImageBundle {
     pub name: String,
     pub image: SImage,
-    pub style: SKStyle,        
+    pub style: SBevyStyle,        
 }    
 
 #[derive(DeJson, Clone)]

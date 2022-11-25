@@ -21,7 +21,7 @@ pub struct SWindow {
     /// The size of the window in pixels
     pub size: Option<Vec<OptStr>>,
     /// The text to display in the window's title bar
-    pub title: String,
+    pub title: Option<String>,
     /// Styles for the main window quad.
     pub window_styles: SStyle,
     /// A set of styles to apply to the children element wrapper.
@@ -152,6 +152,10 @@ impl StoredWidgets {
     pub fn text_widget(&self, id: &str) -> &TextWidgetBundle {
         self.text_widgets.get(id).unwrap()
     }
+
+    pub fn window(&self, id: &str) -> &WindowBundle {
+        self.windows.get(id).unwrap()
+    }
 }
 
 
@@ -178,6 +182,10 @@ impl KayakStore {
 
     pub fn text_widget(&self, id: &str) -> &TextWidgetBundle {
         self.widgets.text_widget(id)
+    }
+
+    pub fn window(&self, id: &str) -> &WindowBundle {
+        self.widgets.window(id)
     }
 }
 

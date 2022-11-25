@@ -74,7 +74,43 @@ pub struct SAssets {
 #[derive(DeJson, Clone)]
 
 pub struct SBevyStyle {
-    pub name: String,
+    pub display: OptStr,
+    /// Whether to arrange this node relative to other nodes, or positioned absolutely
+    pub position_type: OptStr,
+    pub direction: OptStr,
+    pub flex_direction: OptStr,
+    pub flex_wrap: OptStr,
+    pub align_items: OptStr,
+    pub align_self: OptStr,
+    // /// How to align each line, only applies if flex_wrap is set to
+    // /// [`FlexWrap::Wrap`] and there are multiple lines of items
+    // pub align_content: AlignContent,
+    // /// How items align according to the main axis
+    // pub justify_content: JustifyContent,
+    // /// The position of the node as described by its Rect
+    // pub position: UiRect,
+    // /// The margin of the node
+    // pub margin: UiRect,
+    // /// The padding of the node
+    // pub padding: UiRect,
+    // /// The border of the node
+    // pub border: UiRect,
+    // /// Defines how much a flexbox item should grow if there's space available
+    // pub flex_grow: f32,
+    // /// How to shrink if there's not enough space available
+    // pub flex_shrink: f32,
+    // /// The initial size of the item
+    // pub flex_basis: Val,
+    // /// The size of the flexbox
+    // pub size: Size,
+    // /// The minimum size of the flexbox
+    // pub min_size: Size,
+    // /// The maximum size of the flexbox
+    // pub max_size: Size,
+    // /// The aspect ratio of the flexbox
+    // pub aspect_ratio: Option<f32>,
+    // /// How to handle overflow
+    // pub overflow: Overflow,    
 }
 
 #[derive(DeJson, Clone)]

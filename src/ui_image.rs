@@ -86,7 +86,7 @@ impl ImageBundleBuilder {
     pub fn parse(&self) -> Result<ImageBundle, &'static str> {                        
         let image = self.image();
         // let style = self.style();
-        let name = self.widget_name();
+        // let name = self.widget_name();
         // let children = self.children();
         let mut image_bundle = ImageBundle::default();
         if let Some(val) = image {

@@ -23,7 +23,7 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, KChildren, WidgetName}};
 
-use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_style::StyleBuilder};
+use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_kstyle::KStyleBuilder};
 
 
 pub struct WindowBuilder {
@@ -85,12 +85,12 @@ impl WindowBuilder {
 
     fn window_styles(&self) -> Option<KStyle> {
         let prop = &self.node.window_styles.clone();
-        StyleBuilder::new(prop.to_owned()).parse().ok()
+        KStyleBuilder::new(prop.to_owned()).parse().ok()
     }
     
     fn children_styles(&self) -> Option<KStyle> {
         let prop = &self.node.children_styles.clone();
-        StyleBuilder::new(prop.to_owned()).parse().ok()
+        KStyleBuilder::new(prop.to_owned()).parse().ok()
     }
 
     pub fn parse(&self) -> Result<KWindow, &'static str> {        
@@ -140,7 +140,7 @@ impl WindowBundleBuilder {
 
     fn styles(&self) -> Option<KStyle> {
         let prop = &self.node.styles.clone();
-        StyleBuilder::new(prop.to_owned()).parse().ok()
+        KStyleBuilder::new(prop.to_owned()).parse().ok()
     }
 
     fn widget_name(&self) -> String {

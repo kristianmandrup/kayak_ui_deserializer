@@ -2,13 +2,13 @@ use bevy::prelude::Color;
 use kayak_ui::prelude::{Edge, KStyle, Corner, KCursorIcon};
 use morphorm::{Units, LayoutType};
 
-use crate::{json_deserializer::{SStyle}, ui_parser::{Conv}, ui_color::parse_color, ui_edge::{EdgeBuilder, to_edge_units}, ui_corner::CornerBuilder, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type};
+use crate::{json_deserializer::{SKStyle}, ui_parser::{Conv}, ui_color::parse_color, ui_edge::{EdgeBuilder, to_edge_units}, ui_corner::CornerBuilder, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type};
 
-pub struct StyleBuilder {
-    node: SStyle
+pub struct KStyleBuilder {
+    node: SKStyle
 }
-impl StyleBuilder {
-    pub fn new(node: SStyle) -> Self {
+impl KStyleBuilder {
+    pub fn new(node: SKStyle) -> Self {
         Self {
             node
         }
@@ -25,7 +25,7 @@ impl StyleBuilder {
 
     fn background_color(&self) -> Option<Color> {
         let prop = &self.node.background_color.clone();
-        StyleBuilder::prop_color(prop)
+        KStyleBuilder::prop_color(prop)
     }
 
     fn border(&self) -> Option<Edge<f32>> {
@@ -39,7 +39,7 @@ impl StyleBuilder {
 
     fn border_color(&self) -> Option<Color> {
         let prop = &self.node.border_color.clone();
-        StyleBuilder::prop_color(prop)
+        KStyleBuilder::prop_color(prop)
     }
 
     fn border_radius(&self) -> Option<Corner<f32>> {
@@ -58,7 +58,7 @@ impl StyleBuilder {
     
     fn color(&self) -> Option<Color> {
         let prop = &self.node.color.clone();
-        StyleBuilder::prop_color(prop)
+        KStyleBuilder::prop_color(prop)
     }
 
     fn col_between(&self) -> Option<Units> {
@@ -224,7 +224,7 @@ impl StyleBuilder {
     }
 }
 
-impl StyleBuilder {
+impl KStyleBuilder {
     pub fn parse(&self) -> Result<KStyle, &'static str> {
         let background_color = self.background_color();
         let border = self.border();

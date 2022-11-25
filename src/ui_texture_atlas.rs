@@ -1,7 +1,7 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{TextureAtlasProps, TextureAtlasBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{json_deserializer::{STextureAtlasBundle, STextureAtlasProps}, ui_style::StyleBuilder, ui_parser::Conv};
+use crate::{json_deserializer::{STextureAtlasBundle, STextureAtlasProps}, ui_kstyle::KStyleBuilder, ui_parser::Conv};
 
 // pub struct TextureAtlasProps {
 //     /// The handle to image
@@ -102,7 +102,7 @@ impl TextureAtlasBundleBuilder {
 
     fn styles(&self) -> Option<KStyle> {
         let prop = &self.node.styles.clone();
-        StyleBuilder::new(prop.to_owned()).parse().ok()
+        KStyleBuilder::new(prop.to_owned()).parse().ok()
     }
 
     fn widget_name(&self) -> String {

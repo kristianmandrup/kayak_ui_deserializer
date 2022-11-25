@@ -3,7 +3,8 @@
 mod json_deserializer;
 mod ui_parser;
 mod ui_unit;
-mod ui_style;
+mod ui_kstyle;
+mod ui_bevy_style;
 mod ui_color;
 mod ui_edge;
 mod ui_corner;
@@ -17,3 +18,4 @@ mod ui_text_props;
 mod ui_button;
 mod ui_texture_atlas;
 mod ui_window;
+mod ui_image;

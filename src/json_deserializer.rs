@@ -1,9 +1,10 @@
 use std::{collections::HashMap};
 
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle}};
+use bevy::{prelude::{AssetServer, ImageBundle}, asset::FileAssetIo};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KImageBundle}};
 use nanoserde::{DeJson};
 
-use crate::{ui_style::StyleBuilder, ui_button::build_button, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::build_button, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle};
 
 pub type OptStr = Option<String>;
 
@@ -26,7 +27,7 @@ pub struct STextureAtlasProps {
 #[derive(DeJson, Clone)]
 pub struct STextureAtlasBundle {
     pub atlas: STextureAtlasProps,
-    pub styles: SStyle,
+    pub styles: SKStyle,
     pub name: String,
 }
 
@@ -41,15 +42,15 @@ pub struct SWindow {
     /// The text to display in the window's title bar
     pub title: Option<String>,
     /// Styles for the main window quad.
-    pub window_styles: SStyle,
+    pub window_styles: SKStyle,
     /// A set of styles to apply to the children element wrapper.
-    pub children_styles: SStyle,
+    pub children_styles: SKStyle,
 }
 
 #[derive(DeJson, Clone)]
 pub struct SWindowBundle {
     pub window: SWindow,
-    pub styles: SStyle,
+    pub styles: SKStyle,
     pub children: SChildren,
     pub name: String
 }
@@ -69,8 +70,15 @@ pub struct SAssets {
     pub images: Option<Vec<SImageAsset>>,
     pub fonts: Option<Vec<SFontAsset>>,
 }
+
 #[derive(DeJson, Clone)]
-pub struct SStyle {
+
+pub struct SBevyStyle {
+    pub name: String,
+}
+
+#[derive(DeJson, Clone)]
+pub struct SKStyle {
     pub name: String,
     pub background_color: OptStr,
     pub border: OptStr,
@@ -116,28 +124,28 @@ pub struct SText {
 
 #[derive(DeJson, Clone)]
 pub struct SImage {
-    path: OptStr,
-    image_ref: OptStr,
+    pub path: OptStr,
+    pub image_ref: OptStr,
 }    
 
 #[derive(DeJson, Clone)]
 pub struct SButton {
     pub name: String,
-    pub style: SStyle,
+    pub style: SKStyle,
 }
 
 #[derive(DeJson, Clone)]
 pub struct SImageBundle {
-    name: String,
-    image: SImage,
-    style: SStyle,        
+    pub name: String,
+    pub image: SImage,
+    pub style: SKStyle,        
 }    
 
 #[derive(DeJson, Clone)]
 pub struct STextWidgetBundle {
     pub name: String,
     pub text: SText,
-    pub style: SStyle,
+    pub style: SKStyle,
 }
 
 #[derive(DeJson, Clone)]
@@ -149,24 +157,20 @@ pub struct SWidgets {
     pub texture_atlas_bundles: Option<Vec<STextureAtlasBundle>>,
 }
 
-pub struct StoredWidgets {
-    pub buttons: HashMap<String, KButton>,
+pub struct StoredBundles {
     pub text_widget_bundles: HashMap<String, TextWidgetBundle>,
     pub window_bundles: HashMap<String, WindowBundle>,
-    pub texture_atlas_bundles: HashMap<String, TextureAtlasBundle>
+    pub texture_atlas_bundles: HashMap<String, TextureAtlasBundle>,
+    pub image_bundles: HashMap<String, ImageBundle>
 }
-impl StoredWidgets {
+impl StoredBundles {
     pub fn new() -> Self {
         Self {
-            buttons: HashMap::new(),
             text_widget_bundles: HashMap::new(),
             window_bundles: HashMap::new(),
-            texture_atlas_bundles: HashMap::new()
+            texture_atlas_bundles: HashMap::new(),
+            image_bundles: HashMap::new()
         }                    
-    }
-
-    pub fn button(&self, id: &str) -> &KButton {
-        self.buttons.get(id).unwrap()
     }
 
     pub fn text_widget_bundle(&self, id: &str) -> &TextWidgetBundle {
@@ -180,19 +184,40 @@ impl StoredWidgets {
     pub fn texture_atlas_bundle(&self, id: &str) -> &TextureAtlasBundle {
         self.texture_atlas_bundles.get(id).unwrap()
     }    
+
+    pub fn image_bundle(&self, id: &str) -> &ImageBundle {
+        self.image_bundles.get(id).unwrap()
+    }    
+}
+
+pub struct StoredWidgets {
+    pub buttons: HashMap<String, KButton>,
+}
+impl StoredWidgets {
+    pub fn new() -> Self {
+        Self {
+            buttons: HashMap::new(),
+        }                    
+    }
+
+    pub fn button(&self, id: &str) -> &KButton {
+        self.buttons.get(id).unwrap()
+    }    
 }
 
 
 pub struct KayakStore {
     // pub assets: HashMap<String, Asset>,
     pub styles: HashMap<String, KStyle>,
-    pub widgets: StoredWidgets
+    pub widgets: StoredWidgets,
+    pub bundles: StoredBundles
 }
 impl KayakStore {
     pub fn new() -> Self {
         Self {
             styles: HashMap::new(),
-            widgets: StoredWidgets::new()
+            widgets: StoredWidgets::new(),
+            bundles: StoredBundles::new()
         }        
     }
 
@@ -205,15 +230,19 @@ impl KayakStore {
     }
 
     pub fn text_widget_bundle(&self, id: &str) -> &TextWidgetBundle {
-        self.widgets.text_widget_bundle(id)
+        self.bundles.text_widget_bundle(id)
     }
 
     pub fn window_bundle(&self, id: &str) -> &WindowBundle {
-        self.widgets.window_bundle(id)
+        self.bundles.window_bundle(id)
     }
 
     pub fn texture_atlas_bundle(&self, id: &str) -> &TextureAtlasBundle {
-        self.widgets.texture_atlas_bundle(id)
+        self.bundles.texture_atlas_bundle(id)
+    }
+
+    pub fn image_bundle(&self, id: &str) -> &ImageBundle {
+        self.bundles.image_bundle(id)
     }
 }
 
@@ -226,17 +255,19 @@ impl Default for KayakStore {
 #[derive(DeJson)]
 pub struct KayakData {
     pub assets: Option<SAssets>,
-    pub styles: Option<Vec<SStyle>>,
+    pub styles: Option<Vec<SKStyle>>,
     pub widgets: Option<SWidgets>,
 }
 
 pub struct KayakBuilder {
+    pub asset_server: AssetServer,
     pub data: KayakData,
     pub store: KayakStore
 }
 impl KayakBuilder {
-    pub fn new(data: KayakData) -> Self {
+    pub fn new(asset_server: AssetServer, data: KayakData) -> Self {
         Self {
+            asset_server,
             data,
             store: KayakStore::new()
         }        
@@ -252,7 +283,7 @@ impl KayakBuilder {
         if let Some(items) = self.data.styles.to_owned() {
             for item in items {
                 let name = item.clone().name;
-                let kstyle = StyleBuilder::new(item).parse().unwrap();                
+                let kstyle = KStyleBuilder::new(item).parse().unwrap();                
                 self.store.styles.to_owned().insert(name, kstyle);
             }
         }
@@ -284,7 +315,7 @@ impl KayakBuilder {
         for item in text_widget_bundles {
             let name = item.to_owned().name;
             let text_widget_bundle = build_text_widget_bundle(item).unwrap();
-            self.store.widgets.text_widget_bundles.insert(name, text_widget_bundle);
+            self.store.bundles.text_widget_bundles.insert(name, text_widget_bundle);
         }
     }
 
@@ -292,7 +323,7 @@ impl KayakBuilder {
         for item in windows {
             let name = item.to_owned().name;
             let window_bundle = build_window_bundle(item).unwrap();
-            self.store.widgets.window_bundles.insert(name, window_bundle);
+            self.store.bundles.window_bundles.insert(name, window_bundle);
         }
     }
 
@@ -300,7 +331,15 @@ impl KayakBuilder {
         for item in tabs {
             let name = item.to_owned().name;
             let tab = build_texture_atlas_bundle(item).unwrap();
-            self.store.widgets.texture_atlas_bundles.insert(name, tab);
+            self.store.bundles.texture_atlas_bundles.insert(name, tab);
+        }
+    }
+
+    pub fn build_image_bundles(&mut self, image_bundles: Vec<SImageBundle>) { 
+        for item in image_bundles {
+            let name = item.to_owned().name;
+            let ib = build_image_bundle(self.asset_server.clone(), item).unwrap();
+            self.store.bundles.image_bundles.insert(name, ib);
         }
     }
 }
@@ -337,7 +376,9 @@ fn array() {
       "#;
 
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
-    let builder = KayakBuilder::new(data).build();
+    let source_io = FileAssetIo::new("path", false);
+    let asset_server = AssetServer::new(source_io);
+    let builder = KayakBuilder::new(asset_server, data).build();
     // 
     // assert_eq!(data.styles.unwrap().len(), 0);
     // assert_eq!(kayak.assets.unwrap().images.unwrap().len(), 1);

@@ -1,6 +1,6 @@
 use kayak_ui::widgets::KButton;
 
-use crate::{json_deserializer::SButton, ui_style::StyleBuilder};
+use crate::{json_deserializer::SButton, ui_kstyle::KStyleBuilder};
 
 // pub struct KButtonBundle {
 //     pub button: KButton,
@@ -12,7 +12,7 @@ use crate::{json_deserializer::SButton, ui_style::StyleBuilder};
 
 pub fn build_button(btn: SButton) -> Result<KButton, &'static str>  {
     let mut button = KButton::default();
-    let styles = StyleBuilder::new(btn.style).parse().unwrap();
+    let styles = KStyleBuilder::new(btn.style).parse().unwrap();
     button.user_styles = styles;
     Ok(button)
 }

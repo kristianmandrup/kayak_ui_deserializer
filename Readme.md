@@ -45,6 +45,7 @@ Currently this library can be used to load and build the following Kayak UI cons
     let buttons = widgets.buttons; // HashMap<String, KButton>
     let tw_bundles = widgets.text_widget_bundles; // HashMap<String, TextWidgetBundle>
     let img_bundles = widgets.image_bundles;
+    let button_bundles = widgets.button_bundles;
 
 // get widgets and styles from store
     let base_image = store.style("base-image");
@@ -54,6 +55,7 @@ Currently this library can be used to load and build the following Kayak UI cons
     let wb = store.window_bundle("main window");
     let tab = store.texture_atlas_bundle("my tab");
     let tab = store.image_bundle("my image bundle");
+    let bb = store.button_bundle("my button bundle");
 ```
 
 ## Status
@@ -64,20 +66,16 @@ The essential builders should now be working.
 
 ### Todo
 
-- `Style` (Bevy style)
 - `ClipBundle`
 - `TextBoxBundle`
-- `TextProps`
-- `RenderCommand` (partly done)
 - `BackgroundBundle`
 - `Background`
 - `KayakAppBundle`
 - `KayakApp`
 - `ElementBundle`
-- `KButtonBundle`
 - `Layout`
-- `Size`
 - `Space`
+- `RenderCommand` (partly done)
 
 ## Serialization formats
 

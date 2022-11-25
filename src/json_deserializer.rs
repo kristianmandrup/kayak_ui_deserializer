@@ -1,10 +1,10 @@
 use std::{collections::HashMap};
 
 use bevy::{prelude::{AssetServer, ImageBundle}, asset::FileAssetIo};
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle}};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle}};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::build_button, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle};
 
 pub type OptStr = Option<String>;
 
@@ -186,6 +186,14 @@ pub struct SButton {
 }
 
 #[derive(DeJson, Clone)]
+pub struct SButtonBundle {
+    pub button: Option<SButton>,
+    pub styles: Option<SKStyle>,
+    // pub on_event: OnEvent,
+    pub name: String,
+}
+
+#[derive(DeJson, Clone)]
 pub struct SImageBundle {
     pub name: String,
     pub image: SImage,
@@ -206,13 +214,16 @@ pub struct SWidgets {
     pub image_bundles: Option<Vec<SImageBundle>>,
     pub window_bundles: Option<Vec<SWindowBundle>>,
     pub texture_atlas_bundles: Option<Vec<STextureAtlasBundle>>,
+    pub button_bundles: Option<Vec<SButtonBundle>>,
+    
 }
 
 pub struct StoredBundles {
     pub text_widget_bundles: HashMap<String, TextWidgetBundle>,
     pub window_bundles: HashMap<String, WindowBundle>,
     pub texture_atlas_bundles: HashMap<String, TextureAtlasBundle>,
-    pub image_bundles: HashMap<String, ImageBundle>
+    pub image_bundles: HashMap<String, ImageBundle>,
+    pub button_bundles: HashMap<String, KButtonBundle>
 }
 impl StoredBundles {
     pub fn new() -> Self {
@@ -220,7 +231,8 @@ impl StoredBundles {
             text_widget_bundles: HashMap::new(),
             window_bundles: HashMap::new(),
             texture_atlas_bundles: HashMap::new(),
-            image_bundles: HashMap::new()
+            image_bundles: HashMap::new(),
+            button_bundles: HashMap::new(),
         }                    
     }
 
@@ -238,6 +250,10 @@ impl StoredBundles {
 
     pub fn image_bundle(&self, id: &str) -> &ImageBundle {
         self.image_bundles.get(id).unwrap()
+    }    
+
+    pub fn button_bundle(&self, id: &str) -> &KButtonBundle {
+        self.button_bundles.get(id).unwrap()
     }    
 }
 
@@ -295,6 +311,10 @@ impl KayakStore {
     pub fn image_bundle(&self, id: &str) -> &ImageBundle {
         self.bundles.image_bundle(id)
     }
+
+    pub fn button_bundle(&self, id: &str) -> &KButtonBundle {
+        self.bundles.button_bundle(id)
+    }
 }
 
 impl Default for KayakStore {
@@ -351,6 +371,9 @@ impl KayakBuilder {
             if let Some(window_bundles) = items.window_bundles {
                 self.build_window_bundles(window_bundles);     
             }            
+            if let Some(button_bundles) = items.button_bundles {
+                self.build_button_bundles(button_bundles);     
+            }            
         }
     }
 
@@ -361,6 +384,16 @@ impl KayakBuilder {
             self.store.widgets.buttons.insert(name, button);
         }
     }
+
+    
+    pub fn build_button_bundles(&mut self, button_bundles: Vec<SButtonBundle>) { 
+        for item in button_bundles {
+            let name = item.to_owned().name;
+            let button_bundle = build_button_bundle(item).unwrap();
+            self.store.bundles.button_bundles.insert(name, button_bundle);
+        }
+    }
+
 
     pub fn build_text_widget_bundles(&mut self, text_widget_bundles: Vec<STextWidgetBundle>) { 
         for item in text_widget_bundles {

@@ -1,12 +1,28 @@
 # Kayak UI deserializer
 
-Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui), a Bevy ECS UI engine.
+Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui) a [Bevy ECS](https://bevyengine.org/) UI engine.
 
 ## What is inside
 
+Install `cargo-modules` crate and run:
+
+`$ cargo modules generate tree --with-types`
+
+Currently almost everything is public.
+
+```rust
+// loads kayak UI data map from a JSON string
+let data: KayakData = DeJson::deserialize_json(json).unwrap();
+// builds Kayak UI structs from the loaded data map.
+// Stores the Kayak UI structs in HashMaps in the builder store
+let builder = KayakBuilder::new(data).build();
+// store contains the HashMaps with Kayak UI structs that were built
+let store = builder.store;
+```
+
 ## Goal
 
-The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in a Hashmap for reference. This allows the Game UI designer to externalize some UI decisions as Game "assets" that can be loaded from file.
+The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in hashmaps. This will allow the Game UI designer to externalize parts of the UI as Game "assets" that can be loaded from one or more files.
 
 ## API
 
@@ -20,7 +36,7 @@ Currently this library can be used to load and build the following Kayak UI cons
 
 ```rust
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
-    let mut builder = KayakBuilder::new(data).build();
+    let builder = KayakBuilder::new(data).build();
     let store = builder.store;
     // accessing hashmaps
     let styles = store.styles;// HashMap<String, KStyle>
@@ -43,10 +59,12 @@ Still fleshing out the internal functioning and structures. The focus so far is 
 
 The essential builders should now be working.
 
-Currently missing:
+### Todo
 
-- link between loading the JSON into memory structures and calling the builders
-- `HashMap` registration
+- `KImageBundle`
+- `ClipBundle`
+- `TextBoxBundle`
+- `RenderCommand` (partly done)
 
 ## Serialization formats
 

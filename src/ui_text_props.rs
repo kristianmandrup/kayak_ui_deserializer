@@ -1,12 +1,12 @@
 use kayak_ui::{widgets::TextProps, prelude::Alignment};
 
-use crate::{json_deserializer::Text, ui_alignment::to_alignment, ui_parser::Conv};
+use crate::{json_deserializer::SText, ui_alignment::to_alignment, ui_parser::Conv};
 
 pub struct UiTextProps {
-    node: Text
+    node: SText
 }
 impl UiTextProps {
-    pub fn new(node: Text) -> Self {
+    pub fn new(node: SText) -> Self {
         Self {
             node
         }

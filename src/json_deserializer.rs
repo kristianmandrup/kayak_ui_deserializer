@@ -1,9 +1,6 @@
-use std::collections::HashMap;
+use std::{collections::HashMap};
 
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton}};
-// use serde_json;
-// use std::{result::Result};
-// use serde::{Deserialize, Serialize};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle}};
 use nanoserde::{DeJson};
 
 use crate::{ui_style::StyleBuilder, ui_text_widget::build_text_widget, ui_button::build_button};
@@ -11,22 +8,51 @@ use crate::{ui_style::StyleBuilder, ui_text_widget::build_text_widget, ui_button
 pub type OptStr = Option<String>;
 
 #[derive(DeJson, Clone)]
-pub struct ImageAsset {
+pub struct SChildren {
+    pub widgets: Option<SWidgets>
+}
+
+#[derive(DeJson, Clone)]
+pub struct SWindow {
+    /// If true, allows the window to be draggable by its title bar
+    pub draggable: OptStr,
+    /// The initial position at which to display the window in pixels
+    pub initial_position: Option<Vec<OptStr>>,
+    /// The size of the window in pixels
+    pub size: Option<Vec<OptStr>>,
+    /// The text to display in the window's title bar
+    pub title: String,
+    /// Styles for the main window quad.
+    pub window_styles: SStyle,
+    /// A set of styles to apply to the children element wrapper.
+    pub children_styles: SStyle,
+}
+
+#[derive(DeJson, Clone)]
+pub struct SWindowBundle {
+    pub window: SWindow,
+    pub styles: SStyle,
+    pub children: SChildren,
+    pub name: OptStr,
+}
+
+#[derive(DeJson, Clone)]
+pub struct SImageAsset {
     pub name: String,
     pub path: String,
 }
 #[derive(DeJson, Clone)]
-pub struct FontAsset {
+pub struct SFontAsset {
     pub name: String,
     pub path: String,
 }
 #[derive(DeJson, Clone)]
-pub struct Assets {
-    pub images: Option<Vec<ImageAsset>>,
-    pub fonts: Option<Vec<FontAsset>>,
+pub struct SAssets {
+    pub images: Option<Vec<SImageAsset>>,
+    pub fonts: Option<Vec<SFontAsset>>,
 }
 #[derive(DeJson, Clone)]
-pub struct Style {
+pub struct SStyle {
     pub name: String,
     pub background_color: OptStr,
     pub border: OptStr,
@@ -61,7 +87,7 @@ pub struct Style {
 }
 
 #[derive(DeJson, Clone)]
-pub struct Text {
+pub struct SText {
     pub alignment: OptStr,
     pub content: OptStr,
     pub font: OptStr,
@@ -71,52 +97,51 @@ pub struct Text {
 }    
 
 #[derive(DeJson, Clone)]
-pub struct Image {
+pub struct SImage {
     path: OptStr,
     image_ref: OptStr,
 }    
 
 
 #[derive(DeJson, Clone)]
-pub struct Button {
+pub struct SButton {
     pub name: String,
-    pub style: Style,
+    pub style: SStyle,
 }
 
 #[derive(DeJson, Clone)]
-pub struct ImageBundle {
+pub struct SImageBundle {
     name: String,
-    image: Image,
-    style: Style,        
+    image: SImage,
+    style: SStyle,        
 }    
 
 #[derive(DeJson, Clone)]
-pub struct TextWidget {
+pub struct STextWidget {
     pub name: String,
-    pub text: Text,
-    pub style: Style,
+    pub text: SText,
+    pub style: SStyle,
 }
 
 #[derive(DeJson, Clone)]
-pub struct Widgets {
-    pub buttons: Option<Vec<Button>>,
-    pub text_widgets: Option<Vec<TextWidget>>,
-    pub image_bundles: Option<Vec<ImageBundle>>,
-}
-
-pub struct KWidgets {
-    pub text: HashMap<String, TextWidget>
+pub struct SWidgets {
+    pub buttons: Option<Vec<SButton>>,
+    pub text_widgets: Option<Vec<STextWidget>>,
+    pub image_bundles: Option<Vec<SImageBundle>>,
+    pub window_bundles: Option<Vec<SWindow>>,
 }
 
 pub struct StoredWidgets {
     pub buttons: HashMap<String, KButton>,
-    pub text_widgets: HashMap<String, TextWidgetBundle>
+    pub text_widgets: HashMap<String, TextWidgetBundle>,
+    pub windows: HashMap<String, WindowBundle>
 }
 impl StoredWidgets {
     pub fn new() -> Self {
         Self {
             buttons: HashMap::new(),
-            text_widgets: HashMap::new()
+            text_widgets: HashMap::new(),
+            windows: HashMap::new(),
         }                    
     }
 }
@@ -144,9 +169,9 @@ impl Default for KayakStore {
 
 #[derive(DeJson)]
 pub struct KayakData {
-    pub assets: Option<Assets>,
-    pub styles: Option<Vec<Style>>,
-    pub widgets: Option<Widgets>,
+    pub assets: Option<SAssets>,
+    pub styles: Option<Vec<SStyle>>,
+    pub widgets: Option<SWidgets>,
 }
 
 pub struct KayakBuilder {
@@ -185,7 +210,7 @@ impl KayakBuilder {
         }
     }
 
-    pub fn build_buttons(&mut self, buttons: Vec<Button>) -> () { 
+    pub fn build_buttons(&mut self, buttons: Vec<SButton>) -> () { 
         for item in buttons {
             let name = item.clone().name;
             let button = build_button(item).unwrap();
@@ -193,7 +218,7 @@ impl KayakBuilder {
         }
     }
 
-    pub fn text_widgets(&mut self, text_widgets: Vec<TextWidget>) { 
+    pub fn text_widgets(&mut self, text_widgets: Vec<STextWidget>) { 
         for item in text_widgets {
             let name = item.to_owned().name;
             let text_widget_bundle = build_text_widget(item).unwrap();

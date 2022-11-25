@@ -4,6 +4,31 @@ use kayak_ui::prelude::{Rect};
 use regex::Regex;
 use crate::{ui_parser::Conv, json_deserializer::{SRect, SUiRect}};
 
+pub fn to_val(val: String) -> Val {
+    let px_re = Regex::new(r"\d+\s*px").unwrap();
+    let pct_re = Regex::new(r"\d+\s*px").unwrap();
+    if let Some(num) = extract_f32(px_re, val.clone()) {
+        return Val::Px(num)
+    } else if let Some(num) = extract_f32(pct_re, val.clone()) {
+        return Val::Percent(num)
+    } else {
+        match val.as_str() {
+            "auto" => Val::Auto,
+            _ => Val::Undefined
+        }    
+    }
+}    
+
+pub fn extract_f32(re: Regex, val: String) -> Option<f32> {
+    if let Some(caps) = re.captures(val.as_str()) {
+        let text1 = caps.get(1).map_or("", |m| m.as_str());
+        text1.trim().parse::<f32>().ok()
+    } else {
+        None
+    }
+}
+
+
 pub struct UiRectBuilder {
     node: SUiRect,
 }
@@ -14,34 +39,10 @@ impl UiRectBuilder {
         }
     }
 
-    fn extract_f32(&self, re: Regex, val: String) -> Option<f32> {
-        if let Some(caps) = re.captures(val.as_str()) {
-            let text1 = caps.get(1).map_or("", |m| m.as_str());
-            text1.trim().parse::<f32>().ok()
-        } else {
-            None
-        }
-    }
-
-    fn to_val(&self, val: String) -> Val {
-        let px_re = Regex::new(r"\d+\s*px").unwrap();
-        let pct_re = Regex::new(r"\d+\s*px").unwrap();
-        if let Some(num) = self.extract_f32(px_re, val.clone()) {
-            return Val::Px(num)
-        } else if let Some(num) = self.extract_f32(pct_re, val.clone()) {
-            return Val::Percent(num)
-        } else {
-            match val.as_str() {
-                "auto" => Val::Auto,
-                _ => Val::Undefined
-            }    
-        }
-    }    
-
     pub fn left(&self) -> Option<Val> {
         let prop = &self.node.left.clone();
         if let Some(val) = prop.clone() {
-            Some(self.to_val(val))
+            Some(to_val(val))
         } else {
             None
         }       
@@ -51,7 +52,7 @@ impl UiRectBuilder {
     pub fn right(&self) -> Option<Val> {
         let prop = &self.node.right.clone();
         if let Some(val) = prop.clone() {
-            Some(self.to_val(val))
+            Some(to_val(val))
         } else {
             None
         }       
@@ -61,7 +62,7 @@ impl UiRectBuilder {
     pub fn top(&self) -> Option<Val> {
         let prop = &self.node.top.clone();
         if let Some(val) = prop.clone() {
-            Some(self.to_val(val))
+            Some(to_val(val))
         } else {
             None
         }       
@@ -71,7 +72,7 @@ impl UiRectBuilder {
     pub fn bottom(&self) -> Option<Val> {
         let prop = &self.node.bottom.clone();
         if let Some(val) = prop.clone() {
-            Some(self.to_val(val))
+            Some(to_val(val))
         } else {
             None
         }       

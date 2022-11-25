@@ -1,6 +1,6 @@
-use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, UiRect};
+use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Size, Val, UiRect, Overflow};
 
-use crate::{json_deserializer::SBevyStyle, ui_rect::{UiRectBuilder}};
+use crate::{json_deserializer::SBevyStyle, ui_rect::{UiRectBuilder, to_val}, ui_parser::Conv, ui_size::SizeBuilder};
 
 // Style
 pub struct BevyStyleBuilder {
@@ -11,6 +11,14 @@ impl BevyStyleBuilder {
         Self {
             node
         }
+    }
+
+    fn to_f32(&self, prop: &Option<String>) -> Option<f32> {
+        if let Some(str) = Conv::get_prop(prop) {
+            Conv(str).to_f32()
+        } else {
+            None
+        }                    
     }
 
     fn display(&self) -> Option<Display> {
@@ -150,22 +158,105 @@ impl BevyStyleBuilder {
 
     fn position(&self) -> Option<UiRect> {
         let prop = &self.node.position.clone();
-        UiRectBuilder::new(prop.clone()).parse().ok()
+        if let Some(val) = prop.clone() {
+            UiRectBuilder::new(val).parse().ok()
+        } else {
+            None
+        }
+        
     }
     
     fn margin(&self) -> Option<UiRect> {
         let prop = &self.node.margin.clone();
-        UiRectBuilder::new(prop.clone()).parse().ok()
+        if let Some(val) = prop.clone() {
+            UiRectBuilder::new(val).parse().ok()
+        } else {
+            None
+        }
+
     }
 
     fn padding(&self) -> Option<UiRect> {
         let prop = &self.node.padding.clone();
-        UiRectBuilder::new(prop.clone()).parse().ok()
+        if let Some(val) = prop.clone() {
+            UiRectBuilder::new(val).parse().ok()
+        } else {
+            None
+        }
     }
 
     fn border(&self) -> Option<UiRect> {
         let prop = &self.node.border.clone();
-        UiRectBuilder::new(prop.clone()).parse().ok()
+        if let Some(val) = prop.clone() {
+            UiRectBuilder::new(val).parse().ok()
+        } else {
+            None
+        }
+    }
+
+    pub fn flex_grow(&self) -> Option<f32> {
+        let prop = &self.node.flex_grow.clone();
+        self.to_f32(prop)
+    }
+
+    pub fn flex_shrink(&self) -> Option<f32> {
+        let prop = &self.node.flex_shrink.clone();
+        self.to_f32(prop)
+    }
+
+    pub fn flex_basis(&self) -> Option<Val> {
+        let prop = &self.node.flex_basis.clone();
+        if let Some(val) = prop.clone() {
+            Some(to_val(val))
+        } else {
+            None
+        }        
+    }
+
+    pub fn size(&self) -> Option<Size> {
+        let prop = &self.node.size.clone();
+        if let Some(val) = prop.clone() {
+            SizeBuilder::new(val).parse().ok()
+        } else {
+            None
+        }        
+    }
+
+    pub fn min_size(&self) -> Option<Size> {
+        let prop = &self.node.min_size.clone();
+        if let Some(val) = prop.clone() {
+            SizeBuilder::new(val).parse().ok()
+        } else {
+            None
+        }        
+    }
+
+    pub fn max_size(&self) -> Option<Size> {
+        let prop = &self.node.max_size.clone();
+        if let Some(val) = prop.clone() {
+            SizeBuilder::new(val).parse().ok()
+        } else {
+            None
+        }        
+    }
+
+    pub fn aspect_ratio(&self) -> Option<f32> {
+        let prop = &self.node.aspect_ratio.clone();
+        self.to_f32(prop)
+    }
+
+    pub fn overflow(&self) -> Option<Overflow> {
+        let prop = &self.node.overflow.clone();
+        if let Some(val) = prop.clone() {
+            let ov = match val.as_str() {
+                "visible" => Overflow::Visible,
+                "hidden" => Overflow::Hidden,
+                _ => Overflow::Visible
+            };
+            Some(ov)
+        } else {
+            None
+        }        
     }
 
     pub fn parse(&self) -> Result<Style, &'static str> {                        
@@ -181,8 +272,18 @@ impl BevyStyleBuilder {
         let position = self.position();
         let margin = self.margin();
         let padding = self.padding();        
-        let border = self.border();                
+        let border = self.border(); 
+        let flex_grow = self.flex_grow();
+        let flex_shrink = self.flex_shrink();
+        let flex_basis = self.flex_basis();
+        let size = self.size();
+        let min_size = self.min_size();
+        let max_size = self.max_size();
+        let aspect_ratio = self.aspect_ratio();
+        let overflow = self.overflow();
+        
         let mut style = Style::default();
+
         if let Some(val) = display {
             style.display = val;    
         }
@@ -222,32 +323,32 @@ impl BevyStyleBuilder {
         if let Some(val) = padding {
             style.padding = val;    
         }
+        if let Some(val) = flex_grow {
+            style.flex_grow = val;    
+        }
+        if let Some(val) = flex_shrink {
+            style.flex_shrink = val;    
+        }
+        if let Some(val) = flex_basis {
+            style.flex_basis = val;    
+        }
+        if let Some(val) = size {
+            style.size = val;    
+        }
+        if let Some(val) = min_size {
+            style.min_size = val;    
+        }
+        if let Some(val) = max_size {
+            style.max_size = val;    
+        }
+        style.aspect_ratio = aspect_ratio;
+        if let Some(val) = overflow {
+            style.overflow = val;    
+        }
         Ok(style)       
     }    
 
 }
 
-// /// The position of the node as described by its Rect
-// pub position: UiRect,
-// /// The margin of the node
-// pub margin: UiRect,
-// /// The padding of the node
-// pub padding: UiRect,
-// /// The border of the node
-// pub border: UiRect,
-// /// Defines how much a flexbox item should grow if there's space available
-// pub flex_grow: f32,
-// /// How to shrink if there's not enough space available
-// pub flex_shrink: f32,
-// /// The initial size of the item
-// pub flex_basis: Val,
-// /// The size of the flexbox
-// pub size: Size,
-// /// The minimum size of the flexbox
-// pub min_size: Size,
-// /// The maximum size of the flexbox
-// pub max_size: Size,
-// /// The aspect ratio of the flexbox
-// pub aspect_ratio: Option<f32>,
 // /// How to handle overflow
 // pub overflow: Overflow,

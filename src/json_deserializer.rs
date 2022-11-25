@@ -9,6 +9,15 @@ use crate::{ui_kstyle::KStyleBuilder, ui_button::build_button, ui_window::build_
 pub type OptStr = Option<String>;
 
 #[derive(DeJson, Clone)]
+pub struct SSize {
+    /// The width of the 2-dimensional area.
+    pub width: OptStr,
+    /// The height of the 2-dimensional area.
+    pub height: OptStr,
+}
+
+
+#[derive(DeJson, Clone)]
 pub struct SUiRect {
     pub left: OptStr,
     /// The value corresponding to the right side of the UI rect.
@@ -105,16 +114,16 @@ pub struct SBevyStyle {
     pub align_self: OptStr,
     pub align_content: OptStr,
     pub justify_content: OptStr,
-    pub position: SUiRect,
-    pub margin: SUiRect,
-    pub padding: SUiRect,
-    pub border: SUiRect,
+    pub position: Option<SUiRect>,
+    pub margin: Option<SUiRect>,
+    pub padding: Option<SUiRect>,
+    pub border: Option<SUiRect>,
     pub flex_grow: OptStr,
     pub flex_shrink: OptStr,
     pub flex_basis: OptStr,    
-    pub size: OptStr,    
-    pub min_size: OptStr,        
-    pub max_size: OptStr,        
+    pub size: Option<SSize>,    
+    pub min_size: Option<SSize>,        
+    pub max_size: Option<SSize>,        
     pub aspect_ratio: OptStr,    
     pub overflow: OptStr,                
 }

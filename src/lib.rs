@@ -19,3 +19,4 @@ mod ui_button;
 mod ui_texture_atlas;
 mod ui_window;
 mod ui_image;
+mod ui_size;

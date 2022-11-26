@@ -37,7 +37,8 @@ Widgets:
 Bundles:
 
 - `TextWidgetBundle`
-- `ButtonBundle`
+- `TextBoxBundle`
+- `KButtonBundle`
 - `WindowBundle`
 - `ImageBundle`
 - `BackgroundBundle`
@@ -51,11 +52,16 @@ Bundles:
     // accessing hashmaps
     let styles = store.styles;// HashMap<String, KStyle>
     let widgets = store.widgets;
-    let bundles = store.widgets;
+    let bundles = store.bundles;
     let buttons = widgets.buttons; // HashMap<String, KButton>
+
+    // bundle hashmap
     let tw_bundles = bundles.text_widget_bundles; // HashMap<String, TextWidgetBundle>
-    let img_bundles = bundles.image_bundles;
-    let button_bundles = bundles.button_bundles;
+    let tb_bundles = bundles.text_box_bundles; // HashMap<String, TextBoxBundle>
+    let img_bundles = bundles.image_bundles; // HashMap<String, ImageBundle>
+    let button_bundles = bundles.button_bundles; // HashMap<String, KButtonBundle>
+    let clip_bundles = bundles.button_bundles; // HashMap<String, ClipBundle>
+    let elem_bundles = bundles.element_bundles; // HashMap<String, ElementBundle>
 
     // get reusable styles from store
     let base_image = store.style("base-image");
@@ -63,7 +69,7 @@ Bundles:
     let menu_button = store.button("menu_button");
     // get bundles
     let title = store.text_widget_bundle("title");
-    let sub_title = store.text_widget_bundle("sub_title");
+    let sub_title = store.text_box_bundle("sub_title");
 
     let wb = store.window_bundle("main window");
     let tab = store.texture_atlas_bundle("my tab");
@@ -71,6 +77,7 @@ Bundles:
     let buttons_b = store.button_bundle("my button bundle");
     let background_b = store.background_bundle("my background");
     let clip_b = store.clip_bundle("my clip");
+    let elem_b = store.element_bundle("my elements");
 ```
 
 ## Status
@@ -79,14 +86,10 @@ Still fleshing out the internal functioning and structures. The focus so far is 
 
 The essential builders should now be working.
 
-### Todo
+### Todo?
 
-- `TextBoxBundle`
 - `KayakAppBundle`
 - `KayakApp`
-- `ElementBundle`
-- `Layout`
-- `Space`
 - `RenderCommand` (partly done)
 
 ## Serialization formats
@@ -98,6 +101,8 @@ Currently targeting JSON format as a POC. It should be easy to support additiona
 The current goal is to be able to load the following type of JSON structure into a `HashMap`.
 
 The HashMap can then be referenced when building the Kayak UI to reduce the code footprint and make the UI definition more like an asset that can to a large degree be managed independently of the code, similar to CSS for HTML.
+
+Note: `assets`, `extends` and `-ref` are not yet supported
 
 ```json
 {

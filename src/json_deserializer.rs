@@ -1,10 +1,10 @@
 use std::{collections::HashMap};
 
 use bevy::{prelude::{AssetServer, ImageBundle}, asset::FileAssetIo};
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle}};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, TextBoxBundle, ElementBundle}};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle};
 
 pub type OptStr = Option<String>;
 
@@ -14,7 +14,6 @@ pub struct SClipBundle {
     pub style: SKStyle,
     pub name: String,
 }
-
 
 #[derive(DeJson, Clone)]
 pub struct SBackgroundBundle {
@@ -71,8 +70,8 @@ pub struct STextureAtlasProps {
 
 #[derive(DeJson, Clone)]
 pub struct STextureAtlasBundle {
-    pub atlas: STextureAtlasProps,
-    pub styles: SKStyle,
+    pub atlas: Option<STextureAtlasProps>,
+    pub styles: Option<SKStyle>,
     pub name: String,
 }
 
@@ -94,11 +93,20 @@ pub struct SWindow {
 
 #[derive(DeJson, Clone)]
 pub struct SWindowBundle {
-    pub window: SWindow,
-    pub styles: SKStyle,
-    pub children: SChildren,
+    pub window: Option<SWindow>,
+    pub styles: Option<SKStyle>,
+    // pub children: SChildren,
     pub name: String
 }
+
+#[derive(DeJson, Clone)]
+pub struct SElementBundle {
+    pub element: OptStr,
+    pub styles: Option<SKStyle>,
+    // pub children: SChildren,
+    pub name: String
+}
+
 
 #[derive(DeJson, Clone)]
 pub struct SImageAsset {
@@ -179,13 +187,15 @@ pub struct SKStyle {
 }
 
 #[derive(DeJson, Clone)]
-pub struct SText {
+pub struct STextProps {
     pub alignment: OptStr,
     pub content: OptStr,
     pub font: OptStr,
     pub line_height: OptStr,
     pub show_cursor: OptStr,
     pub size: OptStr,
+    pub user_styles: SKStyle,
+    pub word_wrap: OptStr
 }    
 
 #[derive(DeJson, Clone)]
@@ -218,7 +228,7 @@ pub struct SImageBundle {
 #[derive(DeJson, Clone)]
 pub struct STextWidgetBundle {
     pub name: String,
-    pub text: SText,
+    pub text: STextProps,
     pub style: SKStyle,
 }
 
@@ -237,6 +247,8 @@ pub struct SBundles {
     pub button_bundles: Option<Vec<SButtonBundle>>,
     pub background_bundles: Option<Vec<SBackgroundBundle>>,    
     pub clip_bundles: Option<Vec<SClipBundle>>,    
+    pub text_box_bundles: Option<Vec<STextBoxBundle>>,        
+    pub element_bundles: Option<Vec<SElementBundle>>,        
 }
 
 pub struct StoredBundles {
@@ -247,22 +259,30 @@ pub struct StoredBundles {
     pub button_bundles: HashMap<String, KButtonBundle>,
     pub background_bundles: HashMap<String, BackgroundBundle>,
     pub clip_bundles: HashMap<String, ClipBundle>,
+    pub text_box_bundles: HashMap<String, TextBoxBundle>,
+    pub element_bundles: HashMap<String, ElementBundle>,
 }
 impl StoredBundles {
     pub fn new() -> Self {
         Self {
             text_widget_bundles: HashMap::new(),
+            text_box_bundles: HashMap::new(),            
             window_bundles: HashMap::new(),
             texture_atlas_bundles: HashMap::new(),
             image_bundles: HashMap::new(),
             button_bundles: HashMap::new(),
             background_bundles: HashMap::new(),
-            clip_bundles: HashMap::new()
+            clip_bundles: HashMap::new(),
+            element_bundles: HashMap::new(),            
         }                    
     }
 
     pub fn text_widget_bundle(&self, id: &str) -> &TextWidgetBundle {
         self.text_widget_bundles.get(id).unwrap()
+    }
+
+    pub fn text_box_bundle(&self, id: &str) -> &TextBoxBundle {
+        self.text_box_bundles.get(id).unwrap()
     }
 
     pub fn window_bundle(&self, id: &str) -> &WindowBundle {
@@ -287,6 +307,10 @@ impl StoredBundles {
 
     pub fn clip_bundle(&self, id: &str) -> &ClipBundle {
         self.clip_bundles.get(id).unwrap()
+    }    
+
+    pub fn element_bundle(&self, id: &str) -> &ElementBundle {
+        self.element_bundles.get(id).unwrap()
     }    
 }
 
@@ -333,6 +357,10 @@ impl KayakStore {
         self.bundles.text_widget_bundle(id)
     }
 
+    pub fn text_box_bundle(&self, id: &str) -> &TextBoxBundle {
+        self.bundles.text_box_bundle(id)
+    }
+
     pub fn window_bundle(&self, id: &str) -> &WindowBundle {
         self.bundles.window_bundle(id)
     }
@@ -356,6 +384,10 @@ impl KayakStore {
     pub fn clip_bundle(&self, id: &str) -> &ClipBundle {
         self.bundles.clip_bundle(id)
     }
+
+    pub fn element_bundle(&self, id: &str) -> &ElementBundle {
+        self.bundles.element_bundle(id)
+    }
 }
 
 impl Default for KayakStore {
@@ -363,6 +395,25 @@ impl Default for KayakStore {
         Self::new()
     }
 }
+
+#[derive(DeJson, Clone)]
+pub struct STextBoxProps {
+    pub disabled: OptStr,
+    pub placeholder: OptStr,
+    pub value: OptStr,
+}
+
+#[derive(DeJson, Clone)]
+pub struct STextBoxBundle {
+    pub text_box: Option<STextBoxProps>,
+    pub style: Option<SKStyle>,
+    // pub on_event: OnEvent,
+    // pub on_layout: OnLayout,
+    // pub on_change: OnChange,
+    pub focusable: OptStr,
+    pub name: String,
+}
+
 
 #[derive(DeJson)]
 pub struct KayakData {
@@ -433,7 +484,14 @@ impl KayakBuilder {
             }            
             if let Some(clip_bundles) = items.clip_bundles {
                 self.build_clip_bundles(clip_bundles);     
-            }                    }
+            }                    
+            if let Some(text_box_bundles) = items.text_box_bundles {
+                self.build_text_box_bundles(text_box_bundles);     
+            }
+            if let Some(element_bundles) = items.element_bundles {
+                self.build_element_bundles(element_bundles);     
+            }
+        }                                
     }
 
     pub fn build_buttons(&mut self, buttons: Vec<SButton>) -> () { 
@@ -443,7 +501,6 @@ impl KayakBuilder {
             self.store.widgets.buttons.insert(name, button);
         }
     }
-
     
     pub fn build_button_bundles(&mut self, button_bundles: Vec<SButtonBundle>) { 
         for item in button_bundles {
@@ -452,7 +509,6 @@ impl KayakBuilder {
             self.store.bundles.button_bundles.insert(name, button_bundle);
         }
     }
-
 
     pub fn build_text_widget_bundles(&mut self, text_widget_bundles: Vec<STextWidgetBundle>) { 
         for item in text_widget_bundles {
@@ -499,6 +555,22 @@ impl KayakBuilder {
             let name = item.to_owned().name;
             let ib = build_clip_bundle(item).unwrap();
             self.store.bundles.clip_bundles.insert(name, ib);
+        }
+    }
+
+    pub fn build_text_box_bundles(&mut self, text_box_bundles: Vec<STextBoxBundle>) { 
+        for item in text_box_bundles {
+            let name = item.to_owned().name;
+            let ib = build_text_box_bundle(item).unwrap();
+            self.store.bundles.text_box_bundles.insert(name, ib);
+        }
+    }
+
+    pub fn build_element_bundles(&mut self, element_bundles: Vec<SElementBundle>) { 
+        for item in element_bundles {
+            let name = item.to_owned().name;
+            let ib = build_element_bundle(item).unwrap();
+            self.store.bundles.element_bundles.insert(name, ib);
         }
     }
 }

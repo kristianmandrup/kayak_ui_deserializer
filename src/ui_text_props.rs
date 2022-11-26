@@ -1,12 +1,12 @@
-use kayak_ui::{widgets::TextProps, prelude::Alignment};
+use kayak_ui::{widgets::TextProps, prelude::{Alignment, KStyle}};
 
-use crate::{json_deserializer::SText, ui_alignment::to_alignment, ui_parser::Conv};
+use crate::{json_deserializer::STextProps, ui_alignment::to_alignment, ui_parser::Conv, ui_kstyle::KStyleBuilder};
 
-pub struct UiTextProps {
-    node: SText
+pub struct TextPropsBuilder {
+    node: STextProps
 }
-impl UiTextProps {
-    pub fn new(node: SText) -> Self {
+impl TextPropsBuilder {
+    pub fn new(node: STextProps) -> Self {
         Self {
             node
         }
@@ -58,10 +58,19 @@ impl UiTextProps {
             None
         }
     }
+
+    fn user_styles(&self) -> Option<KStyle> {
+        let prop = &self.node.user_styles.clone();
+        KStyleBuilder::new(prop.to_owned()).parse().ok()
+    }
+
+    fn word_wrap(&self) -> Option<bool> {
+        self.node.word_wrap.clone().unwrap().trim().parse().ok()
+    }
 }
 
 
-impl UiTextProps {
+impl TextPropsBuilder {
     pub fn parse(&self) -> Result<TextProps, &'static str> {        
         let content = self.content();
         let font = self.font();
@@ -69,6 +78,8 @@ impl UiTextProps {
         let show_cursor = self.show_cursor();
         let size = self.size();
         let alignment = self.alignment();
+        let user_styles = self.user_styles();
+        let word_wrap = self.word_wrap();
         let mut text_props = TextProps::default();
         if let Some(val) = content.clone() {
             text_props.content = val;    
@@ -85,6 +96,12 @@ impl UiTextProps {
         }
         if let Some(val) = alignment {
             text_props.alignment = val;    
+        }
+        if let Some(val) = user_styles {
+            text_props.user_styles = val;    
+        }
+        if let Some(val) = word_wrap {
+            text_props.word_wrap = val;    
         }
         Ok(text_props)            
     }

@@ -135,12 +135,20 @@ impl WindowBundleBuilder {
 
     fn window(&self) -> Option<KWindow> {
         let prop = &self.node.window.clone();
-        WindowBuilder::new(prop.to_owned()).parse().ok()
+        if let Some(val) = prop {
+            WindowBuilder::new(val.to_owned()).parse().ok()
+        } else {
+            None
+        }        
     }
 
     fn styles(&self) -> Option<KStyle> {
         let prop = &self.node.styles.clone();
-        KStyleBuilder::new(prop.to_owned()).parse().ok()
+        if let Some(val) = prop {
+            KStyleBuilder::new(val.to_owned()).parse().ok()
+        } else {
+            None
+        }                
     }
 
     fn widget_name(&self) -> String {

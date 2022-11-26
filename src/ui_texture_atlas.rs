@@ -97,12 +97,21 @@ impl TextureAtlasBundleBuilder {
 
     fn atlas(&self) -> Option<TextureAtlasProps> {
         let prop = &self.node.atlas.clone();
-        TextureAtlasPropsBuilder::new(prop.to_owned()).parse().ok()
+        if let Some(val) = prop {
+            TextureAtlasPropsBuilder::new(val.to_owned()).parse().ok()
+        } else {
+            None
+        }
+        
     }
 
     fn styles(&self) -> Option<KStyle> {
         let prop = &self.node.styles.clone();
-        KStyleBuilder::new(prop.to_owned()).parse().ok()
+        if let Some(val) = prop {
+            KStyleBuilder::new(val.to_owned()).parse().ok()
+        } else {
+            None
+        }        
     }
 
     fn widget_name(&self) -> String {

@@ -1,6 +1,6 @@
 use std::{collections::HashMap};
 
-use bevy::{prelude::{AssetServer, ImageBundle}, asset::FileAssetIo};
+use bevy::{prelude::{AssetServer, ImageBundle, Image, Handle}, asset::FileAssetIo, text::Font};
 use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, TextBoxBundle, ElementBundle}};
 use nanoserde::{DeJson};
 
@@ -11,14 +11,14 @@ pub type OptStr = Option<String>;
 #[derive(DeJson, Clone)]
 pub struct SClipBundle {
     pub clip: OptStr,
-    pub style: SKStyle,
+    pub styles: Option<SKStyle>,
     pub name: String,
 }
 
 #[derive(DeJson, Clone)]
 pub struct SBackgroundBundle {
     pub background: OptStr,
-    pub style: SKStyle,
+    pub styles: Option<SKStyle>,
     pub name: String,
 }
 
@@ -60,7 +60,7 @@ pub struct SChildren {
 #[derive(DeJson, Clone)]
 pub struct STextureAtlasProps {
     /// The handle to image
-    pub handle: SImage,
+    pub handle: Option<SImage>,
     /// The position of the tile (in pixels)
     pub position: Option<Vec<OptStr>>,
     /// The size of the tile (in pixels)
@@ -207,7 +207,7 @@ pub struct SImage {
 #[derive(DeJson, Clone)]
 pub struct SButton {
     pub name: String,
-    pub style: SKStyle,
+    pub styles: SKStyle,
 }
 
 #[derive(DeJson, Clone)]
@@ -222,14 +222,91 @@ pub struct SButtonBundle {
 pub struct SImageBundle {
     pub name: String,
     pub image: SImage,
-    pub style: SBevyStyle,        
-}    
+    pub styles: SBevyStyle,        
+    pub image_mode: OptStr,
+    pub calculated_size: OptStr,
+    // pub struct BackgroundColor(pub Color);
+    pub background_color: OptStr,
+    pub focus_policy: OptStr,
+    pub transform: STransform,
+    pub visibility: OptStr,
+    pub computed_visibility: OptStr,
+}  
+
+#[derive(DeJson, Clone)]
+pub struct SVec2 {
+    pub x: OptStr,
+    pub y: OptStr,
+}
+
+#[derive(DeJson, Clone)]
+pub struct SVec3 {
+    pub x: OptStr,
+    pub y: OptStr,
+    pub z: OptStr,
+}
+
+#[derive(DeJson, Clone)]
+pub struct STransform {
+    pub translation: SVec3, 
+    pub rotation: SVec3, 
+    pub scale: SVec3,
+}
+
+
+// Transform
+// pub translation: Vec3,
+// /// Rotation of the entity.
+// ///
+// /// See the [`3d_rotation`] example for usage.
+// ///
+// /// [`3d_rotation`]: https://github.com/bevyengine/bevy/blob/latest/examples/transforms/3d_rotation.rs
+// pub rotation: Quat,
+// /// Scale of the entity.
+// ///
+// /// See the [`scale`] example for usage.
+// ///
+// /// [`scale`]: https://github.com/bevyengine/bevy/blob/latest/examples/transforms/scale.rs
+// pub scale: Vec3,
+
+
+// pub node: Node,
+// /// Describes the style including flexbox settings
+// pub style: Style,
+// /// Configures how the image should scale
+// pub image_mode: ImageMode,
+// /// The calculated size based on the given image
+// pub calculated_size: CalculatedSize,
+// /// The background color, which serves as a "fill" for this node
+// ///
+// /// When combined with `UiImage`, tints the provided image.
+// pub background_color: BackgroundColor,
+// /// The image of the node
+// pub image: UiImage,
+// /// Whether this node should block interaction with lower nodes
+// pub focus_policy: FocusPolicy,
+// /// The transform of the node
+// ///
+// /// This field is automatically managed by the UI layout system.
+// /// To alter the position of the `NodeBundle`, use the properties of the [`Style`] component.
+// pub transform: Transform,
+// /// The global transform of the node
+// ///
+// /// This field is automatically managed by the UI layout system.
+// /// To alter the position of the `NodeBundle`, use the properties of the [`Style`] component.
+// pub global_transform: GlobalTransform,
+// /// Describes the visibility properties of the node
+// pub visibility: Visibility,
+// /// Algorithmically-computed indication of whether an entity is visible and should be extracted for rendering
+// pub computed_visibility: ComputedVisibility,
+// /// Indicates the depth at which the node should appear in the UI
+// pub z_index: ZIndex,
 
 #[derive(DeJson, Clone)]
 pub struct STextWidgetBundle {
     pub name: String,
     pub text: STextProps,
-    pub style: SKStyle,
+    pub styles: SKStyle,
 }
 
 #[derive(DeJson, Clone)]
@@ -277,40 +354,40 @@ impl StoredBundles {
         }                    
     }
 
-    pub fn text_widget_bundle(&self, id: &str) -> &TextWidgetBundle {
-        self.text_widget_bundles.get(id).unwrap()
+    pub fn text_widget_bundle(&self, id: &str) -> Option<&TextWidgetBundle> {
+        self.text_widget_bundles.get(id)
     }
 
-    pub fn text_box_bundle(&self, id: &str) -> &TextBoxBundle {
-        self.text_box_bundles.get(id).unwrap()
+    pub fn text_box_bundle(&self, id: &str) -> Option<&TextBoxBundle> {
+        self.text_box_bundles.get(id)
     }
 
-    pub fn window_bundle(&self, id: &str) -> &WindowBundle {
-        self.window_bundles.get(id).unwrap()
+    pub fn window_bundle(&self, id: &str) -> Option<&WindowBundle> {
+        self.window_bundles.get(id)
     }
 
-    pub fn texture_atlas_bundle(&self, id: &str) -> &TextureAtlasBundle {
-        self.texture_atlas_bundles.get(id).unwrap()
+    pub fn texture_atlas_bundle(&self, id: &str) -> Option<&TextureAtlasBundle> {
+        self.texture_atlas_bundles.get(id)
     }    
 
-    pub fn image_bundle(&self, id: &str) -> &ImageBundle {
-        self.image_bundles.get(id).unwrap()
+    pub fn image_bundle(&self, id: &str) -> Option<&ImageBundle> {
+        self.image_bundles.get(id)
     }    
 
-    pub fn button_bundle(&self, id: &str) -> &KButtonBundle {
-        self.button_bundles.get(id).unwrap()
+    pub fn button_bundle(&self, id: &str) -> Option<&KButtonBundle> {
+        self.button_bundles.get(id)
     }    
 
-    pub fn background_bundle(&self, id: &str) -> &BackgroundBundle {
-        self.background_bundles.get(id).unwrap()
+    pub fn background_bundle(&self, id: &str) -> Option<&BackgroundBundle> {
+        self.background_bundles.get(id)
     }    
 
-    pub fn clip_bundle(&self, id: &str) -> &ClipBundle {
-        self.clip_bundles.get(id).unwrap()
+    pub fn clip_bundle(&self, id: &str) -> Option<&ClipBundle> {
+        self.clip_bundles.get(id)
     }    
 
-    pub fn element_bundle(&self, id: &str) -> &ElementBundle {
-        self.element_bundles.get(id).unwrap()
+    pub fn element_bundle(&self, id: &str) -> Option<&ElementBundle> {
+        self.element_bundles.get(id)
     }    
 }
 
@@ -324,68 +401,91 @@ impl StoredWidgets {
         }                    
     }
 
-    pub fn button(&self, id: &str) -> &KButton {
-        self.buttons.get(id).unwrap()
+    pub fn button(&self, id: &str) -> Option<&KButton> {
+        self.buttons.get(id)
     }    
 }
 
+pub struct StoredAssets {
+    pub images: HashMap<String, Handle<Image>>,
+    pub fonts: HashMap<String, Handle<Font>>
+}
+impl StoredAssets {
+    pub fn new() -> Self {
+        Self {
+            images: HashMap::new(),
+            fonts: HashMap::new(),
+        }                    
+    }
+
+    pub fn image(&self, id: &str) -> Option<&Handle<Image>> {
+        self.images.get(id)
+    }    
+
+    pub fn font(&self, id: &str) -> Option<&Handle<Font>> {
+        self.fonts.get(id)
+    }    
+}
 
 pub struct KayakStore {
     // pub assets: HashMap<String, Asset>,
     pub styles: HashMap<String, KStyle>,
     pub widgets: StoredWidgets,
-    pub bundles: StoredBundles
+    pub bundles: StoredBundles,
+    pub assets: StoredAssets,
+    
 }
 impl KayakStore {
     pub fn new() -> Self {
         Self {
             styles: HashMap::new(),
             widgets: StoredWidgets::new(),
-            bundles: StoredBundles::new()
+            bundles: StoredBundles::new(),
+            assets: StoredAssets::new()
         }        
     }
 
-    pub fn style(&self, id: &str) -> &KStyle {
-        self.styles.get(id).unwrap()
+    pub fn style(&self, id: &str) -> Option<&KStyle> {
+        self.styles.get(id)
     }
 
-    pub fn button(&self, id: &str) -> &KButton {
+    pub fn button(&self, id: &str) -> Option<&KButton> {
         self.widgets.button(id)
     }
 
-    pub fn text_widget_bundle(&self, id: &str) -> &TextWidgetBundle {
+    pub fn text_widget_bundle(&self, id: &str) -> Option<&TextWidgetBundle> {
         self.bundles.text_widget_bundle(id)
     }
 
-    pub fn text_box_bundle(&self, id: &str) -> &TextBoxBundle {
+    pub fn text_box_bundle(&self, id: &str) -> Option<&TextBoxBundle> {
         self.bundles.text_box_bundle(id)
     }
 
-    pub fn window_bundle(&self, id: &str) -> &WindowBundle {
+    pub fn window_bundle(&self, id: &str) -> Option<&WindowBundle> {
         self.bundles.window_bundle(id)
     }
 
-    pub fn texture_atlas_bundle(&self, id: &str) -> &TextureAtlasBundle {
+    pub fn texture_atlas_bundle(&self, id: &str) -> Option<&TextureAtlasBundle> {
         self.bundles.texture_atlas_bundle(id)
     }
 
-    pub fn image_bundle(&self, id: &str) -> &ImageBundle {
+    pub fn image_bundle(&self, id: &str) -> Option<&ImageBundle> {
         self.bundles.image_bundle(id)
     }
 
-    pub fn button_bundle(&self, id: &str) -> &KButtonBundle {
+    pub fn button_bundle(&self, id: &str) -> Option<&KButtonBundle> {
         self.bundles.button_bundle(id)
     }
 
-    pub fn background_bundle(&self, id: &str) -> &BackgroundBundle {
+    pub fn background_bundle(&self, id: &str) -> Option<&BackgroundBundle> {
         self.bundles.background_bundle(id)
     }
 
-    pub fn clip_bundle(&self, id: &str) -> &ClipBundle {
+    pub fn clip_bundle(&self, id: &str) -> Option<&ClipBundle> {
         self.bundles.clip_bundle(id)
     }
 
-    pub fn element_bundle(&self, id: &str) -> &ElementBundle {
+    pub fn element_bundle(&self, id: &str) -> Option<&ElementBundle> {
         self.bundles.element_bundle(id)
     }
 }
@@ -437,14 +537,44 @@ impl KayakBuilder {
         }        
     }
 
-    pub fn build(&mut self) -> & mut KayakBuilder {
+    pub fn build(&mut self) -> &Self {
         self.build_styles();
         self.build_widgets();
         self.build_bundles();
+        self.build_assets();
         self
     }
 
-    pub fn build_styles(&self) -> () {
+    pub fn build_assets(&self) -> &Self {
+        if let Some(assets) = self.data.assets.to_owned() {
+            self.build_images(assets);
+        }        
+        self
+    }
+
+    pub fn build_images(&self, assets: SAssets) -> &Self {
+        if let Some(images) = assets.images {
+            for image in images {
+                let handle = self.asset_server.load(image.path);
+                let mut images = self.store.assets.images.to_owned();
+                images.insert(image.name, handle);    
+            }    
+        }
+        self
+    }
+
+    pub fn build_fonts(&self, assets: SAssets) -> &Self {
+        if let Some(fonts) = assets.fonts {
+            for font in fonts {
+                let handle = self.asset_server.load(font.path);
+                let mut fonts = self.store.assets.fonts.to_owned();
+                fonts.insert(font.name, handle);    
+            }    
+        }
+        self
+    }
+
+    pub fn build_styles(&self) -> &Self {
         if let Some(items) = self.data.styles.to_owned() {
             for item in items {
                 let name = item.clone().name;
@@ -452,17 +582,19 @@ impl KayakBuilder {
                 self.store.styles.to_owned().insert(name, kstyle);
             }
         }
+        self
     }
 
-    pub fn build_widgets(&mut self) -> () {
+    pub fn build_widgets(&mut self) -> &Self {
         if let Some(items) = self.data.widgets.to_owned() {
             if let Some(buttons) = items.buttons {
                 self.build_buttons(buttons);     
             }            
         }
+        self
     }
 
-    pub fn build_bundles(&mut self) -> () {
+    pub fn build_bundles(&mut self) -> &Self {
         if let Some(items) = self.data.bundles.to_owned() {
             if let Some(text_widgets) = items.text_widget_bundles {
                 self.build_text_widget_bundles(text_widgets);     
@@ -491,87 +623,98 @@ impl KayakBuilder {
             if let Some(element_bundles) = items.element_bundles {
                 self.build_element_bundles(element_bundles);     
             }
-        }                                
+        }  
+        self                              
     }
 
-    pub fn build_buttons(&mut self, buttons: Vec<SButton>) -> () { 
+    pub fn build_buttons(&mut self, buttons: Vec<SButton>) -> &Self { 
         for item in buttons {
             let name = item.clone().name;
             let button = build_button(item).unwrap();
             self.store.widgets.buttons.insert(name, button);
         }
+        self
     }
     
-    pub fn build_button_bundles(&mut self, button_bundles: Vec<SButtonBundle>) { 
+    pub fn build_button_bundles(&mut self, button_bundles: Vec<SButtonBundle>) -> &Self { 
         for item in button_bundles {
             let name = item.to_owned().name;
             let button_bundle = build_button_bundle(item).unwrap();
             self.store.bundles.button_bundles.insert(name, button_bundle);
         }
+        self
     }
 
-    pub fn build_text_widget_bundles(&mut self, text_widget_bundles: Vec<STextWidgetBundle>) { 
+    pub fn build_text_widget_bundles(&mut self, text_widget_bundles: Vec<STextWidgetBundle>) -> &Self { 
         for item in text_widget_bundles {
             let name = item.to_owned().name;
             let text_widget_bundle = build_text_widget_bundle(item).unwrap();
             self.store.bundles.text_widget_bundles.insert(name, text_widget_bundle);
         }
+        self
     }
 
-    pub fn build_window_bundles(&mut self, windows: Vec<SWindowBundle>) { 
+    pub fn build_window_bundles(&mut self, windows: Vec<SWindowBundle>) -> &Self { 
         for item in windows {
             let name = item.to_owned().name;
             let window_bundle = build_window_bundle(item).unwrap();
             self.store.bundles.window_bundles.insert(name, window_bundle);
         }
+        self
     }
 
-    pub fn build_texture_atlas_bundles(&mut self, tabs: Vec<STextureAtlasBundle>) { 
+    pub fn build_texture_atlas_bundles(&mut self, tabs: Vec<STextureAtlasBundle>)-> &Self { 
         for item in tabs {
             let name = item.to_owned().name;
             let tab = build_texture_atlas_bundle(item).unwrap();
             self.store.bundles.texture_atlas_bundles.insert(name, tab);
         }
+        self
     }
 
-    pub fn build_image_bundles(&mut self, image_bundles: Vec<SImageBundle>) { 
+    pub fn build_image_bundles(&mut self, image_bundles: Vec<SImageBundle>) -> &Self { 
         for item in image_bundles {
             let name = item.to_owned().name;
             let ib = build_image_bundle(self.asset_server.clone(), item).unwrap();
             self.store.bundles.image_bundles.insert(name, ib);
         }
+        self
     }
 
-    pub fn build_background_bundles(&mut self, background_bundles: Vec<SBackgroundBundle>) { 
+    pub fn build_background_bundles(&mut self, background_bundles: Vec<SBackgroundBundle>) -> &Self { 
         for item in background_bundles {
             let name = item.to_owned().name;
             let ib = build_background_bundle(item).unwrap();
             self.store.bundles.background_bundles.insert(name, ib);
         }
+        self
     }
 
-    pub fn build_clip_bundles(&mut self, clip_bundles: Vec<SClipBundle>) { 
+    pub fn build_clip_bundles(&mut self, clip_bundles: Vec<SClipBundle>) -> &Self { 
         for item in clip_bundles {
             let name = item.to_owned().name;
             let ib = build_clip_bundle(item).unwrap();
             self.store.bundles.clip_bundles.insert(name, ib);
         }
+        self
     }
 
-    pub fn build_text_box_bundles(&mut self, text_box_bundles: Vec<STextBoxBundle>) { 
+    pub fn build_text_box_bundles(&mut self, text_box_bundles: Vec<STextBoxBundle>) -> &Self { 
         for item in text_box_bundles {
             let name = item.to_owned().name;
             let ib = build_text_box_bundle(item).unwrap();
             self.store.bundles.text_box_bundles.insert(name, ib);
         }
+        self
     }
 
-    pub fn build_element_bundles(&mut self, element_bundles: Vec<SElementBundle>) { 
+    pub fn build_element_bundles(&mut self, element_bundles: Vec<SElementBundle>) -> &Self { 
         for item in element_bundles {
             let name = item.to_owned().name;
             let ib = build_element_bundle(item).unwrap();
             self.store.bundles.element_bundles.insert(name, ib);
         }
+        self
     }
 }
 

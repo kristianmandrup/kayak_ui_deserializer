@@ -40,7 +40,7 @@ Bundles:
 - `TextBoxBundle`
 - `KButtonBundle`
 - `WindowBundle`
-- `ImageBundle`
+- `ImageBundle` (partly)
 - `BackgroundBundle`
 - `TextureAtlasBundle`
 - `ClipBundle`
@@ -49,11 +49,19 @@ Bundles:
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
     let builder = KayakBuilder::new(data).build();
     let store = builder.store;
-    // accessing hashmaps
+
     let styles = store.styles;// HashMap<String, KStyle>
-    let widgets = store.widgets;
-    let bundles = store.bundles;
+    let widgets = store.widgets; // individual widgets such as buttons
+
+    // assets
+    let assets = store.assets;
+    let fonts = assets.fonts; // Vec<Handle<Font>>
+    let images = assets.images; // Vec<Handle<Image>>
+
+    // button widgets
     let buttons = widgets.buttons; // HashMap<String, KButton>
+
+    let bundles = store.bundles;
 
     // bundle hashmap
     let tw_bundles = bundles.text_widget_bundles; // HashMap<String, TextWidgetBundle>
@@ -102,7 +110,7 @@ The current goal is to be able to load the following type of JSON structure into
 
 The HashMap can then be referenced when building the Kayak UI to reduce the code footprint and make the UI definition more like an asset that can to a large degree be managed independently of the code, similar to CSS for HTML.
 
-Note: `assets`, `extends` and `-ref` are not yet supported
+Note: `extends` and `-ref` are not yet supported
 
 ```json
 {
@@ -110,14 +118,12 @@ Note: `assets`, `extends` and `-ref` are not yet supported
     "images": [
       {
         "name": "profile-image",
-        "type": "image",
         "path": "path/to/profile.png"
       }
     ],
     "fonts": [
       {
         "name": "roboto",
-        "type": "font",
         "path": "path/to/roboto.tff"
       }
     ]

@@ -12,7 +12,7 @@ use crate::{json_deserializer::{SButton, SButtonBundle}, ui_kstyle::KStyleBuilde
 
 pub fn build_button(btn: SButton) -> Result<KButton, &'static str>  {
     let mut button = KButton::default();
-    let styles = KStyleBuilder::new(btn.style).parse().unwrap();
+    let styles = KStyleBuilder::new(btn.styles).parse().unwrap();
     button.user_styles = styles;
     Ok(button)
 }

@@ -1,4 +1,4 @@
-use bevy::{prelude::{AssetServer, Handle, Image, ImageBundle}, ui::{UiImage, Style}};
+use bevy::{prelude::{AssetServer, Handle, Image, ImageBundle}, ui::{UiImage, Style, FocusPolicy}};
 use kayak_ui::{widgets::KImage};
 
 use crate::{json_deserializer::{SImageBundle, SImage}, ui_parser::Conv, ui_bevy_style::BevyStyleBuilder};
@@ -74,28 +74,68 @@ impl ImageBundleBuilder {
     }
 
     fn style(&self) -> Option<Style> {
-        let prop = &self.node.style.clone();
+        let prop = &self.node.styles.clone();
         BevyStyleBuilder::new(prop.to_owned()).parse().ok()
     }
 
-    fn widget_name(&self) -> String {
-        let prop = &self.node.name.clone();
-        prop.to_owned()
+    fn focus_policy(&self) -> Option<FocusPolicy> {
+        let prop = &self.node.focus_policy.clone();
+        if let Some(val) = prop {
+            let fp = match val.as_str() {
+                "block" => FocusPolicy::Block,
+                "pass" => FocusPolicy::Pass,
+                _ => FocusPolicy::Block
+            };
+            Some(fp)
+        } else {
+            None
+        }            
     }
 
     pub fn parse(&self) -> Result<ImageBundle, &'static str> {                        
         let image = self.image();
-        // let style = self.style();
-        // let name = self.widget_name();
+        let style = self.style();
+        let focus_policy = self.focus_policy();
+        // let widget_name = self.widget_name();
         // let children = self.children();
         let mut image_bundle = ImageBundle::default();
         if let Some(val) = image {
             image_bundle.image = val;    
         }
-        // if let Some(val) = style {
-        //     image_bundle.style = val;    
-        // }
-
+        if let Some(val) = style {
+            image_bundle.style = val;    
+        }
+        if let Some(val) = focus_policy {
+            image_bundle.focus_policy = val;    
+        }
+        // image_bundle.widget_name = widget_name;
         Ok(image_bundle)       
     }    
 }
+// pub image_mode: ImageMode,
+// /// The calculated size based on the given image
+// pub calculated_size: CalculatedSize,
+// /// The background color, which serves as a "fill" for this node
+// ///
+// /// When combined with `UiImage`, tints the provided image.
+// pub background_color: BackgroundColor,
+// /// The image of the node
+// pub image: UiImage,
+// /// Whether this node should block interaction with lower nodes
+// pub focus_policy: FocusPolicy,
+// /// The transform of the node
+// ///
+// /// This field is automatically managed by the UI layout system.
+// /// To alter the position of the `NodeBundle`, use the properties of the [`Style`] component.
+// pub transform: Transform,
+// /// The global transform of the node
+// ///
+// /// This field is automatically managed by the UI layout system.
+// /// To alter the position of the `NodeBundle`, use the properties of the [`Style`] component.
+// pub global_transform: GlobalTransform,
+// /// Describes the visibility properties of the node
+// pub visibility: Visibility,
+// /// Algorithmically-computed indication of whether an entity is visible and should be extracted for rendering
+// pub computed_visibility: ComputedVisibility,
+// /// Indicates the depth at which the node should appear in the UI
+// pub z_index: ZIndex,

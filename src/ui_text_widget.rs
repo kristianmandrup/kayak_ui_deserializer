@@ -27,7 +27,7 @@ use crate::{json_deserializer::STextWidgetBundle, ui_text_props::TextPropsBuilde
 // }
 pub fn build_text_widget_bundle(tw: STextWidgetBundle) -> Result<TextWidgetBundle, &'static str>  {
     let text = TextPropsBuilder::new(tw.text).parse().unwrap();
-    let styles = KStyleBuilder::new(tw.style).parse().unwrap();
+    let styles = KStyleBuilder::new(tw.styles).parse().unwrap();
     let widget_name = WidgetName(tw.name);
     // pub styles: KStyle,
     // pub widget_name: WidgetName,        

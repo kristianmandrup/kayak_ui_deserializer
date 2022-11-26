@@ -32,7 +32,7 @@
       {
         "name": "menu-button",
         "type": "button",
-        "style": {
+        "styles": {
           "extends": "base",
           "bottom": "20 px",
           "cursor": "hand"

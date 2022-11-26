@@ -27,9 +27,13 @@ impl BackgroundBundleBuilder {
         
     }
 
-    fn style(&self) -> Option<KStyle> {
-        let prop = &self.node.style.clone();
-        KStyleBuilder::new(prop.to_owned()).parse().ok()
+    fn styles(&self) -> Option<KStyle> {
+        let prop = &self.node.styles.clone();
+        if let Some(val) = prop {
+            KStyleBuilder::new(val.to_owned()).parse().ok()
+        } else {
+            None
+        }        
     }
 
     fn widget_name(&self) -> String {
@@ -39,7 +43,7 @@ impl BackgroundBundleBuilder {
 
     pub fn parse(&self) -> Result<BackgroundBundle, &'static str> {                        
         let background = self.background();
-        let styles = self.style();
+        let styles = self.styles();
         let name = self.widget_name();
         // let children = self.children();
         let mut background_bundle = BackgroundBundle::default();

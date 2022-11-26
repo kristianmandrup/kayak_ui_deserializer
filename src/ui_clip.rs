@@ -27,8 +27,12 @@ impl ClipBundleBuilder {
     }
 
     fn style(&self) -> Option<KStyle> {
-        let prop = &self.node.style.clone();
-        KStyleBuilder::new(prop.to_owned()).parse().ok()
+        let prop = &self.node.styles.clone();
+        if let Some(val) = prop {
+            KStyleBuilder::new(val.to_owned()).parse().ok()
+        } else {
+            None
+        }        
     }
 
     fn widget_name(&self) -> String {

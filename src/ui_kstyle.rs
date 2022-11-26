@@ -4,6 +4,16 @@ use morphorm::{Units, LayoutType};
 
 use crate::{ui_parser::{Conv}, ui_color::parse_color, ui_edge::{EdgeBuilder, to_edge_units}, ui_corner::CornerBuilder, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type, serialized::SKStyle};
 
+pub fn str_to_color(prop: &Option<String>) -> Option<Color> {
+    let str = prop.to_owned();
+    if let Some(val) = str {
+        parse_color(val.as_str())    
+    } else {
+        None
+    }        
+}
+
+
 pub struct KStyleBuilder {
     node: SKStyle
 }
@@ -14,18 +24,10 @@ impl KStyleBuilder {
         }
     }
 
-    fn prop_color(prop: &Option<String>) -> Option<Color> {
-        let str = Conv::get_prop(prop);
-        if let Some(val) = str {
-            parse_color(val.as_str())    
-        } else {
-            None
-        }        
-    }
 
     fn background_color(&self) -> Option<Color> {
         let prop = &self.node.background_color.clone();
-        KStyleBuilder::prop_color(prop)
+        str_to_color(prop)
     }
 
     fn border(&self) -> Option<Edge<f32>> {
@@ -39,7 +41,7 @@ impl KStyleBuilder {
 
     fn border_color(&self) -> Option<Color> {
         let prop = &self.node.border_color.clone();
-        KStyleBuilder::prop_color(prop)
+        str_to_color(prop)
     }
 
     fn border_radius(&self) -> Option<Corner<f32>> {
@@ -58,7 +60,7 @@ impl KStyleBuilder {
     
     fn color(&self) -> Option<Color> {
         let prop = &self.node.color.clone();
-        KStyleBuilder::prop_color(prop)
+        str_to_color(prop)
     }
 
     fn col_between(&self) -> Option<Units> {

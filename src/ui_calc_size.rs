@@ -34,7 +34,7 @@ impl CalcSizeBuilder {
     pub fn parse(&self) -> Result<CalculatedSize, &'static str> {        
         let width = self.width();
         let height = self.height();
-        let mut calc_size = CalculatedSize::default();
+        let calc_size = CalculatedSize::default();
         let mut size = calc_size.size;
         if let Some(val) = width {
             size.width = val;    

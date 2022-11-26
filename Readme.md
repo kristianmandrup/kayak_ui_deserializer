@@ -40,10 +40,12 @@ Bundles:
 - `TextBoxBundle`
 - `KButtonBundle`
 - `WindowBundle`
-- `ImageBundle` (partly)
+- `ImageBundle`
 - `BackgroundBundle`
 - `TextureAtlasBundle`
 - `ClipBundle`
+- `ElementBundle`
+- `ButtonBundle`
 
 ```rust
     let data: KayakData = DeJson::deserialize_json(json).unwrap();

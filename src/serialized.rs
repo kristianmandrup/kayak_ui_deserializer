@@ -271,9 +271,17 @@ pub struct SVec3 {
 }
 
 #[derive(DeJson, Clone)]
+pub struct SQuat {
+    pub x: OptStr, // f32,
+    pub y: OptStr,
+    pub z: OptStr,
+    pub w: OptStr,
+}
+
+#[derive(DeJson, Clone)]
 pub struct STransform {
     pub translation: Option<SVec3>, 
-    pub rotation: Option<SVec3>, 
+    pub rotation: Option<SQuat>, 
     pub scale: Option<SVec3>
 }
 

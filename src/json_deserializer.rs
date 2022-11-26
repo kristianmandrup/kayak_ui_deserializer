@@ -1,7 +1,7 @@
 use bevy::{prelude::{AssetServer}, asset::FileAssetIo};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button}, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle}, ui_button_bundle::build_button_bundle, ui_window_bundle::build_window_bundle, ui_image_bundle::build_image_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button}, ui_texture_atlas_bundle::build_texture_atlas_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle}, ui_button_bundle::build_button_bundle, ui_window_bundle::build_window_bundle, ui_image_bundle::build_image_bundle, ui_text_widget_bundle::build_text_widget_bundle};
 
 pub struct KayakBuilder {
     // pub asset_server: &'a AssetServer,
@@ -84,7 +84,7 @@ impl KayakBuilder {
             for item in items {
                 let name = item.clone().name;
                 let kstyle = KStyleBuilder::new(item).parse().unwrap();                
-                self.store.styles.to_owned().insert(name, kstyle);
+                self.store.kstyles.to_owned().insert(name, kstyle);
             }
         }
         self
@@ -153,7 +153,7 @@ impl KayakBuilder {
     pub fn build_text_widget_bundles(&mut self, text_widget_bundles: Vec<STextWidgetBundle>) -> &Self { 
         for item in text_widget_bundles {
             let name = item.to_owned().name;
-            let text_widget_bundle = build_text_widget_bundle(item).unwrap();
+            let text_widget_bundle = build_text_widget_bundle(&self.store, item).unwrap();
             self.store.bundles.text_widget_bundles.insert(name, text_widget_bundle);
         }
         self

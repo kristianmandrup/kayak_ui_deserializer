@@ -4,7 +4,7 @@ use crate::{ ui_bevy_style::BevyStyleBuilder, serialized::{SImageBundle}, kayak_
 
 
 pub fn build_image_bundle(store: &KayakStore, ib: SImageBundle) -> Result<ImageBundle, &'static str>  {
-    ImageBundleBuilder::new(store, ib).parse()
+    ImageBundleBuilder::new(store, ib).build().parse()
 }
 
 pub struct ImageBundleBuilder<'a> {
@@ -20,13 +20,21 @@ impl<'a> ImageBundleBuilder<'a> {
     }
 
     fn image(&self) -> Option<UiImage> {
-        let prop = &self.node.image.clone();
-        build_image_ui(&self.store, prop.to_owned()).ok()
+        let prop = &self.node.image;
+        if let Some(val) = prop.to_owned() {
+            build_image_ui(&self.store, val).ok()
+        } else {
+            None
+        }        
     }
 
     fn style(&self) -> Option<Style> {
-        let prop = &self.node.styles.clone();
-        BevyStyleBuilder::new(prop.to_owned()).parse().ok()
+        let prop = &self.node.style;
+        if let Some(val) = prop.to_owned() {
+            BevyStyleBuilder::new(val).parse().ok()
+        } else {
+            None
+        }        
     }
 
     fn focus_policy(&self) -> Option<FocusPolicy> {
@@ -41,6 +49,11 @@ impl<'a> ImageBundleBuilder<'a> {
         } else {
             None
         }            
+    }
+
+    pub fn build(&self) -> &Self {
+        self.store.extend_style(self.node.style.to_owned());
+        self
     }
 
     pub fn parse(&self) -> Result<ImageBundle, &'static str> {                        

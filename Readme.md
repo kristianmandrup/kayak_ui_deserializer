@@ -110,7 +110,7 @@ The current goal is to be able to load the following type of JSON structure into
 
 The HashMap can then be referenced when building the Kayak UI to reduce the code footprint and make the UI definition more like an asset that can to a large degree be managed independently of the code, similar to CSS for HTML.
 
-Note: `extends` and `-ref` are not yet supported but now WIP with regards to `extends`
+Note: styling via `extends` is partly supported. Props with `-ref` are not yet supported.
 
 ```json
 {

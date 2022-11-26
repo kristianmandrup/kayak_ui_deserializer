@@ -1,15 +1,16 @@
 use std::collections::HashMap;
 
-use bevy::prelude::{ImageBundle, AssetServer};
+use bevy::{prelude::{ImageBundle, AssetServer}, ui::Style};
 use kayak_ui::{prelude::KStyle, widgets::{KButton, TextWidgetBundle, TextBoxBundle, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, ElementBundle}};
 
-use crate::{store::{StoredWidgets, StoredBundles, StoredAssets}, serialized::{SKStyle}};
+use crate::{store::{StoredWidgets, StoredBundles, StoredAssets}, serialized::{SKStyle, SBevyStyle}};
 
 // #[derive(Copy)]
 pub struct KayakStore {
     pub asset_server: AssetServer,
     // pub assets: HashMap<String, Asset>,
-    pub styles: HashMap<String, KStyle>,
+    pub kstyles: HashMap<String, KStyle>,
+    pub styles: HashMap<String, Style>,
     pub widgets: StoredWidgets,
     pub bundles: StoredBundles,
     pub assets: StoredAssets,
@@ -19,6 +20,7 @@ impl KayakStore {
     pub fn new(asset_server: AssetServer) -> Self {
         Self {
             asset_server,
+            kstyles: HashMap::new(),
             styles: HashMap::new(),
             widgets: StoredWidgets::new(),
             bundles: StoredBundles::new(),
@@ -26,21 +28,34 @@ impl KayakStore {
         }        
     }
 
-    fn kstyle_extend(&self, mut style: KStyle, id: &str) -> KStyle  {
+    fn kstyle_extend(&self, mut kstyle: KStyle, id: &str) -> KStyle  {
+        let extension = self.kstyle(id);
+        if let Some(ext) = extension {
+            kstyle.apply(ext);
+            kstyle
+        } else {
+            kstyle
+        }
+    }
+
+    fn style_extend(&self, style: Style, id: &str) -> Style  {
         let extension = self.style(id);
         if let Some(ext) = extension {
-            style.apply(ext);
+            // style.apply(ext);
             style
         } else {
             style
         }
     }
-    
-    pub fn extend_kstyle(&self, styles: Option<SKStyle>) {
-        if let Some(styles) = styles {
+
+    pub fn extend_style(&self, styles: Option<SBevyStyle>) {
+    }
+
+    pub fn extend_kstyle(&self, kstyles: Option<SKStyle>) {
+        if let Some(styles) = kstyles {
             let extends = styles.extends;
             if let Some(id) = extends {
-                let style = self.style(id.as_str());
+                let style = self.kstyle(id.as_str());
                 if let Some(stl) = style {
                     self.kstyle_extend(stl.to_owned(), id.as_str());
                 }                        
@@ -49,7 +64,11 @@ impl KayakStore {
     }
     
 
-    pub fn style(&self, id: &str) -> Option<&KStyle> {
+    pub fn kstyle(&self, id: &str) -> Option<&KStyle> {
+        self.kstyles.get(id)
+    }
+
+    pub fn style(&self, id: &str) -> Option<&Style> {
         self.styles.get(id)
     }
 

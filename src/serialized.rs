@@ -244,14 +244,14 @@ pub struct SButtonBundle {
 #[derive(DeJson, Clone)]
 pub struct SImageBundle {
     pub name: String,
-    pub image: SImage,
-    pub styles: SBevyStyle,        
+    pub image: Option<SImage>,
+    pub style: Option<SBevyStyle>,        
     pub image_mode: OptStr,
     pub calculated_size: OptStr,
     // pub struct BackgroundColor(pub Color);
     pub background_color: OptStr,
     pub focus_policy: OptStr,
-    pub transform: STransform,
+    pub transform: Option<STransform>,
     pub visibility: OptStr,
     pub computed_visibility: OptStr,
 }  
@@ -271,9 +271,9 @@ pub struct SVec3 {
 
 #[derive(DeJson, Clone)]
 pub struct STransform {
-    pub translation: SVec3, 
-    pub rotation: SVec3, 
-    pub scale: SVec3,
+    pub translation: Option<SVec3>, 
+    pub rotation: Option<SVec3>, 
+    pub scale: Option<SVec3>
 }
 
 
@@ -328,8 +328,8 @@ pub struct STransform {
 #[derive(DeJson, Clone)]
 pub struct STextWidgetBundle {
     pub name: String,
-    pub text: STextProps,
-    pub styles: SKStyle,
+    pub text: Option<STextProps>,
+    pub styles: Option<SKStyle>,
 }
 
 #[derive(DeJson, Clone)]

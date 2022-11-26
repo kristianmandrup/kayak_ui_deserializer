@@ -149,6 +149,7 @@ pub struct SAssets {
 
 pub struct SBevyStyle {
     pub display: OptStr,
+    pub extends: OptStr,
     /// Whether to arrange this node relative to other nodes, or positioned absolutely
     pub position_type: OptStr,
     pub direction: OptStr,
@@ -247,7 +248,7 @@ pub struct SImageBundle {
     pub image: Option<SImage>,
     pub style: Option<SBevyStyle>,        
     pub image_mode: OptStr,
-    pub calculated_size: OptStr,
+    pub calculated_size: Option<SSize>,
     // pub struct BackgroundColor(pub Color);
     pub background_color: OptStr,
     pub focus_policy: OptStr,

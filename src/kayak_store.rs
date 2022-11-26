@@ -31,17 +31,18 @@ impl KayakStore {
     fn kstyle_extend(&self, mut kstyle: KStyle, id: &str) -> KStyle  {
         let extension = self.kstyle(id);
         if let Some(ext) = extension {
-            kstyle.apply(ext);
+            ext.clone_into(&mut kstyle);
+            // kstyle.apply(ext);
             kstyle
         } else {
             kstyle
         }
     }
 
-    fn style_extend(&self, style: Style, id: &str) -> Style  {
+    fn style_extend(&self, mut style: Style, id: &str) -> Style  {
         let extension = self.style(id);
         if let Some(ext) = extension {
-            // style.apply(ext);
+            ext.clone_into(&mut style);
             style
         } else {
             style
@@ -49,6 +50,15 @@ impl KayakStore {
     }
 
     pub fn extend_style(&self, styles: Option<SBevyStyle>) {
+        if let Some(styles) = styles {
+            let extends = styles.extends;
+            if let Some(id) = extends {
+                let style = self.style(id.as_str());
+                if let Some(stl) = style {
+                    self.style_extend(stl.to_owned(), id.as_str());
+                }                        
+            }
+        }
     }
 
     pub fn extend_kstyle(&self, kstyles: Option<SKStyle>) {

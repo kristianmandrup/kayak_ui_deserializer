@@ -1,6 +1,6 @@
-use bevy::{prelude::{ImageBundle}, ui::{UiImage, Style, FocusPolicy}};
+use bevy::{prelude::{ImageBundle}, ui::{UiImage, Style, FocusPolicy, CalculatedSize}};
 
-use crate::{ ui_bevy_style::BevyStyleBuilder, serialized::{SImageBundle}, kayak_store::KayakStore, ui_image::{build_image_ui}};
+use crate::{ ui_bevy_style::BevyStyleBuilder, serialized::{SImageBundle}, kayak_store::KayakStore, ui_image::{build_image_ui}, ui_size::SizeBuilder, ui_calc_size::CalcSizeBuilder};
 
 
 pub fn build_image_bundle(store: &KayakStore, ib: SImageBundle) -> Result<ImageBundle, &'static str>  {
@@ -51,6 +51,16 @@ impl<'a> ImageBundleBuilder<'a> {
         }            
     }
 
+    fn calculated_size(&self) -> Option<CalculatedSize> {
+        let prop = &self.node.calculated_size.clone();
+        if let Some(val) = prop.clone() {
+            CalcSizeBuilder::new(val).parse().ok()
+        } else {
+            None
+        }        
+    }
+
+
     pub fn build(&self) -> &Self {
         self.store.extend_style(self.node.style.to_owned());
         self
@@ -60,6 +70,7 @@ impl<'a> ImageBundleBuilder<'a> {
         let image = self.image();
         let style = self.style();
         let focus_policy = self.focus_policy();
+        let calculated_size = self.calculated_size();
         // let widget_name = self.widget_name();
         // let children = self.children();
         let mut image_bundle = ImageBundle::default();
@@ -71,6 +82,9 @@ impl<'a> ImageBundleBuilder<'a> {
         }
         if let Some(val) = focus_policy {
             image_bundle.focus_policy = val;    
+        }
+        if let Some(val) = calculated_size {
+            image_bundle.calculated_size = val;    
         }
         // image_bundle.widget_name = widget_name;
         Ok(image_bundle)       

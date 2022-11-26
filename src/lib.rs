@@ -24,6 +24,7 @@ mod ui_window_bundle;
 mod ui_image;
 mod ui_image_bundle;
 mod ui_size;
+mod ui_calc_size;
 mod ui_background;
 mod ui_clip;
 mod ui_text_box;

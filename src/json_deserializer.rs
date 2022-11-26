@@ -19,24 +19,8 @@ impl KayakBuilder {
 
     pub fn process(&mut self) -> &Self {
         self.build();
-//        self.extend();
         self
     }
-
-    // pub fn extend(&mut self) -> &Self {
-    //     self.extend_widgets();
-    //     self
-    // }
-
-    // pub fn extend_widgets(&self) {
-    //     if let Some(widgets) = self.data.widgets.to_owned() {
-    //         if let Some(btns) = widgets.buttons {
-    //             for btn in btns {
-    //                 self.store.extend_kstyle(btn.styles);
-    //             }    
-    //         }
-    //     }
-    // }
 
     pub fn build(&mut self) -> &Self {
         self.build_styles();

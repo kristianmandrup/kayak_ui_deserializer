@@ -1,12 +1,13 @@
 use std::collections::HashMap;
 
-use bevy::prelude::ImageBundle;
+use bevy::prelude::{ImageBundle, AssetServer};
 use kayak_ui::{prelude::KStyle, widgets::{KButton, TextWidgetBundle, TextBoxBundle, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, ElementBundle}};
 
-use crate::{store::{StoredWidgets, StoredBundles, StoredAssets}, serialized::{SBevyStyle, SKStyle}};
+use crate::{store::{StoredWidgets, StoredBundles, StoredAssets}, serialized::{SKStyle}};
 
 // #[derive(Copy)]
 pub struct KayakStore {
+    pub asset_server: AssetServer,
     // pub assets: HashMap<String, Asset>,
     pub styles: HashMap<String, KStyle>,
     pub widgets: StoredWidgets,
@@ -15,8 +16,9 @@ pub struct KayakStore {
     
 }
 impl KayakStore {
-    pub fn new() -> Self {
+    pub fn new(asset_server: AssetServer) -> Self {
         Self {
+            asset_server,
             styles: HashMap::new(),
             widgets: StoredWidgets::new(),
             bundles: StoredBundles::new(),
@@ -89,11 +91,5 @@ impl KayakStore {
 
     pub fn element_bundle(&self, id: &str) -> Option<&ElementBundle> {
         self.bundles.element_bundle(id)
-    }
-}
-
-impl Default for KayakStore {
-    fn default() -> Self {
-        Self::new()
     }
 }

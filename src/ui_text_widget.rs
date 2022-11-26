@@ -25,6 +25,8 @@ use crate::{ui_text_props::TextPropsBuilder, ui_kstyle::KStyleBuilder, serialize
 // pub struct UiNode {
 //     pub width: Units
 // }
+
+// TODO: builder
 pub fn build_text_widget_bundle(tw: STextWidgetBundle) -> Result<TextWidgetBundle, &'static str>  {
     let text = TextPropsBuilder::new(tw.text).parse().unwrap();
     let styles = KStyleBuilder::new(tw.styles).parse().unwrap();

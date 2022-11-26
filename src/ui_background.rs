@@ -1,18 +1,20 @@
 use kayak_ui::{widgets::{Background, BackgroundBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::SBackgroundBundle};
+use crate::{ui_kstyle::KStyleBuilder, serialized::SBackgroundBundle, kayak_store::KayakStore};
 
 
-pub fn build_background_bundle(bb: SBackgroundBundle) -> Result<BackgroundBundle, &'static str>  {
-    BackgroundBundleBuilder::new(bb).parse()
+pub fn build_background_bundle(store: &KayakStore, bb: SBackgroundBundle) -> Result<BackgroundBundle, &'static str>  {
+    BackgroundBundleBuilder::new(store, bb).build().parse()
 }
 
-pub struct BackgroundBundleBuilder {
+pub struct BackgroundBundleBuilder<'a> {
+    store: &'a KayakStore,
     node: SBackgroundBundle,
 }
-impl BackgroundBundleBuilder {
-    pub fn new(node: SBackgroundBundle) -> Self {
+impl<'a> BackgroundBundleBuilder<'a> {
+    pub fn new(store: &'a KayakStore, node: SBackgroundBundle) -> Self {
         Self {
+            store,
             node
         }
     }
@@ -39,6 +41,11 @@ impl BackgroundBundleBuilder {
     fn widget_name(&self) -> String {
         let prop = &self.node.name.clone();
         prop.to_owned()
+    }
+
+    pub fn build(&self) -> &Self {
+        self.store.extend_kstyle(self.node.styles.to_owned());
+        self
     }
 
     pub fn parse(&self) -> Result<BackgroundBundle, &'static str> {                        

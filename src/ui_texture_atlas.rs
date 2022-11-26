@@ -1,7 +1,7 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{TextureAtlasProps, TextureAtlasBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_parser::Conv, serialized::{STextureAtlasProps, STextureAtlasBundle}};
+use crate::{ui_kstyle::KStyleBuilder, ui_parser::Conv, serialized::{STextureAtlasProps, STextureAtlasBundle}, kayak_store::KayakStore};
 
 // pub struct TextureAtlasProps {
 //     /// The handle to image
@@ -69,28 +69,20 @@ impl TextureAtlasPropsBuilder {
     }    
 }
 
-// impl Widget for TextureAtlasProps {}
 
-// /// A widget that renders a bevy texture atlas
-// #[derive(Bundle)]
-// pub struct TextureAtlasBundle {
-//     pub atlas: TextureAtlasProps,
-//     pub styles: KStyle,
-//     pub widget_name: WidgetName,
-// }
-
-
-pub fn build_texture_atlas_bundle(tab: STextureAtlasBundle) -> Result<TextureAtlasBundle, &'static str>  {
-    TextureAtlasBundleBuilder::new(tab).parse()
+pub fn build_texture_atlas_bundle(store: &KayakStore, tab: STextureAtlasBundle) -> Result<TextureAtlasBundle, &'static str>  {
+    TextureAtlasBundleBuilder::new(store, tab).parse()
 }
 
 
-pub struct TextureAtlasBundleBuilder {
+pub struct TextureAtlasBundleBuilder<'a> {
+    store: &'a KayakStore,
     node: STextureAtlasBundle,
 }
-impl TextureAtlasBundleBuilder {
-    pub fn new(node: STextureAtlasBundle) -> Self {
+impl<'a> TextureAtlasBundleBuilder<'a> {
+    pub fn new(store: &'a KayakStore, node: STextureAtlasBundle) -> Self {
         Self {
+            store,
             node
         }
     }

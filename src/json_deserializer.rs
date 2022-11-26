@@ -1,20 +1,19 @@
 use bevy::{prelude::{AssetServer}, asset::FileAssetIo};
-use kayak_ui::{prelude::KStyle};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle}};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button}, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle}, ui_button_bundle::build_button_bundle, ui_window_bundle::build_window_bundle, ui_image_bundle::build_image_bundle};
 
 pub struct KayakBuilder {
-    pub asset_server: AssetServer,
-    pub data: KayakData,
-    pub store: KayakStore
+    // pub asset_server: &'a AssetServer,
+    pub store: KayakStore,
+    pub data: KayakData,    
 }
 impl KayakBuilder {
     pub fn new(asset_server: AssetServer, data: KayakData) -> Self {
         Self {
-            asset_server,
+            // asset_server,
             data,
-            store: KayakStore::new()
+            store: KayakStore::new(asset_server)
         }        
     }
 
@@ -54,10 +53,14 @@ impl KayakBuilder {
         self
     }
 
+    fn asset_server(&self) -> AssetServer {
+        self.store.asset_server.clone()
+    }
+
     pub fn build_images(&self, assets: SAssets) -> &Self {
         if let Some(images) = assets.images {
             for image in images {
-                let handle = self.asset_server.load(image.path);
+                let handle = self.asset_server().load(image.path);
                 let mut images = self.store.assets.images.to_owned();
                 images.insert(image.name, handle);    
             }    
@@ -68,7 +71,7 @@ impl KayakBuilder {
     pub fn build_fonts(&self, assets: SAssets) -> &Self {
         if let Some(fonts) = assets.fonts {
             for font in fonts {
-                let handle = self.asset_server.load(font.path);
+                let handle = self.asset_server().load(font.path);
                 let mut fonts = self.store.assets.fonts.to_owned();
                 fonts.insert(font.name, handle);    
             }    
@@ -132,7 +135,7 @@ impl KayakBuilder {
     pub fn build_buttons(&mut self, buttons: Vec<SButton>) -> &Self { 
         for item in buttons {
             let name = item.clone().name;
-            let button = build_button(item).unwrap();
+            let button = build_button(&self.store, item).unwrap();
             self.store.widgets.buttons.insert(name, button);
         }
         self
@@ -159,7 +162,7 @@ impl KayakBuilder {
     pub fn build_window_bundles(&mut self, windows: Vec<SWindowBundle>) -> &Self { 
         for item in windows {
             let name = item.to_owned().name;
-            let window_bundle = build_window_bundle(item).unwrap();
+            let window_bundle = build_window_bundle(&self.store, item).unwrap();
             self.store.bundles.window_bundles.insert(name, window_bundle);
         }
         self
@@ -168,7 +171,7 @@ impl KayakBuilder {
     pub fn build_texture_atlas_bundles(&mut self, tabs: Vec<STextureAtlasBundle>)-> &Self { 
         for item in tabs {
             let name = item.to_owned().name;
-            let tab = build_texture_atlas_bundle(item).unwrap();
+            let tab = build_texture_atlas_bundle(&self.store, item).unwrap();
             self.store.bundles.texture_atlas_bundles.insert(name, tab);
         }
         self
@@ -177,7 +180,7 @@ impl KayakBuilder {
     pub fn build_image_bundles(&mut self, image_bundles: Vec<SImageBundle>) -> &Self { 
         for item in image_bundles {
             let name = item.to_owned().name;
-            let ib = build_image_bundle(self.asset_server.clone(), item).unwrap();
+            let ib = build_image_bundle(&self.store, item).unwrap();
             self.store.bundles.image_bundles.insert(name, ib);
         }
         self
@@ -186,7 +189,7 @@ impl KayakBuilder {
     pub fn build_background_bundles(&mut self, background_bundles: Vec<SBackgroundBundle>) -> &Self { 
         for item in background_bundles {
             let name = item.to_owned().name;
-            let ib = build_background_bundle(item).unwrap();
+            let ib = build_background_bundle(&self.store,item).unwrap();
             self.store.bundles.background_bundles.insert(name, ib);
         }
         self

@@ -1,51 +1,20 @@
-use bevy::prelude::ButtonBundle;
-use kayak_ui::{widgets::{KButton, KButtonBundle}, prelude::{KStyle, WidgetName}};
+use kayak_ui::{widgets::{KButton}, prelude::{KStyle}};
+use crate::{ui_kstyle::KStyleBuilder, serialized::{SButton}, kayak_store::KayakStore};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::{SButton, SButtonBundle}, kayak_store::KayakStore};
-
-// pub struct KButtonBundle {
-//     pub button: KButton,
-//     pub styles: KStyle,
-//     pub on_event: OnEvent,
-//     pub widget_name: WidgetName,
-// }
-
-// TODO: builder and parser
-pub fn build_button(btn: SButton) -> Result<KButton, &'static str>  {
-    let mut button = KButton::default();
-    if let Some(b) = btn.styles {
-        let styles = KStyleBuilder::new(b).parse().unwrap();
-        button.user_styles = styles;
-        Ok(button)            
-    } else {
-        Err("bad button")
-    }
+pub fn build_button(store: &KayakStore, bb: SButton) -> Result<KButton, &'static str>  {
+    ButtonBuilder::new(store, bb).build().parse()
 }
 
-
-pub fn build_button_bundle(store: &KayakStore, bb: SButtonBundle) -> Result<KButtonBundle, &'static str>  {
-    ButtonBundleBuilder::new(store, bb).build().parse()
-}
-
-pub struct ButtonBundleBuilder<'a> {
+pub struct ButtonBuilder<'a> {
     store: &'a KayakStore,
-    node: SButtonBundle,
+    node: SButton,
 }
-impl<'a> ButtonBundleBuilder<'a> {
-    pub fn new(store: &'a KayakStore, node: SButtonBundle) -> Self {
+impl<'a> ButtonBuilder<'a> {
+    pub fn new(store: &'a KayakStore, node: SButton) -> Self {
         Self {
             store,
             node
         }
-    }
-
-    fn button(&self) -> Option<KButton> {
-        let prop = &self.node.button.clone();
-        if let Some(val) = prop.clone() {
-            build_button(val).ok()
-        } else {
-            None
-        }        
     }
 
     fn styles(&self) -> Option<KStyle> {
@@ -57,28 +26,19 @@ impl<'a> ButtonBundleBuilder<'a> {
         }        
     }
 
-    fn widget_name(&self) -> String {
-        let prop = &self.node.name.clone();
-        prop.to_owned()
-    }
-
     pub fn build(&self) -> &Self {
         self.store.extend_kstyle(self.node.styles.to_owned());
         self
     }
 
-    pub fn parse(&self) -> Result<KButtonBundle, &'static str> {        
-        let button = self.button();
+    pub fn parse(&self) -> Result<KButton, &'static str> {        
         let styles = self.styles();
-        let widget_name = self.widget_name();
-        let mut bb = KButtonBundle::default();
-        if let Some(val) = button {
-            bb.button = val;    
-        }
+        // let widget_name = self.widget_name();
+        let mut button = KButton::default();
         if let Some(val) = styles {
-            bb.styles = val;    
+            button.user_styles = val;    
         }
-        bb.widget_name = WidgetName(widget_name);    
-        Ok(bb)
+        // bb.widget_name = WidgetName(widget_name);    
+        Ok(button)
     }
 }

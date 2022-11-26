@@ -27,7 +27,7 @@ impl<'a> ClipBundleBuilder<'a> {
         }        
     }
 
-    fn style(&self) -> Option<KStyle> {
+    fn styles(&self) -> Option<KStyle> {
         let prop = &self.node.styles.clone();
         if let Some(val) = prop {
             KStyleBuilder::new(val.to_owned()).parse().ok()
@@ -48,7 +48,7 @@ impl<'a> ClipBundleBuilder<'a> {
 
     pub fn parse(&self) -> Result<ClipBundle, &'static str> {                        
         let clip = self.clip();
-        let styles = self.style();
+        let styles = self.styles();
         let name = self.widget_name();
         // let children = self.children();
         let mut clip_bundle = ClipBundle::default();

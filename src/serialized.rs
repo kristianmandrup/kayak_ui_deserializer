@@ -107,9 +107,9 @@ pub struct SWindow {
     /// The text to display in the window's title bar
     pub title: Option<String>,
     /// Styles for the main window quad.
-    pub window_styles: SKStyle,
+    pub window_styles: Option<SKStyle>,
     /// A set of styles to apply to the children element wrapper.
-    pub children_styles: SKStyle,
+    pub children_styles: Option<SKStyle>,
 }
 
 #[derive(DeJson, Clone)]

@@ -5,8 +5,8 @@ use regex::Regex;
 use crate::{ui_parser::Conv, serialized::{SUiRect, SRect}};
 
 pub fn to_val(val: String) -> Val {
-    let px_re = Regex::new(r"\d+\s*px").unwrap();
-    let pct_re = Regex::new(r"\d+\s*px").unwrap();
+    let px_re = Regex::new(r"(\d+)\s*px").unwrap();
+    let pct_re = Regex::new(r"(\d+)\s*%").unwrap();
     if let Some(num) = extract_f32(px_re, val.clone()) {
         return Val::Px(num)
     } else if let Some(num) = extract_f32(pct_re, val.clone()) {

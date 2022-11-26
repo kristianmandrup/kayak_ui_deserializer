@@ -15,7 +15,7 @@ fn map_color(s: &str) -> Option<f32> {
 
 
 fn parse_hsla(color_str: &str) -> Option<Vec<Option<f32>>> {
-    let re = Regex::new(r"hsla\(\.\)").unwrap();
+    let re = Regex::new(r"hsla\((\.)\)").unwrap();
     if let Some(mtch) = re.find(color_str) {
         let spl = mtch.as_str().split(",");
         let vec = spl.map(|s| map_color(s)).collect();
@@ -35,7 +35,7 @@ pub fn parse_hsla_color(color_str: &str) -> Option<Color> {
 }    
 
 fn parse_rgba(color_str: &str) -> Option<Vec<Option<f32>>>  {
-    let re = Regex::new(r"rgba?\(\.\)").unwrap();
+    let re = Regex::new(r"rgba?\((\.)\)").unwrap();
     if let Some(mtch) = re.find(color_str) {
         let spl = mtch.as_str().split(",");
         let vec = spl.map(|s| map_color(s)).collect();

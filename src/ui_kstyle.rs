@@ -55,7 +55,7 @@ impl KStyleBuilder {
 
     fn bottom(&self) -> Option<Units> {
         let prop = &self.node.border_color.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
     
     fn color(&self) -> Option<Color> {
@@ -65,7 +65,7 @@ impl KStyleBuilder {
 
     fn col_between(&self) -> Option<Units> {
         let prop = &self.node.col_between.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
     
     fn cursor(&self) -> Option<KCursorIcon> {
@@ -94,7 +94,7 @@ impl KStyleBuilder {
 
     fn height(&self) -> Option<Units> {
         let prop = &self.node.height.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn layout_type(&self) -> Option<LayoutType> {
@@ -108,7 +108,7 @@ impl KStyleBuilder {
 
     fn left(&self) -> Option<Units> {
         let prop = &self.node.left.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn line_height(&self) -> Option<f32> {
@@ -122,22 +122,22 @@ impl KStyleBuilder {
 
     fn max_height(&self) -> Option<Units> {
         let prop = &self.node.max_height.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn max_width(&self) -> Option<Units> {
         let prop = &self.node.max_width.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn min_height(&self) -> Option<Units> {
         let prop = &self.node.min_height.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn min_width(&self) -> Option<Units> {
         let prop = &self.node.min_width.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn offset(&self) -> Option<Edge<Units>> {
@@ -160,22 +160,22 @@ impl KStyleBuilder {
 
     fn padding_top(&self) -> Option<Units> {
         let prop = &self.node.padding_top.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn padding_bottom(&self) -> Option<Units> {
         let prop = &self.node.padding_bottom.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn padding_left(&self) -> Option<Units> {
         let prop = &self.node.padding_left.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn padding_right(&self) -> Option<Units> {
         let prop = &self.node.padding_right.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     // fn pointer_events(&self) -> PointerEvents {
@@ -204,22 +204,22 @@ impl KStyleBuilder {
 
     fn right(&self) -> Option<Units> {
         let prop = &self.node.right.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn row_between(&self) -> Option<Units> {
         let prop = &self.node.row_between.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn top(&self) -> Option<Units> {
         let prop = &self.node.top.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn width(&self) -> Option<Units> {
         let prop = &self.node.width.clone();
-        UiUnit::new(prop.clone()).parse().ok()
+        UiUnit::new(prop.clone()).parse()
     }
 
     fn z_index(&self) -> Option<i32> {

@@ -13,7 +13,29 @@ use crate::serialized::OptStr;
 //     /// Automatically determine the value
 //     Auto,
 // }
+pub fn to_units(val: String) -> Option<Units> {
+    let px_re = Regex::new(r"(\d+)\s*px").unwrap();
+    let pct_re = Regex::new(r"(\d+)\s*%").unwrap();
+    let em_re = Regex::new(r"(\d+)\s*em").unwrap();
+    if let Some(num) = extract_f32(px_re, val.clone()) {
+        return Some(Units::Pixels(num))
+    } else if let Some(num) = extract_f32(pct_re, val.clone()) {
+        return Some(Units::Percentage(num))
+    } else if let Some(num) = extract_f32(em_re, val.clone()) {
+        return Some(Units::Stretch(num))
+    } else {
+        None
+    }
+}    
 
+pub fn extract_f32(re: Regex, val: String) -> Option<f32> {
+    if let Some(caps) = re.captures(val.as_str()) {
+        let text1 = caps.get(1).map_or("", |m| m.as_str());
+        text1.trim().parse::<f32>().ok()
+    } else {
+        None
+    }
+}
 
 
 pub struct UiUnit {
@@ -27,28 +49,11 @@ impl UiUnit {
         }
     }
 
-    fn number(re: Regex, str: String) -> f32 {
-        let str = re.replace(&str, "");
-        let num_str = &str[..str.len() - 2];
-        num_str.parse::<f32>().unwrap()
-    }
-
-    pub fn parse(&self) -> Result<Units, &'static str>  {
+    pub fn parse(&self) -> Option<Units>  {
         if let Some(str) = self.str.clone() {
-            if let Ok(re) = Regex::new(r"px\s*$") {
-                let number = UiUnit::number(re, str);
-                Ok(Units::Pixels(number))    
-            } else if let Ok(re) = Regex::new(r"%\s*$") {
-                let number = UiUnit::number(re, str);
-                Ok(Units::Percentage(number))    
-            } else if let Ok(re) = Regex::new(r"em\s*$") {
-                let number = UiUnit::number(re, str);
-                Ok(Units::Stretch(number))
-            } else {
-                Err("Bad unit")
-            }
+            to_units(str)
         } else {
-            Err("Missing unit")
+            None
         }
     }
 }

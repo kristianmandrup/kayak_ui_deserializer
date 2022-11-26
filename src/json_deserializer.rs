@@ -1,12 +1,19 @@
 use std::{collections::HashMap};
 
 use bevy::{prelude::{AssetServer, ImageBundle}, asset::FileAssetIo};
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle}};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle}};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle, ui_background::build_background_bundle};
 
 pub type OptStr = Option<String>;
+
+#[derive(DeJson, Clone)]
+pub struct SBackgroundBundle {
+    pub background: OptStr,
+    pub style: SKStyle,
+    pub name: String,
+}
 
 #[derive(DeJson, Clone)]
 pub struct SSize {
@@ -210,12 +217,17 @@ pub struct STextWidgetBundle {
 #[derive(DeJson, Clone)]
 pub struct SWidgets {
     pub buttons: Option<Vec<SButton>>,
+}
+
+
+#[derive(DeJson, Clone)]
+pub struct SBundles {
     pub text_widget_bundles: Option<Vec<STextWidgetBundle>>,
     pub image_bundles: Option<Vec<SImageBundle>>,
     pub window_bundles: Option<Vec<SWindowBundle>>,
     pub texture_atlas_bundles: Option<Vec<STextureAtlasBundle>>,
     pub button_bundles: Option<Vec<SButtonBundle>>,
-    
+    pub background_bundles: Option<Vec<SBackgroundBundle>>,    
 }
 
 pub struct StoredBundles {
@@ -223,7 +235,8 @@ pub struct StoredBundles {
     pub window_bundles: HashMap<String, WindowBundle>,
     pub texture_atlas_bundles: HashMap<String, TextureAtlasBundle>,
     pub image_bundles: HashMap<String, ImageBundle>,
-    pub button_bundles: HashMap<String, KButtonBundle>
+    pub button_bundles: HashMap<String, KButtonBundle>,
+    pub background_bundles: HashMap<String, BackgroundBundle>,
 }
 impl StoredBundles {
     pub fn new() -> Self {
@@ -233,6 +246,7 @@ impl StoredBundles {
             texture_atlas_bundles: HashMap::new(),
             image_bundles: HashMap::new(),
             button_bundles: HashMap::new(),
+            background_bundles: HashMap::new()
         }                    
     }
 
@@ -254,6 +268,10 @@ impl StoredBundles {
 
     pub fn button_bundle(&self, id: &str) -> &KButtonBundle {
         self.button_bundles.get(id).unwrap()
+    }    
+
+    pub fn background_bundle(&self, id: &str) -> &BackgroundBundle {
+        self.background_bundles.get(id).unwrap()
     }    
 }
 
@@ -315,6 +333,10 @@ impl KayakStore {
     pub fn button_bundle(&self, id: &str) -> &KButtonBundle {
         self.bundles.button_bundle(id)
     }
+
+    pub fn background_bundle(&self, id: &str) -> &BackgroundBundle {
+        self.bundles.background_bundle(id)
+    }
 }
 
 impl Default for KayakStore {
@@ -328,6 +350,7 @@ pub struct KayakData {
     pub assets: Option<SAssets>,
     pub styles: Option<Vec<SKStyle>>,
     pub widgets: Option<SWidgets>,
+    pub bundles: Option<SBundles>,
 }
 
 pub struct KayakBuilder {
@@ -347,6 +370,7 @@ impl KayakBuilder {
     pub fn build(&mut self) -> & mut KayakBuilder {
         self.build_styles();
         self.build_widgets();
+        self.build_bundles();
         self
     }
 
@@ -365,6 +389,11 @@ impl KayakBuilder {
             if let Some(buttons) = items.buttons {
                 self.build_buttons(buttons);     
             }            
+        }
+    }
+
+    pub fn build_bundles(&mut self) -> () {
+        if let Some(items) = self.data.bundles.to_owned() {
             if let Some(text_widgets) = items.text_widget_bundles {
                 self.build_text_widget_bundles(text_widgets);     
             }            
@@ -424,6 +453,14 @@ impl KayakBuilder {
             let name = item.to_owned().name;
             let ib = build_image_bundle(self.asset_server.clone(), item).unwrap();
             self.store.bundles.image_bundles.insert(name, ib);
+        }
+    }
+
+    pub fn build_background_bundles(&mut self, background_bundles: Vec<SBackgroundBundle>) { 
+        for item in background_bundles {
+            let name = item.to_owned().name;
+            let ib = build_background_bundle(item).unwrap();
+            self.store.bundles.background_bundles.insert(name, ib);
         }
     }
 }

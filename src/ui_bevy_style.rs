@@ -1,4 +1,5 @@
 use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Size, Val, UiRect, Overflow};
+use kayak_ui::widgets::BackgroundBundle;
 
 use crate::{json_deserializer::SBevyStyle, ui_rect::{UiRectBuilder, to_val}, ui_parser::Conv, ui_size::SizeBuilder};
 

@@ -42,20 +42,25 @@ Currently this library can be used to load and build the following Kayak UI cons
     // accessing hashmaps
     let styles = store.styles;// HashMap<String, KStyle>
     let widgets = store.widgets;
+    let bundles = store.widgets;
     let buttons = widgets.buttons; // HashMap<String, KButton>
-    let tw_bundles = widgets.text_widget_bundles; // HashMap<String, TextWidgetBundle>
-    let img_bundles = widgets.image_bundles;
-    let button_bundles = widgets.button_bundles;
+    let tw_bundles = bundles.text_widget_bundles; // HashMap<String, TextWidgetBundle>
+    let img_bundles = bundles.image_bundles;
+    let button_bundles = bundles.button_bundles;
 
-// get widgets and styles from store
+    // get reusable styles from store
     let base_image = store.style("base-image");
+    // get individual widgets
     let menu_button = store.button("menu_button");
+    // get bundles
     let title = store.text_widget_bundle("title");
     let sub_title = store.text_widget_bundle("sub_title");
+
     let wb = store.window_bundle("main window");
     let tab = store.texture_atlas_bundle("my tab");
     let tab = store.image_bundle("my image bundle");
-    let bb = store.button_bundle("my button bundle");
+    let buttons_b = store.button_bundle("my button bundle");
+    let background_b = store.background_bundle("my background");
 ```
 
 ## Status
@@ -68,8 +73,6 @@ The essential builders should now be working.
 
 - `ClipBundle`
 - `TextBoxBundle`
-- `BackgroundBundle`
-- `Background`
 - `KayakAppBundle`
 - `KayakApp`
 - `ElementBundle`
@@ -118,45 +121,23 @@ The HashMap can then be referenced when building the Kayak UI to reduce the code
     }
   ],
   "widgets": {
-    "texture_atlas_bundles": [{
-      "name": "my-atlas",
-      "atlas": {
-        "handle": {
-          "path": "path/to/atlas"
-        },
-        "position": [20, 40],
-        "tile_size": [16, 16]
-      },
-      "styles": {
-          "extends": "base",
-          "bottom": "20 px"
-      }
-    }],
-    "window_bundles": [
-      {
-        "name": "main window",
-        "window": {
-          "draggable": true,
-          "initial_position": [50, 100],
-          "size": [40, 40]
-          "title": "Game menu"
-        },
-        "styles": "base"
-      }
-    ],
     "buttons": [
       {
         "name": "menu-button",
+        "type": "button",
         "style": {
           "extends": "base",
           "bottom": "20 px",
           "cursor": "hand"
         }
       }
-    ],
+    ]
+  },
+  "bundles": {
     "text_widget_bundles": [
       {
         "name": "game-title",
+        "type": "text-widget",
         "text": {
           "extends": "base",
           "content": "hello",
@@ -168,6 +149,7 @@ The HashMap can then be referenced when building the Kayak UI to reduce the code
     "image_bundles": [
       {
         "name": "my-image",
+        "type": "image-bundle",
         "image-ref": "profile-image",
         "styles": {
           "extends": "base-image",

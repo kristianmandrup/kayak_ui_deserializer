@@ -38,8 +38,10 @@
           "cursor": "hand"
         }
       }
-    ],
-    "text-widgets": [
+    ]
+  },
+  "bundles": {
+    "text_widget_bundles": [
       {
         "name": "game-title",
         "type": "text-widget",
@@ -51,7 +53,7 @@
         }
       }
     ],
-    "image-bundles": [
+    "image_bundles": [
       {
         "name": "my-image",
         "type": "image-bundle",

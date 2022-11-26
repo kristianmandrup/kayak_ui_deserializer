@@ -30,10 +30,7 @@ impl TextBoxPropsBuilder {
         let prop = &self.node.value.clone();
         Conv::get_prop(prop)
     }
-}
 
-
-impl TextBoxPropsBuilder {
     pub fn parse(&self) -> Result<TextBoxProps, &'static str> {        
         let disabled = self.disabled();
         let placeholder = self.placeholder();

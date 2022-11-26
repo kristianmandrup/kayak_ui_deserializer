@@ -1,6 +1,7 @@
+use bevy::prelude::ButtonBundle;
 use kayak_ui::{widgets::{KButton, KButtonBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::{SButton, SButtonBundle}};
+use crate::{ui_kstyle::KStyleBuilder, serialized::{SButton, SButtonBundle}, kayak_store::KayakStore};
 
 // pub struct KButtonBundle {
 //     pub button: KButton,
@@ -21,20 +22,19 @@ pub fn build_button(btn: SButton) -> Result<KButton, &'static str>  {
     }
 }
 
-pub fn build_button_bundle(bb: SButtonBundle) -> Result<KButtonBundle, &'static str>  {
-    ButtonBundleBuilder::new(bb).parse()
+
+pub fn build_button_bundle(store: &KayakStore, bb: SButtonBundle) -> Result<KButtonBundle, &'static str>  {
+    ButtonBundleBuilder::new(store, bb).build().parse()
 }
 
-pub struct ButtonBundleBuilder {
-    node: SButtonBundle
-    // pub button: KButton,
-    // pub styles: KStyle,
-    // pub on_event: OnEvent,
-    // pub widget_name: WidgetName,
+pub struct ButtonBundleBuilder<'a> {
+    store: &'a KayakStore,
+    node: SButtonBundle,
 }
-impl ButtonBundleBuilder {
-    pub fn new(node: SButtonBundle) -> Self {
+impl<'a> ButtonBundleBuilder<'a> {
+    pub fn new(store: &'a KayakStore, node: SButtonBundle) -> Self {
         Self {
+            store,
             node
         }
     }
@@ -48,7 +48,7 @@ impl ButtonBundleBuilder {
         }        
     }
 
-    fn style(&self) -> Option<KStyle> {
+    fn styles(&self) -> Option<KStyle> {
         let prop = &self.node.styles.clone();
         if let Some(val) = prop.clone() {
             KStyleBuilder::new(val).parse().ok()
@@ -62,15 +62,20 @@ impl ButtonBundleBuilder {
         prop.to_owned()
     }
 
+    pub fn build(&self) -> &Self {
+        self.store.extend_kstyle(self.node.styles.to_owned());
+        self
+    }
+
     pub fn parse(&self) -> Result<KButtonBundle, &'static str> {        
         let button = self.button();
-        let style = self.style();
+        let styles = self.styles();
         let widget_name = self.widget_name();
         let mut bb = KButtonBundle::default();
         if let Some(val) = button {
             bb.button = val;    
         }
-        if let Some(val) = style {
+        if let Some(val) = styles {
             bb.styles = val;    
         }
         bb.widget_name = WidgetName(widget_name);    

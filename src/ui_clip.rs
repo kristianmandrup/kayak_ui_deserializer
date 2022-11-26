@@ -1,18 +1,19 @@
 use kayak_ui::{widgets::{Clip, ClipBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::SClipBundle};
+use crate::{ui_kstyle::KStyleBuilder, serialized::SClipBundle, kayak_store::KayakStore};
 
 
-pub fn build_clip_bundle(cb: SClipBundle) -> Result<ClipBundle, &'static str>  {
-    ClipBundleBuilder::new(cb).parse()
+pub fn build_clip_bundle(store: &KayakStore, cb: SClipBundle) -> Result<ClipBundle, &'static str>  {
+    ClipBundleBuilder::new(store, cb).build().parse()
 }
-
-pub struct ClipBundleBuilder {
+pub struct ClipBundleBuilder<'a> {
+    store: &'a KayakStore,
     node: SClipBundle,
 }
-impl ClipBundleBuilder {
-    pub fn new(node: SClipBundle) -> Self {
+impl<'a> ClipBundleBuilder<'a> {
+    pub fn new(store: &'a KayakStore, node: SClipBundle) -> Self {
         Self {
+            store,            
             node
         }
     }
@@ -38,6 +39,11 @@ impl ClipBundleBuilder {
     fn widget_name(&self) -> String {
         let prop = &self.node.name.clone();
         prop.to_owned()
+    }
+
+    pub fn build(&self) -> &Self {
+        self.store.extend_kstyle(self.node.styles.to_owned());
+        self
     }
 
     pub fn parse(&self) -> Result<ClipBundle, &'static str> {                        

@@ -141,7 +141,7 @@ impl KayakBuilder {
     pub fn build_button_bundles(&mut self, button_bundles: Vec<SButtonBundle>) -> &Self { 
         for item in button_bundles {
             let name = item.to_owned().name;
-            let button_bundle = build_button_bundle(item).unwrap();
+            let button_bundle = build_button_bundle(&self.store, item).unwrap();
             self.store.bundles.button_bundles.insert(name, button_bundle);
         }
         self
@@ -195,7 +195,7 @@ impl KayakBuilder {
     pub fn build_clip_bundles(&mut self, clip_bundles: Vec<SClipBundle>) -> &Self { 
         for item in clip_bundles {
             let name = item.to_owned().name;
-            let ib = build_clip_bundle(item).unwrap();
+            let ib = build_clip_bundle(&self.store, item).unwrap();
             self.store.bundles.clip_bundles.insert(name, ib);
         }
         self

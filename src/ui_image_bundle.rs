@@ -1,6 +1,6 @@
-use bevy::{prelude::{ImageBundle, Visibility, ComputedVisibility}, ui::{UiImage, Style, FocusPolicy, CalculatedSize, BackgroundColor, widget::ImageMode}, render::view::visibility};
+use bevy::{prelude::{ImageBundle, Visibility, ComputedVisibility, Transform}, ui::{UiImage, Style, FocusPolicy, CalculatedSize, BackgroundColor, widget::ImageMode}};
 
-use crate::{ ui_bevy_style::BevyStyleBuilder, serialized::{SImageBundle}, kayak_store::KayakStore, ui_image::{build_image_ui}, ui_size::SizeBuilder, ui_calc_size::CalcSizeBuilder, ui_kstyle::str_to_color};
+use crate::{ ui_bevy_style::BevyStyleBuilder, serialized::{SImageBundle}, kayak_store::KayakStore, ui_image::{build_image_ui}, ui_calc_size::CalcSizeBuilder, ui_kstyle::str_to_color, ui_transform::TransformBuilder};
 
 
 pub fn build_image_bundle(store: &KayakStore, ib: SImageBundle) -> Result<ImageBundle, &'static str>  {
@@ -51,6 +51,15 @@ impl<'a> ImageBundleBuilder<'a> {
         }            
     }
 
+    fn transform(&self) -> Option<Transform> {
+        let prop = &self.node.transform.clone();
+        if let Some(val) = prop.clone() {
+            TransformBuilder::new(val).parse().ok()
+        } else {
+            None
+        }        
+    }
+
     fn calculated_size(&self) -> Option<CalculatedSize> {
         let prop = &self.node.calculated_size.clone();
         if let Some(val) = prop.clone() {
@@ -71,7 +80,7 @@ impl<'a> ImageBundleBuilder<'a> {
 
     fn image_mode(&self) -> Option<ImageMode> {
         let prop = &&self.node.image_mode.clone();
-        if let Some(val) = prop.to_owned() {
+        if let Some(_) = prop.to_owned() {
             Some(ImageMode::KeepAspect)
         } else {
             None

@@ -1,6 +1,15 @@
 use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Size, Val, UiRect, Overflow};
 
-use crate::{serialized::SBevyStyle, ui_parser::Conv, ui_rect::{UiRectBuilder, to_val}, ui_size::SizeBuilder};
+use crate::{serialized::SBevyStyle, ui_rect::{UiRectBuilder, to_val}, ui_size::SizeBuilder};
+
+pub fn to_f32(optstr: &Option<String>) -> Option<f32> {
+    if let Some(str) = optstr {
+        str.trim().parse::<f32>().ok()
+    } else {
+        None
+    }                    
+}
+
 
 // Style
 pub struct BevyStyleBuilder {
@@ -11,14 +20,6 @@ impl BevyStyleBuilder {
         Self {
             node
         }
-    }
-
-    fn to_f32(&self, prop: &Option<String>) -> Option<f32> {
-        if let Some(str) = Conv::get_prop(prop) {
-            Conv(str).to_f32()
-        } else {
-            None
-        }                    
     }
 
     fn display(&self) -> Option<Display> {
@@ -196,12 +197,12 @@ impl BevyStyleBuilder {
 
     pub fn flex_grow(&self) -> Option<f32> {
         let prop = &self.node.flex_grow.clone();
-        self.to_f32(prop)
+        to_f32(prop)
     }
 
     pub fn flex_shrink(&self) -> Option<f32> {
         let prop = &self.node.flex_shrink.clone();
-        self.to_f32(prop)
+        to_f32(prop)
     }
 
     pub fn flex_basis(&self) -> Option<Val> {
@@ -242,7 +243,7 @@ impl BevyStyleBuilder {
 
     pub fn aspect_ratio(&self) -> Option<f32> {
         let prop = &self.node.aspect_ratio.clone();
-        self.to_f32(prop)
+        to_f32(prop)
     }
 
     pub fn overflow(&self) -> Option<Overflow> {

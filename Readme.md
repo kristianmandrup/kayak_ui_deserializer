@@ -28,12 +28,21 @@ The current goal is to deserialize a JSON file into Kayak UI structures that can
 
 Currently this library can be used to load and build the following Kayak UI constructs:
 
-- `KStyle`
+- Kayak UI `KStyle` and Bevy `Style`
+
+Widgets:
+
 - `KButton`
+
+Bundles:
+
 - `TextWidgetBundle`
+- `ButtonBundle`
 - `WindowBundle`
-- `TextureAtlasBundle`
 - `ImageBundle`
+- `BackgroundBundle`
+- `TextureAtlasBundle`
+- `ClipBundle`
 
 ```rust
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
@@ -58,9 +67,10 @@ Currently this library can be used to load and build the following Kayak UI cons
 
     let wb = store.window_bundle("main window");
     let tab = store.texture_atlas_bundle("my tab");
-    let tab = store.image_bundle("my image bundle");
+    let img_b = store.image_bundle("my image bundle");
     let buttons_b = store.button_bundle("my button bundle");
     let background_b = store.background_bundle("my background");
+    let clip_b = store.clip_bundle("my clip");
 ```
 
 ## Status
@@ -71,7 +81,6 @@ The essential builders should now be working.
 
 ### Todo
 
-- `ClipBundle`
 - `TextBoxBundle`
 - `KayakAppBundle`
 - `KayakApp`

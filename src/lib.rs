@@ -21,3 +21,4 @@ mod ui_window;
 mod ui_image;
 mod ui_size;
 mod ui_background;
+mod ui_clip;

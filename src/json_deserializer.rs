@@ -1,12 +1,20 @@
 use std::{collections::HashMap};
 
 use bevy::{prelude::{AssetServer, ImageBundle}, asset::FileAssetIo};
-use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle}};
+use kayak_ui::{prelude::KStyle, widgets::{TextWidgetBundle, KButton, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle}};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle, ui_background::build_background_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button, build_button_bundle}, ui_window::build_window_bundle, ui_text_widget::build_text_widget_bundle, ui_texture_atlas::build_texture_atlas_bundle, ui_image::build_image_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle};
 
 pub type OptStr = Option<String>;
+
+#[derive(DeJson, Clone)]
+pub struct SClipBundle {
+    pub clip: OptStr,
+    pub style: SKStyle,
+    pub name: String,
+}
+
 
 #[derive(DeJson, Clone)]
 pub struct SBackgroundBundle {
@@ -228,6 +236,7 @@ pub struct SBundles {
     pub texture_atlas_bundles: Option<Vec<STextureAtlasBundle>>,
     pub button_bundles: Option<Vec<SButtonBundle>>,
     pub background_bundles: Option<Vec<SBackgroundBundle>>,    
+    pub clip_bundles: Option<Vec<SClipBundle>>,    
 }
 
 pub struct StoredBundles {
@@ -237,6 +246,7 @@ pub struct StoredBundles {
     pub image_bundles: HashMap<String, ImageBundle>,
     pub button_bundles: HashMap<String, KButtonBundle>,
     pub background_bundles: HashMap<String, BackgroundBundle>,
+    pub clip_bundles: HashMap<String, ClipBundle>,
 }
 impl StoredBundles {
     pub fn new() -> Self {
@@ -246,7 +256,8 @@ impl StoredBundles {
             texture_atlas_bundles: HashMap::new(),
             image_bundles: HashMap::new(),
             button_bundles: HashMap::new(),
-            background_bundles: HashMap::new()
+            background_bundles: HashMap::new(),
+            clip_bundles: HashMap::new()
         }                    
     }
 
@@ -272,6 +283,10 @@ impl StoredBundles {
 
     pub fn background_bundle(&self, id: &str) -> &BackgroundBundle {
         self.background_bundles.get(id).unwrap()
+    }    
+
+    pub fn clip_bundle(&self, id: &str) -> &ClipBundle {
+        self.clip_bundles.get(id).unwrap()
     }    
 }
 
@@ -336,6 +351,10 @@ impl KayakStore {
 
     pub fn background_bundle(&self, id: &str) -> &BackgroundBundle {
         self.bundles.background_bundle(id)
+    }
+
+    pub fn clip_bundle(&self, id: &str) -> &ClipBundle {
+        self.bundles.clip_bundle(id)
     }
 }
 
@@ -403,7 +422,18 @@ impl KayakBuilder {
             if let Some(button_bundles) = items.button_bundles {
                 self.build_button_bundles(button_bundles);     
             }            
-        }
+            if let Some(texture_atlas_bundles) = items.texture_atlas_bundles {
+                self.build_texture_atlas_bundles(texture_atlas_bundles);     
+            }            
+            if let Some(image_bundles) = items.image_bundles {
+                self.build_image_bundles(image_bundles);     
+            }            
+            if let Some(background_bundles) = items.background_bundles {
+                self.build_background_bundles(background_bundles);     
+            }            
+            if let Some(clip_bundles) = items.clip_bundles {
+                self.build_clip_bundles(clip_bundles);     
+            }                    }
     }
 
     pub fn build_buttons(&mut self, buttons: Vec<SButton>) -> () { 
@@ -461,6 +491,14 @@ impl KayakBuilder {
             let name = item.to_owned().name;
             let ib = build_background_bundle(item).unwrap();
             self.store.bundles.background_bundles.insert(name, ib);
+        }
+    }
+
+    pub fn build_clip_bundles(&mut self, clip_bundles: Vec<SClipBundle>) { 
+        for item in clip_bundles {
+            let name = item.to_owned().name;
+            let ib = build_clip_bundle(item).unwrap();
+            self.store.bundles.clip_bundles.insert(name, ib);
         }
     }
 }

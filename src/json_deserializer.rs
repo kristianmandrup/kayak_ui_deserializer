@@ -18,44 +18,26 @@ impl KayakBuilder {
         }        
     }
 
-    fn kstyle_extend(&self, mut style: KStyle, id: &str) -> KStyle  {
-        let extension = self.store.style(id);
-        if let Some(ext) = extension {
-            style.apply(ext);
-            style
-        } else {
-            style
-        }
-    }
-
     pub fn process(&mut self) -> &Self {
         self.build();
-        self.extend();
+//        self.extend();
         self
     }
 
-    pub fn extend(&mut self) -> &Self {
-        self.extend_widgets();
-        self
-    }
+    // pub fn extend(&mut self) -> &Self {
+    //     self.extend_widgets();
+    //     self
+    // }
 
-    pub fn extend_widgets(&self) {
-        if let Some(widgets) = self.data.widgets.to_owned() {
-            if let Some(btns) = widgets.buttons {
-                for btn in btns {
-                    if let Some(styles) = btn.styles {
-                        let extends = styles.extends;
-                        if let Some(id) = extends {
-                            let style = self.store.style(id.as_str());
-                            if let Some(stl) = style {
-                                self.kstyle_extend(stl.to_owned(), id.as_str());
-                            }                        
-                        }
-                    }            
-                }    
-            }
-        }
-    }
+    // pub fn extend_widgets(&self) {
+    //     if let Some(widgets) = self.data.widgets.to_owned() {
+    //         if let Some(btns) = widgets.buttons {
+    //             for btn in btns {
+    //                 self.store.extend_kstyle(btn.styles);
+    //             }    
+    //         }
+    //     }
+    // }
 
     pub fn build(&mut self) -> &Self {
         self.build_styles();
@@ -222,7 +204,7 @@ impl KayakBuilder {
     pub fn build_text_box_bundles(&mut self, text_box_bundles: Vec<STextBoxBundle>) -> &Self { 
         for item in text_box_bundles {
             let name = item.to_owned().name;
-            let ib = build_text_box_bundle(item).unwrap();
+            let ib = build_text_box_bundle(&self.store,item).unwrap();
             self.store.bundles.text_box_bundles.insert(name, ib);
         }
         self
@@ -231,7 +213,7 @@ impl KayakBuilder {
     pub fn build_element_bundles(&mut self, element_bundles: Vec<SElementBundle>) -> &Self { 
         for item in element_bundles {
             let name = item.to_owned().name;
-            let ib = build_element_bundle(item).unwrap();
+            let ib = build_element_bundle(&self.store, item).unwrap();
             self.store.bundles.element_bundles.insert(name, ib);
         }
         self

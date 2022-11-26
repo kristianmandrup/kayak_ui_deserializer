@@ -12,7 +12,7 @@ pub struct STextBoxProps {
 #[derive(DeJson, Clone)]
 pub struct STextBoxBundle {
     pub text_box: Option<STextBoxProps>,
-    pub style: Option<SKStyle>,
+    pub styles: Option<SKStyle>,
     // pub on_event: OnEvent,
     // pub on_layout: OnLayout,
     // pub on_change: OnChange,
@@ -201,6 +201,7 @@ pub struct SKStyle {
     pub padding_bottom: OptStr,
     pub padding_left: OptStr,
     pub padding_right: OptStr,
+    pub position_type: OptStr,
     pub right: OptStr,
     pub row_between: OptStr,
     pub top: OptStr,

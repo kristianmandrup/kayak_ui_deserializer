@@ -3,8 +3,9 @@ use std::collections::HashMap;
 use bevy::prelude::ImageBundle;
 use kayak_ui::{prelude::KStyle, widgets::{KButton, TextWidgetBundle, TextBoxBundle, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, ElementBundle}};
 
-use crate::store::{StoredWidgets, StoredBundles, StoredAssets};
+use crate::{store::{StoredWidgets, StoredBundles, StoredAssets}, serialized::{SBevyStyle, SKStyle}};
 
+// #[derive(Copy)]
 pub struct KayakStore {
     // pub assets: HashMap<String, Asset>,
     pub styles: HashMap<String, KStyle>,
@@ -22,6 +23,29 @@ impl KayakStore {
             assets: StoredAssets::new()
         }        
     }
+
+    fn kstyle_extend(&self, mut style: KStyle, id: &str) -> KStyle  {
+        let extension = self.style(id);
+        if let Some(ext) = extension {
+            style.apply(ext);
+            style
+        } else {
+            style
+        }
+    }
+    
+    pub fn extend_kstyle(&self, styles: Option<SKStyle>) {
+        if let Some(styles) = styles {
+            let extends = styles.extends;
+            if let Some(id) = extends {
+                let style = self.style(id.as_str());
+                if let Some(stl) = style {
+                    self.kstyle_extend(stl.to_owned(), id.as_str());
+                }                        
+            }
+        }                
+    }
+    
 
     pub fn style(&self, id: &str) -> Option<&KStyle> {
         self.styles.get(id)

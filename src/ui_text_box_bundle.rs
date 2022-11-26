@@ -1,18 +1,20 @@
 use kayak_ui::{widgets::{TextBoxBundle, TextBoxProps}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_text_box::TextBoxPropsBuilder, serialized::STextBoxBundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_text_box::TextBoxPropsBuilder, serialized::STextBoxBundle, kayak_store::KayakStore};
 
 
-pub fn build_text_box_bundle(bb: STextBoxBundle) -> Result<TextBoxBundle, &'static str>  {
-    TextBoxBundleBuilder::new(bb).parse()
+pub fn build_text_box_bundle(store: &KayakStore, bb: STextBoxBundle) -> Result<TextBoxBundle, &'static str>  {
+    TextBoxBundleBuilder::new(store, bb).build().parse()
 }
 
-pub struct TextBoxBundleBuilder {
+pub struct TextBoxBundleBuilder<'a> {
+    store: &'a KayakStore,
     node: STextBoxBundle,
 }
-impl TextBoxBundleBuilder {
-    pub fn new(node: STextBoxBundle) -> Self {
+impl<'a> TextBoxBundleBuilder<'a> {
+    pub fn new(store: &'a KayakStore, node: STextBoxBundle) -> Self {
         Self {
+            store,
             node
         }
     }
@@ -27,8 +29,8 @@ impl TextBoxBundleBuilder {
         
     }
 
-    fn style(&self) -> Option<KStyle> {
-        let prop = &self.node.style.clone();
+    fn styles(&self) -> Option<KStyle> {
+        let prop = &self.node.styles.clone();
         if let Some(val) = prop {
             KStyleBuilder::new(val.to_owned()).parse().ok()
         } else {
@@ -41,9 +43,14 @@ impl TextBoxBundleBuilder {
         prop.to_owned()
     }
 
+    pub fn build(&self) -> &Self {
+        self.store.extend_kstyle(self.node.styles.to_owned());
+        self
+    }
+
     pub fn parse(&self) -> Result<TextBoxBundle, &'static str> {                        
         let text_box = self.text_box();
-        let styles = self.style();
+        let styles = self.styles();
         let name = self.widget_name();
         // let children = self.children();
         let mut text_box_bundle = TextBoxBundle::default();

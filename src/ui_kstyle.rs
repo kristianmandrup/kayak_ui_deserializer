@@ -1,5 +1,5 @@
 use bevy::prelude::Color;
-use kayak_ui::prelude::{Edge, KStyle, Corner, KCursorIcon};
+use kayak_ui::prelude::{KPositionType, Edge, KStyle, Corner, KCursorIcon};
 use morphorm::{Units, LayoutType};
 
 use crate::{ui_parser::{Conv}, ui_color::parse_color, ui_edge::{EdgeBuilder, to_edge_units}, ui_corner::CornerBuilder, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type, serialized::SKStyle};
@@ -101,9 +101,7 @@ impl KStyleBuilder {
             Some(to_layout_type(val.clone()))
         } else {
             None
-        }        
-
-        
+        }                
     }    
 
     fn left(&self) -> Option<Units> {
@@ -180,14 +178,22 @@ impl KStyleBuilder {
 
     // fn pointer_events(&self) -> PointerEvents {
     //     let prop = &self.node.padding_right.clone();
-    //     UiPointerEvents::new(prop.clone()).parse().unwrap()
+    //     // UiPointerEvents::new(prop.clone()).parse().unwrap()
     // }
     
-    
-    // fn position_type(&self) -> KPositionType {
-    //     let prop = &self.node.position_type.clone();
-    //     UiPositionType::new(prop.clone()).parse().unwrap()
-    // }
+    fn position_type(&self) -> Option<KPositionType> {
+        let prop = &self.node.position_type.clone();
+        if let Some(val) = prop {
+            let pt = match val.as_str() {
+                "self-directed" => KPositionType::SelfDirected,
+                "parent-directed" => KPositionType::ParentDirected,
+                _ => KPositionType::SelfDirected,
+            };
+            Some(pt)
+        } else {
+            None
+        }    
+    }
 
     // fn render_command(&self) -> RenderCommand {
     //     let prop = &self.node.position_type.clone();
@@ -250,6 +256,7 @@ impl KStyleBuilder {
         let padding_bottom = self.padding_bottom();        
         let padding_left = self.padding_left();
         let padding_right = self.padding_right();
+        let position_type = self.position_type();
         let right = self.right();
         let row_between = self.row_between();
         let top = self.top();
@@ -329,6 +336,9 @@ impl KStyleBuilder {
         if let Some(val) = padding_right {
             styled.padding_right = val.into();    
         }            
+        if let Some(val) = position_type {
+            styled.position_type = val.into();    
+        }                    
         if let Some(val) = right {
             styled.right = val.into();    
         }            

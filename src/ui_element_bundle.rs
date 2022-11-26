@@ -1,18 +1,20 @@
 use kayak_ui::{widgets::{Element, ElementBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::SElementBundle};
+use crate::{ui_kstyle::KStyleBuilder, serialized::SElementBundle, kayak_store::KayakStore};
 
 
-pub fn build_element_bundle(bb: SElementBundle) -> Result<ElementBundle, &'static str>  {
-    ElementBundleBuilder::new(bb).parse()
+pub fn build_element_bundle(store: &KayakStore, bb: SElementBundle) -> Result<ElementBundle, &'static str>  {
+    ElementBundleBuilder::new(store, bb).build().parse()
 }
 
-pub struct ElementBundleBuilder {
+pub struct ElementBundleBuilder<'a> {
+    store: &'a KayakStore,
     node: SElementBundle,
 }
-impl ElementBundleBuilder {
-    pub fn new(node: SElementBundle) -> Self {
+impl<'a> ElementBundleBuilder<'a> {
+    pub fn new(store: &'a KayakStore, node: SElementBundle) -> Self {
         Self {
+            store,
             node
         }
     }
@@ -39,6 +41,11 @@ impl ElementBundleBuilder {
     fn widget_name(&self) -> String {
         let prop = &self.node.name.clone();
         prop.to_owned()
+    }
+
+    pub fn build(&self) -> &Self {
+        self.store.extend_kstyle(self.node.styles.to_owned());
+        self
     }
 
     pub fn parse(&self) -> Result<ElementBundle, &'static str> {                        

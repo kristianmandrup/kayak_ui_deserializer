@@ -1,6 +1,6 @@
 use std::any::Any;
 use kayak_ui::prelude::RenderCommand;
-use crate::{ui_alignment::to_alignment, json_deserializer::OptStr};
+use crate::{ui_alignment::to_alignment, serialized::OptStr};
 
 pub struct UiRenderCommandText {
     pub content: OptStr,

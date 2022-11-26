@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::{KButton, KButtonBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{json_deserializer::{SButton, SButtonBundle}, ui_kstyle::KStyleBuilder};
+use crate::{ui_kstyle::KStyleBuilder, serialized::{SButton, SButtonBundle}};
 
 // pub struct KButtonBundle {
 //     pub button: KButton,
@@ -9,12 +9,16 @@ use crate::{json_deserializer::{SButton, SButtonBundle}, ui_kstyle::KStyleBuilde
 //     pub widget_name: WidgetName,
 // }
 
-
+// TODO: builder and parser
 pub fn build_button(btn: SButton) -> Result<KButton, &'static str>  {
     let mut button = KButton::default();
-    let styles = KStyleBuilder::new(btn.styles).parse().unwrap();
-    button.user_styles = styles;
-    Ok(button)
+    if let Some(b) = btn.styles {
+        let styles = KStyleBuilder::new(b).parse().unwrap();
+        button.user_styles = styles;
+        Ok(button)            
+    } else {
+        Err("bad button")
+    }
 }
 
 pub fn build_button_bundle(bb: SButtonBundle) -> Result<KButtonBundle, &'static str>  {

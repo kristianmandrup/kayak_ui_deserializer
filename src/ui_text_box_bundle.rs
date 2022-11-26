@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::{TextBoxBundle, TextBoxProps}, prelude::{KStyle, WidgetName}};
 
-use crate::{json_deserializer::STextBoxBundle, ui_kstyle::KStyleBuilder, ui_text_box::TextBoxPropsBuilder};
+use crate::{ui_kstyle::KStyleBuilder, ui_text_box::TextBoxPropsBuilder, serialized::STextBoxBundle};
 
 
 pub fn build_text_box_bundle(bb: STextBoxBundle) -> Result<TextBoxBundle, &'static str>  {

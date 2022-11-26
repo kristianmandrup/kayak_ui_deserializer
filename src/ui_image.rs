@@ -1,7 +1,7 @@
 use bevy::{prelude::{AssetServer, Handle, Image, ImageBundle}, ui::{UiImage, Style, FocusPolicy}};
 use kayak_ui::{widgets::KImage};
 
-use crate::{json_deserializer::{SImageBundle, SImage}, ui_parser::Conv, ui_bevy_style::BevyStyleBuilder};
+use crate::{ui_parser::Conv, ui_bevy_style::BevyStyleBuilder, serialized::{SImage, SImageBundle}};
 
 
 // pub struct KImage(pub Handle<bevy::prelude::Image>);

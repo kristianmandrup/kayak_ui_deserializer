@@ -2,7 +2,7 @@
 
 use kayak_ui::{widgets::{TextWidgetBundle}, prelude::WidgetName};
 
-use crate::{json_deserializer::STextWidgetBundle, ui_text_props::TextPropsBuilder, ui_kstyle::KStyleBuilder};
+use crate::{ui_text_props::TextPropsBuilder, ui_kstyle::KStyleBuilder, serialized::STextWidgetBundle};
 
 // pub struct UiTextWidget {
 //     node: TextWidget

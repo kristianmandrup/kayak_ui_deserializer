@@ -1,7 +1,7 @@
 use morphorm::Units;
 use regex::Regex;
 
-use crate::{json_deserializer::OptStr};
+use crate::serialized::OptStr;
 
 // pub enum Units {
 //     /// A number of pixels

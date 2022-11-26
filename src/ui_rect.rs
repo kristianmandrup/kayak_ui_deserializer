@@ -2,7 +2,7 @@
 use bevy::ui::{Val, UiRect};
 use kayak_ui::prelude::{Rect};
 use regex::Regex;
-use crate::{ui_parser::Conv, json_deserializer::{SRect, SUiRect}};
+use crate::{ui_parser::Conv, serialized::{SUiRect, SRect}};
 
 pub fn to_val(val: String) -> Val {
     let px_re = Regex::new(r"\d+\s*px").unwrap();

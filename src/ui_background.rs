@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::{Background, BackgroundBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{json_deserializer::SBackgroundBundle, ui_kstyle::KStyleBuilder};
+use crate::{ui_kstyle::KStyleBuilder, serialized::SBackgroundBundle};
 
 
 pub fn build_background_bundle(bb: SBackgroundBundle) -> Result<BackgroundBundle, &'static str>  {

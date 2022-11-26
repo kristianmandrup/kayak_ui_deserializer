@@ -1,6 +1,6 @@
 use kayak_ui::widgets::TextBoxProps;
 
-use crate::{json_deserializer::STextBoxProps, ui_parser::Conv};
+use crate::{ui_parser::Conv, serialized::STextBoxProps};
 
 pub struct TextBoxPropsBuilder {
     node: STextBoxProps

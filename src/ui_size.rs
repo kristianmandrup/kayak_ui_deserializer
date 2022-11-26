@@ -1,6 +1,6 @@
 use bevy::ui::{Size, Val};
 
-use crate::{json_deserializer::SSize, ui_rect::to_val};
+use crate::{ui_rect::to_val, serialized::SSize};
 
 pub struct SizeBuilder {
     node: SSize,

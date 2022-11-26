@@ -23,7 +23,7 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, WidgetName}};
 
-use crate::{json_deserializer::{SWindow, SWindowBundle}, ui_parser::Conv, ui_kstyle::KStyleBuilder};
+use crate::{ui_parser::Conv, ui_kstyle::KStyleBuilder, serialized::{SWindow, SWindowBundle}};
 
 
 pub struct WindowBuilder {

@@ -1,7 +1,7 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{TextureAtlasProps, TextureAtlasBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{json_deserializer::{STextureAtlasBundle, STextureAtlasProps}, ui_kstyle::KStyleBuilder, ui_parser::Conv};
+use crate::{ui_kstyle::KStyleBuilder, ui_parser::Conv, serialized::{STextureAtlasProps, STextureAtlasBundle}};
 
 // pub struct TextureAtlasProps {
 //     /// The handle to image

@@ -1,6 +1,6 @@
 use kayak_ui::prelude::Corner;
 
-use crate::{json_deserializer::{OptStr}, ui_parser::Conv};
+use crate::{ui_parser::Conv, serialized::OptStr};
 
 pub struct UiCorner {
     top_left: OptStr,

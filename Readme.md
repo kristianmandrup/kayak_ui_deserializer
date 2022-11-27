@@ -1,6 +1,6 @@
 # Kayak UI deserializer
 
-JSON deserializer (loader) for [Kayak UI](https://github.com/StarArawn/kayak_ui) the premier UI engine for the [Bevy ECS](https://bevyengine.org/) game enginer.
+JSON deserializer (loader) for [Kayak UI](https://github.com/StarArawn/kayak_ui) the premier UI engine for the [Bevy ECS](https://bevyengine.org/) game engine.
 
 <!-- vscode-markdown-toc -->
 

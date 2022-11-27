@@ -230,6 +230,7 @@ pub fn load(json: &str) {
 #[cfg(test)]
 mod tests {
     use bevy::prelude::StageLabel;
+    use nanoserde::DeRon;
 
     use super::*;
 
@@ -329,7 +330,7 @@ mod tests {
     #[test]
     fn load_ron() {
         let str = ron();
-        let data: KayakData = ron::from_str(str).unwrap();
+        let data: KayakData = DeRon::deserialize_ron(str).unwrap();
         let source_io = FileAssetIo::new("path", false);
         let asset_server = AssetServer::new(source_io);
         let builder = KayakBuilder::new(asset_server, data).build();

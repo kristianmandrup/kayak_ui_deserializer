@@ -7,7 +7,7 @@ Currently supports:
 - [RON](https://docs.rs/ron/latest/ron/) Rust Object Notation
 - [JSON](https://www.json.org/json-en.html) JavaScript Object Notation
 
-This project uses `nanoserde`, `serde` and `ron` for deserialization.
+This project uses `nanoserde`, `ron` for deserialization.
 
 <!-- vscode-markdown-toc -->
 
@@ -208,7 +208,7 @@ You can use `ref_id` for an `image` to reference an image asset by name as demon
 
 ## Ron structure (WIP)
 
-Ron (Rust Object Notation) could translate to the following:
+Ron (Rust Object Notation) should translate to the following Kayak UI string format:
 
 ```rust
 KayakUI( // class name is optional
@@ -226,12 +226,12 @@ KayakUI( // class name is optional
 )
 ```
 
-Loading a `ron` string for Kayak UI
+Loading a `ron` string into a Kayak UI store
 
 ```rust
 fn load_ron() {
     let str = ron();
-    let data: KayakData = ron::from_str(str).unwrap();
+    let data: KayakData = DeRon::deserialize_ron(str).unwrap();
     let source_io = FileAssetIo::new("path", false);
     let asset_server = AssetServer::new(source_io);
     let builder = KayakBuilder::new(asset_server, data).build();
@@ -243,8 +243,6 @@ fn load_ron() {
 Currently most of the serialization structs use `OptStr` which is a type alias for `Option<String>`. This will shortly be changed to proper primitive types like `f32`.
 
 The project further needs to be partitioned into proper module folders and a good, clean file structure.
-
-[RON](https://docs.rs/ron/latest/ron/) will be the next format to be supported, including serialization from the store.
 
 ## <a name='Styleexample'></a>Style example
 

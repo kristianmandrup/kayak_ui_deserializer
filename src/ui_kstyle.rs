@@ -24,7 +24,6 @@ impl KStyleBuilder {
         }
     }
 
-
     fn background_color(&self) -> Option<Color> {
         let prop = &self.node.background_color.clone();
         str_to_color(prop)

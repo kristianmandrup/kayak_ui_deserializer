@@ -1,3 +1,4 @@
+use bevy::prelude::StageLabel;
 use kayak_ui::prelude::Corner;
 
 use crate::{ui_parser::Conv, serialized::OptStr};
@@ -13,17 +14,34 @@ fn part_to_string(part: &str) -> Option<String> {
     if part.is_empty() { None } else { Some(part.to_string()) }
 }
 
-fn corner_from_str(str: String) -> UiCorner {
-    let parts = str.split(' ').collect::<Vec<&str>>();
-    let top_left = part_to_string(parts[0]);
-    let top_right = part_to_string(parts[1]);
-    let bottom_left = part_to_string(parts[2]);
-    let bottom_right = part_to_string(parts[3]);
+fn all_corner(str: String) -> UiCorner {
+    let top_left = part_to_string(str.as_str());
+    let top_right = part_to_string(str.as_str());
+    let bottom_left = part_to_string(str.as_str());
+    let bottom_right = part_to_string(str.as_str());
     UiCorner {
         top_left,
         top_right,
         bottom_left,
         bottom_right
+    }
+}
+
+fn corner_from_str(str: String) -> UiCorner {
+    let parts = str.split(' ').collect::<Vec<&str>>();
+    if parts.len() <= 1 {
+        all_corner(parts[0].to_string().clone())
+    } else {
+        let top_left = part_to_string(parts[0]);
+        let top_right = part_to_string(parts[1]);
+        let bottom_left = part_to_string(parts[2]);
+        let bottom_right = part_to_string(parts[3]);
+        UiCorner {
+            top_left,
+            top_right,
+            bottom_left,
+            bottom_right
+        }    
     }
 }
 

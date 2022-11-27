@@ -265,4 +265,41 @@ Note that for `UiRect` and `Size` object properties such as `margin` and `size`,
 
 ## KStyle
 
-TODO
+`KStyle` object and properties.
+
+```json
+{
+  "background_color": "blue",
+  "border": 4,
+  "border_color": "rgba(0.2, 0.5, 1, 1)",
+  "border_radius": 2,
+  "bottom": "2 %",
+  "color": "hsla(0.4, 0.7, 0.8, 0.6)",
+  "col_between": "4px",
+  "cursor": "hand",
+  "font": "roboto",
+  "font_size": 12,
+  "height": 100,
+  "layout_type": "grid",
+  "left": "10 em",
+  "line_height": 14,
+  "max_height": "120px",
+  "max_width": "120px",
+  "min_height": "120px",
+  "min_width": "120px",
+  "offset": {
+    "left": "20px"
+  },
+  "padding": {
+    "bottom": "10px",
+    "top": "10px"
+  },
+  "padding_left": "20 px",
+  "position_type": "self-directed",
+  "right": "100px",
+  "row_between": "50px",
+  "top": "20px",
+  "width": "20px",
+  "z_index": 1
+}
+```

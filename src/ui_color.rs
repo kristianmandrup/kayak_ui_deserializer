@@ -1,4 +1,4 @@
-use bevy::{prelude::Color, sprite::ColorMaterial};
+use bevy::{prelude::Color};
 use regex::Regex;
 
 fn col_to_optstr(color_str: &str) -> Option<String> {
@@ -89,7 +89,16 @@ pub fn parse_color_alias(color: &str) -> Color {
     }
 }
 
-pub fn color_to_str(color: Color ) -> String {    
+pub fn color_to_str(color: Color ) -> String {
+    match color {
+        Color::Rgba {red, green, blue, alpha } => format!("rgba({}, {}, {}, {}", red, green, blue, alpha),
+        Color::RgbaLinear { red, green, blue, alpha } => format!("rgbal({}, {}, {}, {}", red, green, blue, alpha),
+        Color::Hsla { hue, saturation, lightness, alpha } => format!("hsla({}, {}, {}, {}", hue, saturation, lightness, alpha),
+        // _ => color_name_to_str(color)
+    }    
+}    
+
+pub fn color_name_to_str(color: Color ) -> String {    
     if color == Color::ALICE_BLUE {
         "alice-blue".to_string()
     } else if color == Color::ANTIQUE_WHITE {
@@ -167,7 +176,7 @@ pub fn color_to_str(color: Color ) -> String {
     } else if color == Color::YELLOW_GREEN {
         "yellow-green".to_string()
     } else {
-        "white".to_string()
+        "".to_string()
     }        
 }
 

@@ -1,32 +1,33 @@
-# Kayak UI deserializer
-
-Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui) a [Bevy ECS](https://bevyengine.org/) UI engine.
-
 <!-- vscode-markdown-toc -->
 
-- 1. [Goal](#Goal)
-- 2. [Serialization formats](#Serializationformats)
-- 3. [Usage](#Usage)
-- 4. [API](#API)
-- 5. [JSON structure](#JSONstructure)
-- 6. [Style](#Style)
-- 7. [KStyle](#KStyle)
+- [Kayak UI deserializer](#kayak-ui-deserializer)
+  - [Goal](#goal)
+  - [Serialization formats](#serialization-formats)
+  - [Usage](#usage)
+  - [API](#api)
+  - [JSON structure](#json-structure)
+  - [Style example](#style-example)
+  - [KStyle example](#kstyle-example)
 
 <!-- vscode-markdown-toc-config
-	numbering=true
+	numbering=false
 	autoSave=true
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
-## 1. <a name='Goal'></a>Goal
+# Kayak UI deserializer
+
+Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui) a [Bevy ECS](https://bevyengine.org/) UI engine.
+
+## <a name='Goal'></a>Goal
 
 The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in hashmaps. This will allow the Game UI designer to externalize parts of the UI as Game assets that can be loaded from one or more UI asset files.
 
-## 2. <a name='Serializationformats'></a>Serialization formats
+## <a name='Serializationformats'></a>Serialization formats
 
 This deserializer currently targets the JSON format. It should be easy to add support for additional structured formats like [YAML](https://yaml.org/), [KDL](https://kdl.dev/) etc.
 
-## 3. <a name='Usage'></a>Usage
+## <a name='Usage'></a>Usage
 
 Use `nanoserde` to deserialize JSON into a `KayakData` object that is then fed into the `KayakBuilder`. The `store` on the `builder` will contain the built and registered UI components.
 
@@ -42,7 +43,7 @@ let builder = KayakBuilder::new(data).build();
 let store = builder.store;
 ```
 
-## 4. <a name='API'></a>API
+## <a name='API'></a>API
 
 Currently this library can be used to load and build the following Kayak UI constructs:
 
@@ -92,7 +93,7 @@ Currently this library can be used to load and build the following Kayak UI cons
     let elem_b = store.element_bundle("my elements");
 ```
 
-## 5. <a name='JSONstructure'></a>JSON structure
+## <a name='JSONstructure'></a>JSON structure
 
 The builder populates `HashMap`s in the builder `store` that can be referenced when building a Kayak UI. This should greatly reduce the code footprint and make the UI definition more declarative and allow the UI to be managed independently of the code, similar to CSS for HTML.
 
@@ -187,7 +188,7 @@ You can use `ref_id` for an `image` to reference an image asset by name as demon
 }
 ```
 
-## 6. <a name='Style'></a>Style
+## <a name='Styleexample'></a>Style example
 
 Bevy style properties.
 
@@ -231,7 +232,7 @@ Bevy style properties.
 }
 ```
 
-## 7. <a name='KStyle'></a>KStyle
+## <a name='KStyleexample'></a>KStyle example
 
 `KStyle` object and properties.
 

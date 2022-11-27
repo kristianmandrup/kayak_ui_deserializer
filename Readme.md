@@ -1,7 +1,11 @@
+# Kayak UI deserializer
+
+JSON deserializer (loader) for [Kayak UI](https://github.com/StarArawn/kayak_ui) the premier UI engine for the [Bevy ECS](https://bevyengine.org/) game enginer.
+
 <!-- vscode-markdown-toc -->
 
 - [Kayak UI deserializer](#kayak-ui-deserializer)
-  - [Goal](#goal)
+  - [Project Goals](#project-goals)
   - [Serialization formats](#serialization-formats)
   - [Usage](#usage)
   - [API](#api)
@@ -15,13 +19,11 @@
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 
-# Kayak UI deserializer
+## <a name='Projectgoals'></a>Project Goals
 
-Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui) a [Bevy ECS](https://bevyengine.org/) UI engine.
+The current goal of this project is to enable deserialization of a JSON file into Kayak UI components that are stored and can be referenced.
 
-## <a name='Goal'></a>Goal
-
-The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in hashmaps. This will allow the Game UI designer to externalize parts of the UI as Game assets that can be loaded from one or more UI asset files.
+This will allow a Bev UI designer to externalize most of the UI definitions as Game assets that can be loaded from one or more UI asset files.
 
 ## <a name='Serializationformats'></a>Serialization formats
 

@@ -1,6 +1,6 @@
-# Kayak UI deserializer
+# Kayak UI serde
 
-Deserializer (loader) for [Kayak UI](https://github.com/StarArawn/kayak_ui) the premier UI engine for the [Bevy ECS](https://bevyengine.org/) game engine.
+Ser/Deser(ializer) for [Kayak UI](https://github.com/StarArawn/kayak_ui), a UI widget system for the [Bevy ECS](https://bevyengine.org/) game engine.
 
 Currently supports:
 
@@ -11,7 +11,7 @@ This project uses `nanoserde`, `ron` for deserialization.
 
 <!-- vscode-markdown-toc -->
 
-- [Kayak UI deserializer](#kayak-ui-deserializer)
+- [Kayak UI serde](#kayak-ui-serde)
   - [Project Goals](#project-goals)
   - [Serialization formats](#serialization-formats)
   - [Usage](#usage)
@@ -30,9 +30,9 @@ This project uses `nanoserde`, `ron` for deserialization.
 
 ## <a name='Projectgoals'></a>Project Goals
 
-The current goal of this project is to enable deserialization of a JSON file into Kayak UI components that are stored and can be referenced.
+The current goal of this project is to enable ser/deser for a JSON or RON file into Kayak UI components that are stored and can be referenced from Bevy to build the UI.
 
-This will allow a Bev UI designer to externalize most of the UI definitions as Game assets that can be loaded from one or more UI asset files.
+This will allow a Bevy UI designer to externalize most of the UI definitions as game assets that are loaded from UI asset files.
 
 ## <a name='Serializationformats'></a>Serialization formats
 

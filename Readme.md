@@ -10,6 +10,8 @@ JSON deserializer (loader) for [Kayak UI](https://github.com/StarArawn/kayak_ui)
   - [Usage](#usage)
   - [API](#api)
   - [JSON structure](#json-structure)
+  - [Ron structure (WIP)](#ron-structure-wip)
+  - [Roadmap](#roadmap)
   - [Style example](#style-example)
   - [KStyle example](#kstyle-example)
 
@@ -27,7 +29,12 @@ This will allow a Bev UI designer to externalize most of the UI definitions as G
 
 ## <a name='Serializationformats'></a>Serialization formats
 
-This deserializer currently targets the JSON format. It should be easy to add support for additional structured formats like [YAML](https://yaml.org/), [KDL](https://kdl.dev/) etc.
+This deserializer currently targets the JSON format.
+Support will likely be added for other structured formats like:
+
+- [RON](https://docs.rs/ron/latest/ron/)
+- [YAML](https://yaml.org/)
+- [KDL](https://kdl.dev/)
 
 ## <a name='Usage'></a>Usage
 
@@ -191,6 +198,52 @@ You can use `ref_id` for an `image` to reference an image asset by name as demon
   }
 }
 ```
+
+## Ron structure (WIP)
+
+Ron (Rust Object Notation) could translate to the following:
+
+```rust
+KayakUI( // class name is optional
+    bundles: ( // this is a map
+        "text_widget_bundles": (
+            name: "game-title",
+            text: (
+              extends: "base",
+              content: "hello",
+              size: 20,
+              font: "roboto"
+            )
+        ),
+    ),
+)
+```
+
+Loading a `ron` string
+
+```rust
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Deserialize, Serialize)]
+struct SSize {
+    width: f32,
+    height: f32,
+}
+
+fn main() {
+    let data: KayakData = ron::from_str(ron_str).unwrap();
+    let builder = KayakBuilder::new(data).build();
+    let store = builder.store;
+}
+```
+
+## Roadmap
+
+Currently most of the serialization structs use `OptStr` which is a type alias for `Option<String>`. This will shortly be changed to proper primitive types like `f32`.
+
+The project further needs to be partitioned into proper module folders and a good, clean file structure.
+
+[RON](https://docs.rs/ron/latest/ron/) will be the next format to be supported, including serialization from the store.
 
 ## <a name='Styleexample'></a>Style example
 

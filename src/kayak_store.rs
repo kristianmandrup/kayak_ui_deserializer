@@ -5,6 +5,11 @@ use kayak_ui::{prelude::KStyle, widgets::{KButton, TextWidgetBundle, TextBoxBund
 
 use crate::{store::{StoredWidgets, StoredBundles, StoredAssets}, serialized::{SKStyle, SBevyStyle}};
 
+pub enum SerFormat {
+    JSON,
+    RON
+}
+
 // #[derive(Copy)]
 pub struct KayakStore {
     pub asset_server: AssetServer,
@@ -26,6 +31,22 @@ impl KayakStore {
             bundles: StoredBundles::new(),
             assets: StoredAssets::new()
         }        
+    }
+
+    // TODO
+    pub fn serialize(&self, format: SerFormat) -> String {
+        match format {
+            SerFormat::JSON => { self.serialize_json() }
+            SerFormat::RON => { self.serialize_ron() }
+        }
+    }
+
+    pub fn serialize_json(&self) -> String {
+        "".to_string()        
+    }
+
+    pub fn serialize_ron(&self) -> String {        
+        "".to_string()
     }
 
     fn kstyle_extend(&self, mut kstyle: KStyle, id: &str) -> KStyle  {

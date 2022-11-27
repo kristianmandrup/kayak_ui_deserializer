@@ -51,7 +51,10 @@ Bundles:
     let builder = KayakBuilder::new(data).build();
     let store = builder.store;
 
-    let styles = store.styles;// HashMap<String, KStyle>
+    // kayak and bevy styles
+    let kstyles = store.kstyles;// HashMap<String, KStyle>
+    let styles = store.styles;// HashMap<String, Style>
+
     let widgets = store.widgets; // individual widgets such as buttons
 
     // assets

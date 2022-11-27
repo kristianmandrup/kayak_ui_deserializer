@@ -1,25 +1,18 @@
-use bevy::prelude::StageLabel;
 use kayak_ui::prelude::Corner;
 
-use crate::{ui_parser::Conv, serialized::OptStr};
+use crate::{ui_parser::Conv, serialized::{SCorner}};
 
-pub struct UiCorner {
-    top_left: OptStr,
-    top_right: OptStr,
-    bottom_left: OptStr,
-    bottom_right: OptStr,
-}
 
 fn part_to_string(part: &str) -> Option<String> {
     if part.is_empty() { None } else { Some(part.to_string()) }
 }
 
-fn all_corner(str: String) -> UiCorner {
+fn all_corner(str: String) -> SCorner {
     let top_left = part_to_string(str.as_str());
     let top_right = part_to_string(str.as_str());
     let bottom_left = part_to_string(str.as_str());
     let bottom_right = part_to_string(str.as_str());
-    UiCorner {
+    SCorner {
         top_left,
         top_right,
         bottom_left,
@@ -27,7 +20,7 @@ fn all_corner(str: String) -> UiCorner {
     }
 }
 
-fn corner_from_str(str: String) -> UiCorner {
+fn corner_from_str(str: String) -> SCorner {
     let parts = str.split(' ').collect::<Vec<&str>>();
     if parts.len() <= 1 {
         all_corner(parts[0].to_string().clone())
@@ -36,7 +29,7 @@ fn corner_from_str(str: String) -> UiCorner {
         let top_right = part_to_string(parts[1]);
         let bottom_left = part_to_string(parts[2]);
         let bottom_right = part_to_string(parts[3]);
-        UiCorner {
+        SCorner {
             top_left,
             top_right,
             bottom_left,
@@ -46,10 +39,10 @@ fn corner_from_str(str: String) -> UiCorner {
 }
 
 pub struct CornerBuilder {
-    node: UiCorner,
+    node: SCorner,
 }
 impl CornerBuilder {
-    pub fn new(node: UiCorner) -> Self {
+    pub fn new(node: SCorner) -> Self {
         Self {
             node
         }

@@ -2,7 +2,7 @@ use std::{marker::PhantomData, str::FromStr, fmt::Debug};
 
 use kayak_ui::prelude::Edge;
 use morphorm::Units;
-use crate::{ui_parser::Conv, ui_unit::UiUnit, serialized::OptStr};
+use crate::{ui_parser::Conv, ui_unit::UiUnit, serialized::{OptStr, SEdge}};
 
 
 pub fn to_edge_units(prop: OptStr) -> Edge<Units> {
@@ -15,23 +15,15 @@ pub fn to_edge_units(prop: OptStr) -> Edge<Units> {
     }    
 }
 
-pub struct UiEdge {
-    top: OptStr,
-    left: OptStr,
-    right: OptStr,
-    bottom: OptStr,
-    all: OptStr,
-}
-
 fn part_to_string(part: &str) -> Option<String> {
     if part.is_empty() { None } else { Some(part.to_string()) }
 }
 
 
-fn edge_from_str(str: String) -> UiEdge {
+fn edge_from_str(str: String) -> SEdge {
     let parts = str.split(' ').collect::<Vec<&str>>();
     if parts.len() <= 1 {
-        return UiEdge {
+        return SEdge {
             top: None,
             right: None,
             bottom: None,
@@ -47,7 +39,7 @@ fn edge_from_str(str: String) -> UiEdge {
     let right = part_to_string(parts[1]);
     let bottom = part_to_string(parts[2]);
     let left = part_to_string(parts[3]);
-    UiEdge {
+    SEdge {
         top,
         right,
         bottom,
@@ -57,11 +49,11 @@ fn edge_from_str(str: String) -> UiEdge {
 }
 
 pub struct EdgeBuilder<T> {
-    node: UiEdge,
+    node: SEdge,
     phantom: PhantomData<T>,
 }
 impl<T> EdgeBuilder<T> where T: Copy + Default + PartialEq + FromStr + Debug {
-    pub fn new(node: UiEdge) -> Self {
+    pub fn new(node: SEdge) -> Self {
         Self {
             node,
             phantom: PhantomData

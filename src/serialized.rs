@@ -223,6 +223,24 @@ pub struct STextProps {
 }    
 
 #[derive(DeJson, Clone)]
+pub struct SCorner {
+    pub top_left: OptStr,
+    pub top_right: OptStr,
+    pub bottom_left: OptStr,
+    pub bottom_right: OptStr,
+}
+
+#[derive(DeJson, Clone)]
+pub struct SEdge {
+    pub top: OptStr,
+    pub left: OptStr,
+    pub right: OptStr,
+    pub bottom: OptStr,
+    pub all: OptStr,
+}
+
+
+#[derive(DeJson, Clone)]
 pub struct SImage {
     pub path: OptStr,
     pub ref_id: OptStr,

@@ -1,15 +1,15 @@
 use bevy::{prelude::{AssetServer}, asset::FileAssetIo};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button}, ui_texture_atlas_bundle::build_texture_atlas_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle, SNinePatchBundle}, ui_button_bundle::build_button_bundle, ui_window_bundle::build_window_bundle, ui_image_bundle::build_image_bundle, ui_text_widget_bundle::build_text_widget_bundle, ui_nine_patch_bundle::build_nine_patch_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button}, ui_texture_atlas_bundle::build_texture_atlas_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakUiData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle, SNinePatchBundle}, ui_button_bundle::build_button_bundle, ui_window_bundle::build_window_bundle, ui_image_bundle::build_image_bundle, ui_text_widget_bundle::build_text_widget_bundle, ui_nine_patch_bundle::build_nine_patch_bundle};
 
 pub struct KayakBuilder {
     // pub asset_server: &'a AssetServer,
     pub store: KayakStore,
-    pub data: KayakData,    
+    pub data: KayakUiData,    
 }
 impl KayakBuilder {
-    pub fn new(asset_server: AssetServer, data: KayakData) -> Self {
+    pub fn new(asset_server: AssetServer, data: KayakUiData) -> Self {
         Self {
             // asset_server,
             data,
@@ -219,22 +219,30 @@ impl KayakBuilder {
     }
 }
 
-pub fn load(json: &str) {
-    if let Ok(data) = DeJson::deserialize_json(json) {
+pub fn load_json(json_str: &str) -> KayakUiData {
+    if let Ok(data) = DeJson::deserialize_json(json_str) {
         data
     } else {
-        panic!("unable to load Kayak UI from JSON string")
+        panic!("unable to load Kayak UI data from JSON")
     }
 }
 
+pub fn load_ron(ron_str: &str) -> KayakUiData {
+    if let Ok(data) = DeJson::deserialize_json(ron_str) {
+        data
+    } else {
+        panic!("unable to load Kayak UI data from RON")
+    }
+}
+
+
 #[cfg(test)]
 mod tests {
-    use bevy::prelude::StageLabel;
     use nanoserde::DeRon;
 
     use super::*;
 
-    fn json() -> &'static str  {
+    fn json_ui_str() -> &'static str  {
         r#"{
             "assets": {
               "images": [
@@ -309,9 +317,9 @@ mod tests {
       "#
     }
 
-    fn ron() -> &'static str  {    
+    fn ron_ui_str() -> &'static str  {    
         r#"{
-        KayakUI( // class name is optional
+        KayakUiData( // class name is optional
             bundles: ( // this is a map
                 "text_widget_bundles": (
                     name: "game-title",
@@ -329,8 +337,8 @@ mod tests {
 
     #[test]
     fn load_ron() {
-        let str = ron();
-        let data: KayakData = DeRon::deserialize_ron(str).unwrap();
+        let str = ron_ui_str();
+        let data: KayakUiData = DeRon::deserialize_ron(str).unwrap();
         let source_io = FileAssetIo::new("path", false);
         let asset_server = AssetServer::new(source_io);
         let builder = KayakBuilder::new(asset_server, data).build();
@@ -342,8 +350,8 @@ mod tests {
 
     #[test]
     fn load_json() {
-        let str = json();
-        let data: KayakData = DeJson::deserialize_json(str).unwrap();
+        let str = json_ui_str();
+        let data: KayakUiData = DeJson::deserialize_json(str).unwrap();
         let source_io = FileAssetIo::new("path", false);
         let asset_server = AssetServer::new(source_io);
         let builder = KayakBuilder::new(asset_server, data).build();

@@ -37,7 +37,7 @@ pub struct STextBoxBundle {
 
 
 #[derive(DeJson, SerJson, DeRon, SerRon, Clone)]
-pub struct KayakData {
+pub struct KayakUiData {
     pub assets: Option<SAssets>,
     pub styles: Option<Vec<SKStyle>>,
     pub widgets: Option<SWidgets>,

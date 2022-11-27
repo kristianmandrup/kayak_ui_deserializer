@@ -45,13 +45,13 @@ Support will likely be added for other structured formats like:
 
 ## <a name='Usage'></a>Usage
 
-Use `nanoserde` to deserialize JSON into a `KayakData` object that is then fed into the `KayakBuilder`. The `store` on the `builder` will contain the built and registered UI components.
+Use `nanoserde` to deserialize JSON into a `KayakUiData` object that is then fed into the `KayakBuilder`. The `store` on the `builder` will contain the built and registered UI components.
 
 ```rust
 use kayak_ui_deserializer::*;
 
 // loads kayak UI data map from a JSON string
-let data: KayakData = DeJson::deserialize_json(json).unwrap();
+let data: KayakUiData = DeJson::deserialize_json(json).unwrap();
 // builds Kayak UI structs from the loaded data map.
 // Stores the Kayak UI structs in HashMaps in the builder store
 let builder = KayakBuilder::new(data).build();
@@ -211,7 +211,7 @@ You can use `ref_id` for an `image` to reference an image asset by name as demon
 Ron (Rust Object Notation) should translate to the following Kayak UI string format:
 
 ```rust
-KayakUI( // class name is optional
+KayakUiData( // class name is optional
     bundles: ( // this is a map
         "text_widget_bundles": (
             name: "game-title",
@@ -230,8 +230,8 @@ Loading a `ron` string into a Kayak UI store
 
 ```rust
 fn load_ron() {
-    let str = ron();
-    let data: KayakData = DeRon::deserialize_ron(str).unwrap();
+    let str = ron_ui_data();
+    let data: KayakUiData = DeRon::deserialize_ron(str).unwrap();
     let source_io = FileAssetIo::new("path", false);
     let asset_server = AssetServer::new(source_io);
     let builder = KayakBuilder::new(asset_server, data).build();

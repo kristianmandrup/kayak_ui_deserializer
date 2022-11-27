@@ -45,7 +45,6 @@ Bundles:
 - `TextureAtlasBundle`
 - `ClipBundle`
 - `ElementBundle`
-- `ButtonBundle`
 
 ```rust
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
@@ -110,9 +109,11 @@ Currently targeting JSON format as a POC. It should be easy to support additiona
 
 The current goal is to be able to load the following type of JSON structure into a `HashMap`.
 
-The HashMap can then be referenced when building the Kayak UI to reduce the code footprint and make the UI definition more like an asset that can to a large degree be managed independently of the code, similar to CSS for HTML.
+The `HashMap` can then be referenced when building the Kayak UI to reduce the code footprint and make the UI definition more like an asset that can to a large degree be managed independently of the code, similar to CSS for HTML.
 
-Note: styling via `extends` is partly supported. Props with `-ref` are not yet supported.
+You can use `extends` to extend a `style` or `styles` property with an asset style by name as demonstrated for the `menu-button` button.
+
+You can use `ref_id` for an `image` to reference an image asset by name as demonstrated for the `my-ref-image` image in the image bundle below.
 
 ```json
 {
@@ -164,17 +165,32 @@ Note: styling via `extends` is partly supported. Props with `-ref` are not yet s
           "extends": "base",
           "content": "hello",
           "size": 20,
-          "font-ref": "roboto"
+          "font": "roboto"
         }
       }
     ],
     "image_bundles": [
       {
-        "name": "my-image",
+        "name": "my-ref-image",
         "type": "image-bundle",
-        "image-ref": "profile-image",
+        "image": {
+          "ref_id": "profile-image",
+        },
         "styles": {
           "extends": "base-image",
+          "left": "10 px",
+          "top": "10 px",
+          "width": "200 px",
+          "height": "182 px"
+        }
+      },
+      {
+        "name": "my-image",
+        "type": "image-bundle",
+        "image": {
+          "path": "path/to/image.png",
+        }
+        "styles": {
           "left": "10 px",
           "top": "10 px",
           "width": "200 px",
@@ -185,3 +201,68 @@ Note: styling via `extends` is partly supported. Props with `-ref` are not yet s
   }
 }
 ```
+
+## Style
+
+Bevy style properties.
+
+Note that for `UiRect` and `Size` object properties such as `margin` and `size`, will be improved to support an `all` attribute and a string split, parsed similar to CSS rect props.
+
+```json
+{
+  "display": "flex",
+  "position_type": "relative",
+  "direction": "rtl",
+  "flex_direction": "row-reverse",
+  "flex_wrap": "no-wrap",
+  "align_items": "flex-start",
+  "align_self": "baseline",
+  "align_content": "space-between",
+  "justify_content": "space-evenly",
+  "position": {
+    "top": 10,
+    "left": 20,
+    "right": 100,
+    "bottom": 150
+  },
+  "margin": {
+    "top": 4,
+    "left": 4,
+    "right": 4,
+    "bottom": 4
+  },
+  "padding": {
+    "top": 2,
+    "left": 2,
+    "right": 2,
+    "bottom": 2
+  },
+  "border": {
+    "top": 2,
+    "left": 2,
+    "right": 2,
+    "bottom": 2
+  },
+  "flex_grow": 4,
+  "flex_shrink": 4,
+  "flex_basis": "2 px",
+  "size": {
+    "width": 10,
+    "height": 10
+  },
+  "min_size": {
+    "width": 6,
+    "height": 6
+  },
+  "max_size": {
+    "width": 20,
+    "height": 20
+  },
+  "aspect_ratio": 4,
+  "overflow": "visible"
+}
+```
+
+## KStyle
+
+TODO

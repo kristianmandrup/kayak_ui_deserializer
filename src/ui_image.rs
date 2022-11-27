@@ -32,12 +32,30 @@ impl<'a> ImageBuilder<'a> {
         self.store.asset_server.clone()
     }
 
+    fn image_ref(&self) -> Option<Handle<Image>> {
+        let prop = &self.node.ref_id.clone();
+        if let Some(img_id) = prop {
+            let opt_image = self.store.assets.image(img_id);
+            if let Some(img_handle) = opt_image {
+                Some(img_handle.to_owned())
+            } else {
+                None
+            }            
+        } else {
+            None
+        }
+    }
+
     fn image(&self) -> Option<Handle<Image>> {
         if let Some(img_path) = self.image_path() {
             let image = self.asset_server().load(img_path);
             Some(image)
         } else {
-            None
+            if let Some(img) = self.image_ref() {
+                Some(img)
+            } else {
+                None
+            }            
         }
     }
 

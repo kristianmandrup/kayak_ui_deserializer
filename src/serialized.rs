@@ -225,7 +225,7 @@ pub struct STextProps {
 #[derive(DeJson, Clone)]
 pub struct SImage {
     pub path: OptStr,
-    pub image_ref: OptStr,
+    pub ref_id: OptStr,
 }    
 
 #[derive(DeJson, Clone)]

@@ -68,7 +68,9 @@ impl BevyStyleBuilder {
                 "row" => Some(FlexDirection::Row),
                 "col" => Some(FlexDirection::Column),
                 "rowreverse" => Some(FlexDirection::RowReverse),
+                "row-reverse" => Some(FlexDirection::RowReverse),
                 "colreverse" => Some(FlexDirection::ColumnReverse),
+                "col-reverse" => Some(FlexDirection::ColumnReverse),
                 _ => None
             }
         } else {
@@ -81,8 +83,10 @@ impl BevyStyleBuilder {
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "nowrap" => Some(FlexWrap::NoWrap),
+                "no-wrap" => Some(FlexWrap::NoWrap),
                 "wrap" => Some(FlexWrap::Wrap),
                 "wrapreverse" => Some(FlexWrap::WrapReverse),
+                "wrap-reverse" => Some(FlexWrap::WrapReverse),
                 _ => None
             }
         } else {
@@ -95,7 +99,9 @@ impl BevyStyleBuilder {
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "flexstart" => Some(AlignItems::FlexStart),
+                "flex-start" => Some(AlignItems::FlexStart),
                 "flexend" => Some(AlignItems::FlexEnd),
+                "flex-end" => Some(AlignItems::FlexEnd),
                 "center" => Some(AlignItems::Center),
                 "baseline" => Some(AlignItems::Baseline),
                 "stretch" => Some(AlignItems::Stretch),
@@ -128,11 +134,15 @@ impl BevyStyleBuilder {
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "flexstart" => Some(AlignContent::FlexStart),
+                "flex-start" => Some(AlignContent::FlexStart),
                 "flexend" => Some(AlignContent::FlexEnd),
+                "flex-end" => Some(AlignContent::FlexEnd),
                 "center" => Some(AlignContent::Center),
                 "stretch" => Some(AlignContent::Stretch),
-                "spacebetween" => Some(AlignContent::SpaceBetween),                
-                "spacearound" => Some(AlignContent::SpaceAround),                
+                "spacebetween" => Some(AlignContent::SpaceBetween),
+                "space-between" => Some(AlignContent::SpaceBetween),
+                "spacearound" => Some(AlignContent::SpaceAround),
+                "space-around" => Some(AlignContent::SpaceAround),
                 _ => None
             }
         } else {
@@ -145,11 +155,16 @@ impl BevyStyleBuilder {
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "flexstart" => Some(JustifyContent::FlexStart),
+                "flex-start" => Some(JustifyContent::FlexStart),
                 "flexend" => Some(JustifyContent::FlexEnd),
+                "flex-end" => Some(JustifyContent::FlexEnd),
                 "center" => Some(JustifyContent::Center),
-                "spacebetween" => Some(JustifyContent::SpaceBetween),                
-                "spacearound" => Some(JustifyContent::SpaceAround),                
-                "spaceevenly" => Some(JustifyContent::SpaceEvenly),                
+                "spacebetween" => Some(JustifyContent::SpaceBetween),
+                "space-between" => Some(JustifyContent::SpaceBetween),
+                "spacearound" => Some(JustifyContent::SpaceAround),
+                "space-around" => Some(JustifyContent::SpaceAround),
+                "spaceevenly" => Some(JustifyContent::SpaceEvenly),
+                "space-evenly" => Some(JustifyContent::SpaceEvenly),                
                 _ => None
             }
         } else {

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use bevy::{prelude::{ImageBundle, Handle, Image}, text::Font};
-use kayak_ui::widgets::{TextWidgetBundle, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, TextBoxBundle, ElementBundle, KButton};
+use kayak_ui::widgets::{TextWidgetBundle, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, TextBoxBundle, ElementBundle, KButton, NinePatchBundle};
 
 pub struct StoredBundles {
     pub text_widget_bundles: HashMap<String, TextWidgetBundle>,
@@ -13,6 +13,7 @@ pub struct StoredBundles {
     pub clip_bundles: HashMap<String, ClipBundle>,
     pub text_box_bundles: HashMap<String, TextBoxBundle>,
     pub element_bundles: HashMap<String, ElementBundle>,
+    pub nine_patch_bundles: HashMap<String, NinePatchBundle>,
 }
 impl StoredBundles {
     pub fn new() -> Self {
@@ -25,7 +26,8 @@ impl StoredBundles {
             button_bundles: HashMap::new(),
             background_bundles: HashMap::new(),
             clip_bundles: HashMap::new(),
-            element_bundles: HashMap::new(),            
+            element_bundles: HashMap::new(),  
+            nine_patch_bundles: HashMap::new(),  
         }                    
     }
 
@@ -63,6 +65,10 @@ impl StoredBundles {
 
     pub fn element_bundle(&self, id: &str) -> Option<&ElementBundle> {
         self.element_bundles.get(id)
+    }    
+
+    pub fn nine_patch_bundle(&self, id: &str) -> Option<&NinePatchBundle> {
+        self.nine_patch_bundles.get(id)
     }    
 }
 

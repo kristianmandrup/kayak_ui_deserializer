@@ -77,6 +77,7 @@ Currently this library can be used to load and build the following Kayak UI cons
     let button_bundles = bundles.button_bundles; // HashMap<String, KButtonBundle>
     let clip_bundles = bundles.button_bundles; // HashMap<String, ClipBundle>
     let elem_bundles = bundles.element_bundles; // HashMap<String, ElementBundle>
+    let np_bundles = bundles.nine_patch_bundles; // HashMap<String, ElementBundle>
 
     // get reusable styles from store
     let base_image = store.style("base-image");
@@ -93,6 +94,7 @@ Currently this library can be used to load and build the following Kayak UI cons
     let background_b = store.background_bundle("my background");
     let clip_b = store.clip_bundle("my clip");
     let elem_b = store.element_bundle("my elements");
+    let npb = store.nine_patch_bundle("my np image");
 ```
 
 ## <a name='JSONstructure'></a>JSON structure

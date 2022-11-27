@@ -21,6 +21,8 @@ mod ui_texture_atlas_bundle;
 mod ui_texture_atlas;
 mod ui_window;
 mod ui_window_bundle;
+mod ui_nine_patch;
+mod ui_nine_patch_bundle;
 mod ui_image;
 mod ui_image_bundle;
 mod ui_size;

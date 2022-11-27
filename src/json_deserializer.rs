@@ -1,7 +1,7 @@
 use bevy::{prelude::{AssetServer}, asset::FileAssetIo};
 use nanoserde::{DeJson};
 
-use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button}, ui_texture_atlas_bundle::build_texture_atlas_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle}, ui_button_bundle::build_button_bundle, ui_window_bundle::build_window_bundle, ui_image_bundle::build_image_bundle, ui_text_widget_bundle::build_text_widget_bundle};
+use crate::{ui_kstyle::KStyleBuilder, ui_button::{build_button}, ui_texture_atlas_bundle::build_texture_atlas_bundle, ui_background::build_background_bundle, ui_clip::build_clip_bundle, ui_text_box_bundle::build_text_box_bundle, ui_element_bundle::build_element_bundle, kayak_store::KayakStore, serialized::{KayakData, SAssets, SButton, SButtonBundle, SWindowBundle, STextWidgetBundle, STextureAtlasBundle, SImageBundle, SBackgroundBundle, SClipBundle, STextBoxBundle, SElementBundle, SNinePatchBundle}, ui_button_bundle::build_button_bundle, ui_window_bundle::build_window_bundle, ui_image_bundle::build_image_bundle, ui_text_widget_bundle::build_text_widget_bundle, ui_nine_patch_bundle::build_nine_patch_bundle};
 
 pub struct KayakBuilder {
     // pub asset_server: &'a AssetServer,
@@ -112,6 +112,9 @@ impl KayakBuilder {
             if let Some(element_bundles) = items.element_bundles {
                 self.build_element_bundles(element_bundles);     
             }
+            if let Some(nine_patch_bundles) = items.nine_patch_bundles {
+                self.build_nine_patch_bundles(nine_patch_bundles);     
+            }
         }  
         self                              
     }
@@ -202,6 +205,15 @@ impl KayakBuilder {
             let name = item.to_owned().name;
             let ib = build_element_bundle(&self.store, item).unwrap();
             self.store.bundles.element_bundles.insert(name, ib);
+        }
+        self
+    }
+
+    pub fn build_nine_patch_bundles(&mut self, np_bundles: Vec<SNinePatchBundle>) -> &Self { 
+        for item in np_bundles {
+            let name = item.to_owned().name;
+            let npb = build_nine_patch_bundle(&self.store, item).unwrap();
+            self.store.bundles.nine_patch_bundles.insert(name, npb);
         }
         self
     }

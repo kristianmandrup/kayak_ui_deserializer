@@ -3,6 +3,21 @@ use nanoserde::DeJson;
 pub type OptStr = Option<String>;
 
 #[derive(DeJson, Clone)]
+pub struct SNinePatchBundle {    
+    pub nine_patch: Option<SNinePatch>,
+    pub styles: Option<SKStyle>,
+    pub name: String,
+}
+
+#[derive(DeJson, Clone)]
+pub struct SNinePatch {
+    pub image: Option<SImage>,
+    pub border: OptStr,
+    pub border_obj: Option<SEdge>,
+}
+
+
+#[derive(DeJson, Clone)]
 pub struct STextBoxProps {
     pub disabled: OptStr,
     pub placeholder: OptStr,
@@ -336,4 +351,5 @@ pub struct SBundles {
     pub clip_bundles: Option<Vec<SClipBundle>>,    
     pub text_box_bundles: Option<Vec<STextBoxBundle>>,        
     pub element_bundles: Option<Vec<SElementBundle>>,        
+    pub nine_patch_bundles: Option<Vec<SNinePatchBundle>>,        
 }

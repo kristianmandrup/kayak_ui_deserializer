@@ -59,6 +59,11 @@ impl<'a> ImageBuilder<'a> {
         }
     }
 
+    pub fn parse_handle(&self) -> Result<Handle<Image>, &'static str> {            
+        let image = self.image().unwrap();         
+        Ok(image)
+    }
+
     pub fn parse(&self) -> Result<KImage, &'static str> {            
         let image = self.image().unwrap();         
         let kimage = KImage(image);

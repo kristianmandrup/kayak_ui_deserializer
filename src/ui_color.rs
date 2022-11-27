@@ -1,4 +1,4 @@
-use bevy::{prelude::Color};
+use bevy::{prelude::Color, sprite::ColorMaterial};
 use regex::Regex;
 
 fn col_to_optstr(color_str: &str) -> Option<String> {
@@ -87,6 +87,88 @@ pub fn parse_color_alias(color: &str) -> Color {
         "yellow-green" => Color::YELLOW_GREEN,
         _ => Color::WHITE
     }
+}
+
+pub fn color_to_str(color: Color ) -> String {    
+    if color == Color::ALICE_BLUE {
+        "alice-blue".to_string()
+    } else if color == Color::ANTIQUE_WHITE {
+        "antique-white".to_string()
+    } else if color == Color::AQUAMARINE {
+        "aquamarine".to_string()
+    } else if color == Color::AZURE {
+        "azure".to_string()
+    } else if color == Color::BEIGE {
+        "beige".to_string()
+    } else if color == Color::BISQUE {
+        "bisque".to_string()
+    } else if color == Color::BLACK {
+        "black".to_string()
+    } else if color == Color::BLUE {
+        "blue".to_string()
+    } else if color == Color::WHITE {
+        "white".to_string()
+    } else if color == Color::CRIMSON {
+        "crimson".to_string()
+    } else if color == Color::CYAN {
+        "cyan".to_string()
+    } else if color == Color::DARK_GRAY {
+        "dark-gray".to_string()
+    } else if color == Color::DARK_GREEN {
+        "dark-green".to_string()
+    } else if color == Color::FUCHSIA {
+        "fuchsia".to_string()
+    } else if color == Color::GOLD {
+        "gold".to_string()
+    } else if color == Color::GRAY {
+        "gray".to_string()
+    } else if color == Color::GREEN {
+        "green".to_string()
+    } else if color == Color::INDIGO {
+        "indigo".to_string()
+    } else if color == Color::LIME_GREEN {
+        "lime-green".to_string()
+    } else if color == Color::MAROON {
+        "maroon".to_string()
+    } else if color == Color::MIDNIGHT_BLUE {
+        "midnight-blue".to_string()
+    } else if color == Color::NAVY {
+        "navy".to_string()
+    } else if color == Color::NONE {
+        "none".to_string()
+    } else if color == Color::OLIVE {
+        "olive".to_string()
+    } else if color == Color::ORANGE {
+        "orange".to_string()
+    } else if color == Color::ORANGE_RED {
+        "organge-red".to_string()
+    } else if color == Color::PINK {
+        "pink".to_string()
+    } else if color == Color::PURPLE {
+        "purple".to_string()
+    } else if color == Color::RED {
+        "red".to_string()
+    } else if color == Color::SALMON {
+        "salmon".to_string()
+    } else if color == Color::SEA_GREEN {
+        "sea-green".to_string()
+    } else if color == Color::SILVER {
+        "silver".to_string()
+    } else if color == Color::TEAL {
+        "teal".to_string()
+    } else if color == Color::TOMATO {
+        "tomato".to_string()
+    } else if color == Color::TURQUOISE {
+        "turquoise".to_string()
+    } else if color == Color::VIOLET {
+        "violet".to_string()
+    } else if color == Color::YELLOW {
+        "yellow".to_string()
+    } else if color == Color::YELLOW_GREEN {
+        "yellow-green".to_string()
+    } else {
+        "white".to_string()
+    }        
 }
 
 pub fn parse_color(color_str: &str) -> Option<Color> {    

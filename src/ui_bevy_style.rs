@@ -1,6 +1,6 @@
 use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Size, Val, UiRect, Overflow};
 
-use crate::{serialized::SBevyStyle, ui_rect::{UiRectBuilder, to_val}, ui_size::SizeBuilder};
+use crate::{serialized::SBevyStyle, ui_rect::{UiRectBuilder, to_val, rect_from_str}, ui_size::{SizeBuilder, size_from_str}};
 
 pub fn to_f32(optstr: &Option<String>) -> Option<f32> {
     if let Some(str) = optstr {
@@ -8,6 +8,20 @@ pub fn to_f32(optstr: &Option<String>) -> Option<f32> {
     } else {
         None
     }                    
+}
+
+pub fn build_rect_from_str(optstr: &Option<String>) -> Option<UiRect> {
+    if let Some(val) = optstr {
+        let optrect = rect_from_str(val.clone());
+        if let Some(rect) = optrect {
+            UiRectBuilder::new(rect).parse().ok()
+        } else {
+            None
+        }                
+    } else {
+        None
+    }            
+
 }
 
 
@@ -172,18 +186,26 @@ impl BevyStyleBuilder {
         }
     }
 
-    fn position(&self) -> Option<UiRect> {
-        let prop = &self.node.position.clone();
+    fn position_obj(&self) -> Option<UiRect> {
+        let prop = &self.node.position_obj.clone();
         if let Some(val) = prop.clone() {
             UiRectBuilder::new(val).parse().ok()
         } else {
             None
-        }
-        
+        }        
+    }
+
+    fn position(&self) -> Option<UiRect> {        
+        if let Some(obj) = self.position_obj() {
+            Some(obj)
+        } else {
+            let prop = &self.node.position.clone();
+            build_rect_from_str(prop)
+        }            
     }
     
-    fn margin(&self) -> Option<UiRect> {
-        let prop = &self.node.margin.clone();
+    fn margin_obj(&self) -> Option<UiRect> {
+        let prop = &self.node.margin_obj.clone();
         if let Some(val) = prop.clone() {
             UiRectBuilder::new(val).parse().ok()
         } else {
@@ -192,8 +214,17 @@ impl BevyStyleBuilder {
 
     }
 
-    fn padding(&self) -> Option<UiRect> {
-        let prop = &self.node.padding.clone();
+    fn margin(&self) -> Option<UiRect> {        
+        if let Some(obj) = self.margin_obj() {
+            Some(obj)
+        } else {
+            let prop = &self.node.margin.clone();
+            build_rect_from_str(prop)
+        }            
+    }
+
+    fn padding_obj(&self) -> Option<UiRect> {
+        let prop = &self.node.padding_obj.clone();
         if let Some(val) = prop.clone() {
             UiRectBuilder::new(val).parse().ok()
         } else {
@@ -201,13 +232,31 @@ impl BevyStyleBuilder {
         }
     }
 
-    fn border(&self) -> Option<UiRect> {
-        let prop = &self.node.border.clone();
+    fn padding(&self) -> Option<UiRect> {        
+        if let Some(obj) = self.padding_obj() {
+            Some(obj)
+        } else {
+            let prop = &self.node.padding.clone();
+            build_rect_from_str(prop)
+        }            
+    }
+
+    fn border_obj(&self) -> Option<UiRect> {
+        let prop = &self.node.border_obj.clone();
         if let Some(val) = prop.clone() {
             UiRectBuilder::new(val).parse().ok()
         } else {
             None
         }
+    }
+
+    fn border(&self) -> Option<UiRect> {        
+        if let Some(obj) = self.border_obj() {
+            Some(obj)
+        } else {
+            let prop = &self.node.border.clone();
+            build_rect_from_str(prop)
+        }            
     }
 
     pub fn flex_grow(&self) -> Option<f32> {
@@ -232,6 +281,16 @@ impl BevyStyleBuilder {
     pub fn size(&self) -> Option<Size> {
         let prop = &self.node.size.clone();
         if let Some(val) = prop.clone() {
+            let size = size_from_str(val);
+            SizeBuilder::new(size).parse().ok()
+        } else {
+            None
+        }
+    }
+
+    pub fn size_obj(&self) -> Option<Size> {
+        let prop = &self.node.size_obj.clone();
+        if let Some(val) = prop.clone() {
             SizeBuilder::new(val).parse().ok()
         } else {
             None
@@ -241,6 +300,16 @@ impl BevyStyleBuilder {
     pub fn min_size(&self) -> Option<Size> {
         let prop = &self.node.min_size.clone();
         if let Some(val) = prop.clone() {
+            let size = size_from_str(val);
+            SizeBuilder::new(size).parse().ok()
+        } else {
+            None
+        }
+    }
+
+    pub fn min_size_obj(&self) -> Option<Size> {
+        let prop = &self.node.min_size_obj.clone();
+        if let Some(val) = prop.clone() {
             SizeBuilder::new(val).parse().ok()
         } else {
             None
@@ -248,7 +317,17 @@ impl BevyStyleBuilder {
     }
 
     pub fn max_size(&self) -> Option<Size> {
-        let prop = &self.node.max_size.clone();
+        let prop = &self.node.min_size.clone();
+        if let Some(val) = prop.clone() {
+            let size = size_from_str(val);
+            SizeBuilder::new(size).parse().ok()
+        } else {
+            None
+        }
+    }
+
+    pub fn max_size_obj(&self) -> Option<Size> {
+        let prop = &self.node.max_size_obj.clone();
         if let Some(val) = prop.clone() {
             SizeBuilder::new(val).parse().ok()
         } else {

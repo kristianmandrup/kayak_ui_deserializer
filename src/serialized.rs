@@ -159,16 +159,23 @@ pub struct SBevyStyle {
     pub align_self: OptStr,
     pub align_content: OptStr,
     pub justify_content: OptStr,
-    pub position: Option<SUiRect>,
-    pub margin: Option<SUiRect>,
-    pub padding: Option<SUiRect>,
-    pub border: Option<SUiRect>,
+    pub position_obj: Option<SUiRect>,
+    pub margin_obj: Option<SUiRect>,
+    pub padding_obj: Option<SUiRect>,
+    pub border_obj: Option<SUiRect>,
+    pub position: OptStr,
+    pub margin: OptStr,
+    pub padding: OptStr,
+    pub border: OptStr,
     pub flex_grow: OptStr,
     pub flex_shrink: OptStr,
     pub flex_basis: OptStr,    
-    pub size: Option<SSize>,    
-    pub min_size: Option<SSize>,        
-    pub max_size: Option<SSize>,        
+    pub size_obj: Option<SSize>,    
+    pub size: OptStr,
+    pub min_size_obj: Option<SSize>,        
+    pub max_size_obj: Option<SSize>,        
+    pub min_size: OptStr,        
+    pub max_size: OptStr,        
     pub aspect_ratio: OptStr,    
     pub overflow: OptStr,                
 }
@@ -180,7 +187,8 @@ pub struct SKStyle {
     pub background_color: OptStr,
     pub border: OptStr,
     pub border_color: OptStr,
-    pub border_radius: OptStr,
+    pub border_radius: OptStr, // Corner
+    pub border_radius_obj: Option<SCorner>,
     pub bottom: OptStr,
     pub col_between: OptStr,
     pub color: OptStr,
@@ -196,8 +204,10 @@ pub struct SKStyle {
     pub max_width: OptStr,
     pub min_height: OptStr,
     pub min_width: OptStr,
-    pub offset: OptStr,
+    pub offset: OptStr, // Edge
+    pub offset_obj: Option<SEdge>, // Edge
     pub padding: OptStr,
+    pub padding_obj: Option<SEdge>, // Edge
     pub padding_top: OptStr,
     pub padding_bottom: OptStr,
     pub padding_left: OptStr,
@@ -303,55 +313,6 @@ pub struct STransform {
     pub scale: Option<SVec3>
 }
 
-
-// Transform
-// pub translation: Vec3,
-// /// Rotation of the entity.
-// ///
-// /// See the [`3d_rotation`] example for usage.
-// ///
-// /// [`3d_rotation`]: https://github.com/bevyengine/bevy/blob/latest/examples/transforms/3d_rotation.rs
-// pub rotation: Quat,
-// /// Scale of the entity.
-// ///
-// /// See the [`scale`] example for usage.
-// ///
-// /// [`scale`]: https://github.com/bevyengine/bevy/blob/latest/examples/transforms/scale.rs
-// pub scale: Vec3,
-
-
-// pub node: Node,
-// /// Describes the style including flexbox settings
-// pub style: Style,
-// /// Configures how the image should scale
-// pub image_mode: ImageMode,
-// /// The calculated size based on the given image
-// pub calculated_size: CalculatedSize,
-// /// The background color, which serves as a "fill" for this node
-// ///
-// /// When combined with `UiImage`, tints the provided image.
-// pub background_color: BackgroundColor,
-// /// The image of the node
-// pub image: UiImage,
-// /// Whether this node should block interaction with lower nodes
-// pub focus_policy: FocusPolicy,
-// /// The transform of the node
-// ///
-// /// This field is automatically managed by the UI layout system.
-// /// To alter the position of the `NodeBundle`, use the properties of the [`Style`] component.
-// pub transform: Transform,
-// /// The global transform of the node
-// ///
-// /// This field is automatically managed by the UI layout system.
-// /// To alter the position of the `NodeBundle`, use the properties of the [`Style`] component.
-// pub global_transform: GlobalTransform,
-// /// Describes the visibility properties of the node
-// pub visibility: Visibility,
-// /// Algorithmically-computed indication of whether an entity is visible and should be extracted for rendering
-// pub computed_visibility: ComputedVisibility,
-// /// Indicates the depth at which the node should appear in the UI
-// pub z_index: ZIndex,
-
 #[derive(DeJson, Clone)]
 pub struct STextWidgetBundle {
     pub name: String,
@@ -363,7 +324,6 @@ pub struct STextWidgetBundle {
 pub struct SWidgets {
     pub buttons: Option<Vec<SButton>>,
 }
-
 
 #[derive(DeJson, Clone)]
 pub struct SBundles {

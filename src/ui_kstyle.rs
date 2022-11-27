@@ -2,7 +2,7 @@ use bevy::prelude::Color;
 use kayak_ui::prelude::{KPositionType, Edge, KStyle, Corner, KCursorIcon};
 use morphorm::{Units, LayoutType};
 
-use crate::{ui_parser::{Conv}, ui_color::parse_color, ui_edge::{EdgeBuilder, to_edge_units}, ui_corner::CornerBuilder, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type, serialized::SKStyle};
+use crate::{ui_parser::{Conv}, ui_color::parse_color, ui_edge::{EdgeBuilder, to_edge_units}, ui_corner::CornerBuilder, ui_unit::UiUnit, ui_cursor_icon::to_cursor_icon, ui_layout_type::to_layout_type, serialized::{SKStyle, SEdge}};
 
 pub fn str_to_color(prop: &Option<String>) -> Option<Color> {
     let str = prop.to_owned();
@@ -10,9 +10,33 @@ pub fn str_to_color(prop: &Option<String>) -> Option<Color> {
         parse_color(val.as_str())    
     } else {
         None
-    }        
+    }            
 }
 
+pub fn obj_to_edge(optobj: &Option<SEdge>) -> Option<Edge<Units>> {
+    if let Some(obj) = optobj.clone() {
+        let top= UiUnit::new(obj.top.to_owned()).parse();
+        let left= UiUnit::new(obj.left.to_owned()).parse();
+        let right= UiUnit::new(obj.right.to_owned()).parse();
+        let bottom= UiUnit::new(obj.bottom.to_owned()).parse();
+        let mut edge = Edge::default();
+        if let Some(val) = top {
+            edge.top = val
+        }            
+        if let Some(val) = right {
+            edge.right = val
+        }            
+        if let Some(val) = left {
+            edge.left = val
+        }            
+        if let Some(val) = bottom {
+            edge.bottom = val
+        }            
+        Some(edge)            
+    } else {
+        None
+    }    
+}
 
 pub struct KStyleBuilder {
     node: SKStyle
@@ -44,9 +68,22 @@ impl KStyleBuilder {
     }
 
     fn border_radius(&self) -> Option<Corner<f32>> {
-        if let Some(val) = self.node.border_radius.clone() {
+        if let Some(corner ) = self.border_radius_obj() {
+            Some(corner)
+        } else {
+            if let Some(val) = self.node.border_radius.clone() {
+                let corner = val.clone();
+                CornerBuilder::create_from_str(corner).parse().ok()    
+            } else {
+                None
+            }
+        }
+    }
+
+    fn border_radius_obj(&self) -> Option<Corner<f32>> {
+        if let Some(val) = self.node.border_radius_obj.clone() {
             let corner = val.clone();
-            CornerBuilder::create_from_str(corner).parse().ok()    
+            CornerBuilder::new(corner).parse().ok()    
         } else {
             None
         }
@@ -139,21 +176,39 @@ impl KStyleBuilder {
         UiUnit::new(prop.clone()).parse()
     }
 
+    fn offset_obj(&self) -> Option<Edge<Units>> {
+        let optobj = &self.node.offset_obj.clone();
+        obj_to_edge(optobj)
+    }
+
     fn offset(&self) -> Option<Edge<Units>> {
         let prop = &self.node.offset.clone();
-        if let Some(_) = prop {
-            Some(to_edge_units(prop.clone()))
+        if let Some(obj) = self.offset_obj() {
+            Some(obj)
         } else {
-            None
-        }        
+            if let Some(_) = prop {
+                Some(to_edge_units(prop.clone()))
+            } else {
+                None
+            }            
+        }
+    }
+
+    fn padding_obj(&self) -> Option<Edge<Units>> {
+        let optobj = &self.node.padding_obj.clone();
+        obj_to_edge(optobj)
     }
 
     fn padding(&self) -> Option<Edge<Units>> {
         let prop = &self.node.padding.clone();
-        if let Some(_) = prop {
-            Some(to_edge_units(prop.clone()))
+        if let Some(obj) = self.padding_obj() {
+            Some(obj)
         } else {
-            None
+            if let Some(_) = prop {
+                Some(to_edge_units(prop.clone()))
+            } else {
+                None
+            }
         }
     }
 

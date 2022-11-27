@@ -2,15 +2,37 @@
 
 Deserializer for [kayak UI](https://github.com/StarArawn/kayak_ui) a [Bevy ECS](https://bevyengine.org/) UI engine.
 
-## What is inside
+<!-- vscode-markdown-toc -->
 
-Install `cargo-modules` crate and run:
+- 1. [Goal](#Goal)
+- 2. [Serialization formats](#Serializationformats)
+- 3. [Usage](#Usage)
+- 4. [API](#API)
+- 5. [JSON structure](#JSONstructure)
+- 6. [Style](#Style)
+- 7. [KStyle](#KStyle)
 
-`$ cargo modules generate tree --with-types`
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
 
-Currently almost everything is public.
+## 1. <a name='Goal'></a>Goal
+
+The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in hashmaps. This will allow the Game UI designer to externalize parts of the UI as Game assets that can be loaded from one or more UI asset files.
+
+## 2. <a name='Serializationformats'></a>Serialization formats
+
+This deserializer currently targets the JSON format. It should be easy to add support for additional structured formats like [YAML](https://yaml.org/), [KDL](https://kdl.dev/) etc.
+
+## 3. <a name='Usage'></a>Usage
+
+Use `nanoserde` to deserialize JSON into a `KayakData` object that is then fed into the `KayakBuilder`. The `store` on the `builder` will contain the built and registered UI components.
 
 ```rust
+use kayak_ui_deserializer::*;
+
 // loads kayak UI data map from a JSON string
 let data: KayakData = DeJson::deserialize_json(json).unwrap();
 // builds Kayak UI structs from the loaded data map.
@@ -20,31 +42,9 @@ let builder = KayakBuilder::new(data).build();
 let store = builder.store;
 ```
 
-## Goal
-
-The current goal is to deserialize a JSON file into Kayak UI structures that can be stored in hashmaps. This will allow the Game UI designer to externalize parts of the UI as Game "assets" that can be loaded from one or more files.
-
-## API
+## 4. <a name='API'></a>API
 
 Currently this library can be used to load and build the following Kayak UI constructs:
-
-- Kayak UI `KStyle` and Bevy `Style`
-
-Widgets:
-
-- `KButton`
-
-Bundles:
-
-- `TextWidgetBundle`
-- `TextBoxBundle`
-- `KButtonBundle`
-- `WindowBundle`
-- `ImageBundle`
-- `BackgroundBundle`
-- `TextureAtlasBundle`
-- `ClipBundle`
-- `ElementBundle`
 
 ```rust
     let data: KayakData = DeJson::deserialize_json(json).unwrap();
@@ -92,27 +92,9 @@ Bundles:
     let elem_b = store.element_bundle("my elements");
 ```
 
-## Status
+## 5. <a name='JSONstructure'></a>JSON structure
 
-Still fleshing out the internal functioning and structures. The focus so far is on parsing and building up Kayak UI structures.
-
-The essential builders should now be working.
-
-### Todo?
-
-- `KayakAppBundle`
-- `KayakApp`
-- `RenderCommand` (partly done)
-
-## Serialization formats
-
-Currently targeting JSON format as a POC. It should be easy to support additional structured formats like [YAML](https://yaml.org/), [KDL](https://kdl.dev/) etc. later on.
-
-## JSON structure
-
-The current goal is to be able to load the following type of JSON structure into a `HashMap`.
-
-The `HashMap` can then be referenced when building the Kayak UI to reduce the code footprint and make the UI definition more like an asset that can to a large degree be managed independently of the code, similar to CSS for HTML.
+The builder populates `HashMap`s in the builder `store` that can be referenced when building a Kayak UI. This should greatly reduce the code footprint and make the UI definition more declarative and allow the UI to be managed independently of the code, similar to CSS for HTML.
 
 You can use `extends` to extend a `style` or `styles` property with an asset style by name as demonstrated for the `menu-button` button.
 
@@ -205,11 +187,9 @@ You can use `ref_id` for an `image` to reference an image asset by name as demon
 }
 ```
 
-## Style
+## 6. <a name='Style'></a>Style
 
 Bevy style properties.
-
-Note that for `UiRect` and `Size` object properties such as `margin` and `size`, will be improved to support an `all` attribute and a string split, parsed similar to CSS rect props.
 
 ```json
 {
@@ -222,30 +202,15 @@ Note that for `UiRect` and `Size` object properties such as `margin` and `size`,
   "align_self": "baseline",
   "align_content": "space-between",
   "justify_content": "space-evenly",
-  "position": {
-    "top": 10,
-    "left": 20,
-    "right": 100,
-    "bottom": 150
-  },
-  "margin": {
+  "position": "10 20 100 150",
+  "margin_obj": {
     "top": 4,
     "left": 4,
     "right": 4,
     "bottom": 4
   },
-  "padding": {
-    "top": 2,
-    "left": 2,
-    "right": 2,
-    "bottom": 2
-  },
-  "border": {
-    "top": 2,
-    "left": 2,
-    "right": 2,
-    "bottom": 2
-  },
+  "padding": "2",
+  "border": "2",
   "flex_grow": 4,
   "flex_shrink": 4,
   "flex_basis": "2 px",
@@ -266,7 +231,7 @@ Note that for `UiRect` and `Size` object properties such as `margin` and `size`,
 }
 ```
 
-## KStyle
+## 7. <a name='KStyle'></a>KStyle
 
 `KStyle` object and properties.
 
@@ -290,14 +255,14 @@ Note that for `UiRect` and `Size` object properties such as `margin` and `size`,
   "max_width": "120px",
   "min_height": "120px",
   "min_width": "120px",
-  "offset": {
+  "offset-obj": {
     "left": "20px"
   },
-  "padding": {
+  "padding-obj": {
     "bottom": "10px",
     "top": "10px"
   },
-  "padding_left": "20 px",
+  "padding_left": "20px",
   "position_type": "self-directed",
   "right": "100px",
   "row_between": "50px",

@@ -19,6 +19,41 @@ pub fn to_val(val: String) -> Val {
     }
 }    
 
+fn part_to_string(part: &str) -> Option<String> {
+    if part.is_empty() { None } else { Some(part.to_string()) }
+}
+
+pub fn rect_from_str(str: String) -> Option<SUiRect> {
+    let parts = str.split(' ').collect::<Vec<&str>>();
+    if parts.len() == 1 {    
+        let top = part_to_string(parts[0]);
+        let right = part_to_string(parts[0]);
+        let bottom = part_to_string(parts[0]);
+        let left = part_to_string(parts[0]);
+        let rect = SUiRect {
+            top,
+            left,
+            bottom,
+            right
+        };
+        Some(rect)
+    } else if parts.len() == 4 {
+        let top = part_to_string(parts[0]);
+        let right = part_to_string(parts[1]);
+        let bottom = part_to_string(parts[2]);
+        let left = part_to_string(parts[3]);
+        let rect = SUiRect {
+            top,
+            left,
+            bottom,
+            right
+        };
+        Some(rect)
+    } else {
+        None
+    }
+}
+
 pub fn extract_f32(re: Regex, val: String) -> Option<f32> {
     if let Some(caps) = re.captures(val.as_str()) {
         let text1 = caps.get(1).map_or("", |m| m.as_str());

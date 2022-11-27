@@ -1,6 +1,13 @@
 # Kayak UI deserializer
 
-JSON deserializer (loader) for [Kayak UI](https://github.com/StarArawn/kayak_ui) the premier UI engine for the [Bevy ECS](https://bevyengine.org/) game engine.
+Deserializer (loader) for [Kayak UI](https://github.com/StarArawn/kayak_ui) the premier UI engine for the [Bevy ECS](https://bevyengine.org/) game engine.
+
+Currently supports:
+
+- [RON](https://docs.rs/ron/latest/ron/) Rust Object Notation
+- [JSON](https://www.json.org/json-en.html) JavaScript Object Notation
+
+This project uses `nanoserde`, `serde` and `ron` for deserialization.
 
 <!-- vscode-markdown-toc -->
 
@@ -32,7 +39,7 @@ This will allow a Bev UI designer to externalize most of the UI definitions as G
 This deserializer currently targets the JSON format.
 Support will likely be added for other structured formats like:
 
-- [RON](https://docs.rs/ron/latest/ron/)
+- [RON](https://docs.rs/ron/latest/ron/) (WIP)
 - [YAML](https://yaml.org/)
 - [KDL](https://kdl.dev/)
 
@@ -219,21 +226,15 @@ KayakUI( // class name is optional
 )
 ```
 
-Loading a `ron` string
+Loading a `ron` string for Kayak UI
 
 ```rust
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Deserialize, Serialize)]
-struct SSize {
-    width: f32,
-    height: f32,
-}
-
-fn main() {
-    let data: KayakData = ron::from_str(ron_str).unwrap();
-    let builder = KayakBuilder::new(data).build();
-    let store = builder.store;
+fn load_ron() {
+    let str = ron();
+    let data: KayakData = ron::from_str(str).unwrap();
+    let source_io = FileAssetIo::new("path", false);
+    let asset_server = AssetServer::new(source_io);
+    let builder = KayakBuilder::new(asset_server, data).build();
 }
 ```
 

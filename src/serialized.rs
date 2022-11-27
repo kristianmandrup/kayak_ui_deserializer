@@ -1,15 +1,16 @@
 use nanoserde::DeJson;
+use serde::{Deserialize, Serialize};
 
 pub type OptStr = Option<String>;
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SNinePatchBundle {    
     pub nine_patch: Option<SNinePatch>,
     pub styles: Option<SKStyle>,
     pub name: String,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SNinePatch {
     pub image: Option<SImage>,
     pub border: OptStr,
@@ -17,14 +18,14 @@ pub struct SNinePatch {
 }
 
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct STextBoxProps {
     pub disabled: OptStr,
     pub placeholder: OptStr,
     pub value: OptStr,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct STextBoxBundle {
     pub text_box: Option<STextBoxProps>,
     pub styles: Option<SKStyle>,
@@ -36,7 +37,7 @@ pub struct STextBoxBundle {
 }
 
 
-#[derive(DeJson)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct KayakData {
     pub assets: Option<SAssets>,
     pub styles: Option<Vec<SKStyle>>,
@@ -44,21 +45,21 @@ pub struct KayakData {
     pub bundles: Option<SBundles>,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SClipBundle {
     pub clip: OptStr,
     pub styles: Option<SKStyle>,
     pub name: String,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SBackgroundBundle {
     pub background: OptStr,
     pub styles: Option<SKStyle>,
     pub name: String,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SSize {
     /// The width of the 2-dimensional area.
     pub width: OptStr,
@@ -67,7 +68,7 @@ pub struct SSize {
 }
 
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SUiRect {
     pub left: OptStr,
     /// The value corresponding to the right side of the UI rect.
@@ -79,7 +80,7 @@ pub struct SUiRect {
 }
 
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SRect {
     pub posy: OptStr,
     pub posx: OptStr,
@@ -88,12 +89,12 @@ pub struct SRect {
     pub z_index: OptStr,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SChildren {
     pub widgets: Option<SWidgets>
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct STextureAtlasProps {
     /// The handle to image
     pub handle: Option<SImage>,
@@ -104,14 +105,14 @@ pub struct STextureAtlasProps {
 }
 
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct STextureAtlasBundle {
     pub atlas: Option<STextureAtlasProps>,
     pub styles: Option<SKStyle>,
     pub name: String,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SWindow {
     /// If true, allows the window to be draggable by its title bar
     pub draggable: OptStr,
@@ -127,7 +128,7 @@ pub struct SWindow {
     pub children_styles: Option<SKStyle>,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SWindowBundle {
     pub window: Option<SWindow>,
     pub styles: Option<SKStyle>,
@@ -135,7 +136,7 @@ pub struct SWindowBundle {
     pub name: String
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SElementBundle {
     pub element: OptStr,
     pub styles: Option<SKStyle>,
@@ -144,23 +145,23 @@ pub struct SElementBundle {
 }
 
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SImageAsset {
     pub name: String,
     pub path: String,
 }
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SFontAsset {
     pub name: String,
     pub path: String,
 }
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SAssets {
     pub images: Option<Vec<SImageAsset>>,
     pub fonts: Option<Vec<SFontAsset>>,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 
 pub struct SBevyStyle {
     pub display: OptStr,
@@ -195,7 +196,7 @@ pub struct SBevyStyle {
     pub overflow: OptStr,                
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SKStyle {
     pub name: String,
     pub extends: OptStr,
@@ -235,7 +236,7 @@ pub struct SKStyle {
     pub z_index: OptStr,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct STextProps {
     pub alignment: OptStr,
     pub content: OptStr,
@@ -247,7 +248,7 @@ pub struct STextProps {
     pub word_wrap: OptStr
 }    
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SCorner {
     pub top_left: OptStr,
     pub top_right: OptStr,
@@ -255,7 +256,7 @@ pub struct SCorner {
     pub bottom_right: OptStr,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SEdge {
     pub top: OptStr,
     pub left: OptStr,
@@ -265,19 +266,19 @@ pub struct SEdge {
 }
 
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SImage {
     pub path: OptStr,
     pub ref_id: OptStr,
 }    
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SButton {
     pub name: String,
     pub styles: Option<SKStyle>,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SButtonBundle {
     pub button: Option<SButton>,
     pub styles: Option<SKStyle>,
@@ -285,7 +286,7 @@ pub struct SButtonBundle {
     pub name: String,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SImageBundle {
     pub name: String,
     pub image: Option<SImage>,
@@ -300,20 +301,20 @@ pub struct SImageBundle {
     pub computed_visibility: OptStr,
 }  
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SVec2 {
     pub x: OptStr,
     pub y: OptStr,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SVec3 {
     pub x: OptStr,
     pub y: OptStr,
     pub z: OptStr,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SQuat {
     pub x: OptStr, // f32,
     pub y: OptStr,
@@ -321,26 +322,26 @@ pub struct SQuat {
     pub w: OptStr,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct STransform {
     pub translation: Option<SVec3>, 
     pub rotation: Option<SQuat>, 
     pub scale: Option<SVec3>
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct STextWidgetBundle {
     pub name: String,
     pub text: Option<STextProps>,
     pub styles: Option<SKStyle>,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SWidgets {
     pub buttons: Option<Vec<SButton>>,
 }
 
-#[derive(DeJson, Clone)]
+#[derive(DeJson, Deserialize, Serialize, Clone)]
 pub struct SBundles {
     pub text_widget_bundles: Option<Vec<STextWidgetBundle>>,
     pub image_bundles: Option<Vec<SImageBundle>>,

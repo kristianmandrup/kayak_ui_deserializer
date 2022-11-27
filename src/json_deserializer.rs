@@ -227,36 +227,129 @@ pub fn load(json: &str) {
     }
 }
 
-#[test]
-fn array() {
+#[cfg(test)]
+mod tests {
+    use bevy::prelude::StageLabel;
 
+    use super::*;
 
-    let json = r#"{
-        "assets": {
-          "images": [
-            {
-              "name": "profile-image",
-              "type": "image",
-              "path": "path/to/profile.png"
+    fn json() -> &'static str  {
+        r#"{
+            "assets": {
+              "images": [
+                {
+                  "name": "profile-image",
+                  "type": "image",
+                  "path": "path/to/profile.png"
+                }
+              ],
+              "fonts": [
+                {
+                  "name": "roboto",
+                  "type": "font",
+                  "path": "path/to/roboto.tff"
+                }
+              ]
+            },
+            "styles": [
+              {
+                "name": "base",
+                "color": "white",
+                "background-color": "darkgray"
+              },
+              {
+                "name": "base-image",
+                "border-radius": "500",
+                "position-type": "self-directed"
+              }
+            ],
+            "widgets": {
+              "buttons": [
+                {
+                  "name": "menu-button",
+                  "type": "button",
+                  "styles": {
+                    "extends": "base",
+                    "bottom": "20 px",
+                    "cursor": "hand"
+                  }
+                }
+              ]
+            },
+            "bundles": {
+              "text_widget_bundles": [
+                {
+                  "name": "game-title",
+                  "type": "text-widget",
+                  "text": {
+                    "extends": "base",
+                    "content": "hello",
+                    "size": 20,
+                    "font-ref": "roboto"
+                  }
+                }
+              ],
+              "image_bundles": [
+                {
+                  "name": "my-image",
+                  "type": "image-bundle",
+                  "image-ref": "profile-image",
+                  "styles": {
+                    "extends": "base-image",
+                    "left": "10 px",
+                    "top": "10 px",
+                    "width": "200 px",
+                    "height": "182 px"
+                  }
+                }
+              ]
             }
-          ],
-          "fonts": [
-            {
-              "name": "roboto",
-              "type": "font",
-              "path": "path/to/roboto.tff"
-            }
-          ]
-        },
-      "#;
+          }                
+      "#
+    }
 
-    let data: KayakData = DeJson::deserialize_json(json).unwrap();
-    let source_io = FileAssetIo::new("path", false);
-    let asset_server = AssetServer::new(source_io);
-    let builder = KayakBuilder::new(asset_server, data).build();
-    // 
-    // assert_eq!(data.styles.unwrap().len(), 0);
-    // assert_eq!(kayak.assets.unwrap().images.unwrap().len(), 1);
-    // assert_eq!(kayak.assets.unwrap().fonts.unwrap().len(), 1);
-    // assert_eq!(kayak.assets.unwrap().fonts.unwrap()[0].name, "roboto");
+    fn ron() -> &'static str  {    
+        r#"{
+        KayakUI( // class name is optional
+            bundles: ( // this is a map
+                "text_widget_bundles": (
+                    name: "game-title",
+                    text: (
+                    extends: "base",
+                    content: "hello",
+                    size: 20,
+                    font: "roboto"
+                    )
+                ),
+            ),
+        )
+        "#
+    }
+
+    #[test]
+    fn load_ron() {
+        let str = ron();
+        let data: KayakData = ron::from_str(str).unwrap();
+        let source_io = FileAssetIo::new("path", false);
+        let asset_server = AssetServer::new(source_io);
+        let builder = KayakBuilder::new(asset_server, data).build();
+        // assert_eq!(data.styles.unwrap().len(), 0);
+        // assert_eq!(kayak.assets.unwrap().images.unwrap().len(), 1);
+        // assert_eq!(kayak.assets.unwrap().fonts.unwrap().len(), 1);
+        // assert_eq!(kayak.assets.unwrap().fonts.unwrap()[0].name, "roboto");
+    }
+
+    #[test]
+    fn load_json() {
+        let str = json();
+        let data: KayakData = DeJson::deserialize_json(str).unwrap();
+        let source_io = FileAssetIo::new("path", false);
+        let asset_server = AssetServer::new(source_io);
+        let builder = KayakBuilder::new(asset_server, data).build();
+        // assert_eq!(data.styles.unwrap().len(), 0);
+        // assert_eq!(kayak.assets.unwrap().images.unwrap().len(), 1);
+        // assert_eq!(kayak.assets.unwrap().fonts.unwrap().len(), 1);
+        // assert_eq!(kayak.assets.unwrap().fonts.unwrap()[0].name, "roboto");
+    }
 }
+

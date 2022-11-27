@@ -26,7 +26,16 @@ pub fn to_units(val: String) -> Option<Units> {
     } else {
         None
     }
-}    
+}
+
+pub fn from_units(units: Units) -> String {
+    match units {
+        Units::Pixels(num) => format!("{}px", num.to_string()),
+        Units::Percentage(num) => format!("{}%", num.to_string()),
+        Units::Stretch(num) => format!("{}em", num.to_string()),
+        _ => panic!("invalid units")
+    }
+}
 
 pub fn extract_f32(re: Regex, val: String) -> Option<f32> {
     if let Some(caps) = re.captures(val.as_str()) {

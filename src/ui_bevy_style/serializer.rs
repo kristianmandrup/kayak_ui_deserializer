@@ -1,4 +1,4 @@
-use bevy::ui::{Style, Display, PositionType, Direction, FlexDirection, FlexWrap, AlignItems};
+use bevy::ui::{Style, Display, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent};
 
 pub struct BevyStyleSerializer {
     node: Style
@@ -10,123 +10,99 @@ impl BevyStyleSerializer {
         }
     }
 
-    fn display(&self) -> String {
+    fn display(&self) -> &str {
         let prop = &self.node.display.clone();
         match prop.to_owned() {
-            Display::Flex => "display".to_string(),
-            _ => "none".to_string(),
+            Display::Flex => "display",
+            _ => "none",
         }    
     }
 
-    fn position_type(&self) -> String {
+    fn position_type(&self) -> &str {
         let prop = &self.node.position_type.clone();
         match prop.to_owned() {
-            PositionType::Relative => "relative".to_string(),
-            PositionType::Absolute => "absolute".to_string(),
+            PositionType::Relative => "relative",
+            PositionType::Absolute => "absolute",
         }    
     }
 
-    fn direction(&self) -> String {
+    fn direction(&self) -> &str {
         let prop = &self.node.direction.clone();
         match prop {
-            Direction::Inherit => "inherit".to_string(),
-            Direction::LeftToRight => "ltr".to_string(),
-            Direction::RightToLeft => "rtl".to_string(),
+            Direction::Inherit => "inherit",
+            Direction::LeftToRight => "ltr",
+            Direction::RightToLeft => "rtl",
         }    
     }
 
-    fn flex_direction(&self) -> String {
+    fn flex_direction(&self) -> &str {
         let prop = &self.node.flex_direction.clone();
         match prop {
-            FlexDirection::Row => "row".to_string(),
-            FlexDirection::Column => "col".to_string(),
-            FlexDirection::RowReverse =>  "rowreverse".to_string(),
-            FlexDirection::RowReverse => "row-reverse".to_string(),
-            FlexDirection::ColumnReverse =>  "colreverse".to_string(),
-            FlexDirection::ColumnReverse => "col-reverse".to_string(),
+            FlexDirection::Row => "row",
+            FlexDirection::Column => "col",
+            FlexDirection::RowReverse =>  "rowreverse",
+            FlexDirection::RowReverse => "row-reverse",
+            FlexDirection::ColumnReverse =>  "colreverse",
+            FlexDirection::ColumnReverse => "col-reverse",
         }
     }
 
-    fn flex_wrap(&self) -> String {
+    fn flex_wrap(&self) -> &str {
         let prop = &self.node.flex_wrap.clone();
         match prop {
-            FlexWrap::NoWrap =>  "no-wrap".to_string(),
-            FlexWrap::Wrap => "wrap".to_string(),
-            FlexWrap::WrapReverse  => "wrapreverse".to_string(),
-            FlexWrap::WrapReverse  => "wrap-reverse".to_string(),
+            FlexWrap::NoWrap =>  "no-wrap",
+            FlexWrap::Wrap => "wrap",
+            FlexWrap::WrapReverse  => "wrapreverse",
+            FlexWrap::WrapReverse  => "wrap-reverse",
         }
     }
 
-    fn align_items(&self) -> String {
+    fn align_items(&self) -> &str {
         let prop = &self.node.align_items.clone();
         match prop {
-            AlignItems::FlexStart => "flex-start".to_string(),
-            AlignItems::FlexEnd => "flex-end".to_string(),
-            AlignItems::Center => "center".to_string(),
-            AlignItems::Baseline => "baseline".to_string(),
-            AlignItems::Stretch => "stretch".to_string(),
+            AlignItems::FlexStart => "flex-start",
+            AlignItems::FlexEnd => "flex-end",
+            AlignItems::Center => "center",
+            AlignItems::Baseline => "baseline",
+            AlignItems::Stretch => "stretch",
         }
     }
 
-    // fn align_self(&self) -> Option<AlignSelf> {
-    //     let prop = &self.node.align_self.clone();
-    //     if let Some(val) = prop.to_owned() {
-    //         match val.as_str() {
-    //             "auto" => Some(AlignSelf::Auto),
-    //             "flexstart" => Some(AlignSelf::FlexStart),
-    //             "flexend" => Some(AlignSelf::FlexEnd),
-    //             "center" => Some(AlignSelf::Center),
-    //             "baseline" => Some(AlignSelf::Baseline),
-    //             "stretch" => Some(AlignSelf::Stretch),
-    //             _ => None
-    //         }
-    //     } else {
-    //         None
-    //     }
-    // }
+    fn align_self(&self) -> &str {
+        let prop = &self.node.align_self.clone();
+        match prop {
+            AlignSelf::Auto => "auto",
+            AlignSelf::FlexStart => "flexstart",
+            AlignSelf::FlexEnd => "flexend",
+            AlignSelf::Center => "center",
+            AlignSelf::Baseline => "baseline",
+            AlignSelf::Stretch => "stretch",
+        }
+    }
 
-    // fn align_content(&self) -> Option<AlignContent> {
-    //     let prop = &self.node.align_content.clone();
-    //     if let Some(val) = prop.to_owned() {
-    //         match val.as_str() {
-    //             "flexstart" => Some(AlignContent::FlexStart),
-    //             "flex-start" => Some(AlignContent::FlexStart),
-    //             "flexend" => Some(AlignContent::FlexEnd),
-    //             "flex-end" => Some(AlignContent::FlexEnd),
-    //             "center" => Some(AlignContent::Center),
-    //             "stretch" => Some(AlignContent::Stretch),
-    //             "spacebetween" => Some(AlignContent::SpaceBetween),
-    //             "space-between" => Some(AlignContent::SpaceBetween),
-    //             "spacearound" => Some(AlignContent::SpaceAround),
-    //             "space-around" => Some(AlignContent::SpaceAround),
-    //             _ => None
-    //         }
-    //     } else {
-    //         None
-    //     }
-    // }
+    fn align_content(&self) -> &str {
+        let prop = &self.node.align_content.clone();
+        match prop {
+            AlignContent::FlexStart => "flex-start",
+            AlignContent::FlexEnd => "flex-end",
+            AlignContent::Center => "center",
+            AlignContent::Stretch => "stretch",
+            AlignContent::SpaceBetween => "space-between",
+            AlignContent::SpaceAround => "space-around",
+        }
+    }
 
-    // fn justify_content(&self) -> Option<JustifyContent> {
-    //     let prop = &self.node.justify_content.clone();
-    //     if let Some(val) = prop.to_owned() {
-    //         match val.as_str() {
-    //             "flexstart" => Some(JustifyContent::FlexStart),
-    //             "flex-start" => Some(JustifyContent::FlexStart),
-    //             "flexend" => Some(JustifyContent::FlexEnd),
-    //             "flex-end" => Some(JustifyContent::FlexEnd),
-    //             "center" => Some(JustifyContent::Center),
-    //             "spacebetween" => Some(JustifyContent::SpaceBetween),
-    //             "space-between" => Some(JustifyContent::SpaceBetween),
-    //             "spacearound" => Some(JustifyContent::SpaceAround),
-    //             "space-around" => Some(JustifyContent::SpaceAround),
-    //             "spaceevenly" => Some(JustifyContent::SpaceEvenly),
-    //             "space-evenly" => Some(JustifyContent::SpaceEvenly),                
-    //             _ => None
-    //         }
-    //     } else {
-    //         None
-    //     }
-    // }
+    fn justify_content(&self) -> &str {
+        let prop = &self.node.justify_content.clone();
+        match prop {                
+            JustifyContent::FlexStart => "flex-start",
+            JustifyContent::FlexEnd => "flex-end",
+            JustifyContent::Center => "center",
+            JustifyContent::SpaceBetween => "space-between",
+            JustifyContent::SpaceAround => "space-around",
+            JustifyContent::SpaceEvenly => "space-evenly",
+        }
+    }
 
     // pub fn serialize(&self) -> Result<SBevyStyle, &'static str> {
     //     let sstyle = SBevyStyle {}

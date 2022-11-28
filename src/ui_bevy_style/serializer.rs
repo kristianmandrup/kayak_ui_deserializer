@@ -67,9 +67,7 @@ impl BevyStyleSerializer {
         match prop {
             FlexDirection::Row => "row",
             FlexDirection::Column => "col",
-            FlexDirection::RowReverse =>  "rowreverse",
             FlexDirection::RowReverse => "row-reverse",
-            FlexDirection::ColumnReverse =>  "colreverse",
             FlexDirection::ColumnReverse => "col-reverse",
         }
     }

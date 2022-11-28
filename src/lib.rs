@@ -35,4 +35,5 @@ mod ui_text_box_bundle;
 mod ui_element_bundle;
 mod kayak_store;
 mod serialized;
+mod serializer;
 mod store;

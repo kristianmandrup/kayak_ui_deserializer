@@ -64,7 +64,7 @@ impl KayakBuilder {
     }
 
     pub fn build_styles(&self) -> &Self {
-        if let Some(items) = self.data.styles.to_owned() {
+        if let Some(items) = self.data.kstyles.to_owned() {
             for item in items {
                 let name = item.clone().name;
                 let kstyle = KStyleBuilder::new(item).parse().unwrap();                

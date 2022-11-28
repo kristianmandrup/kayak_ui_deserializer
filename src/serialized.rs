@@ -1,3 +1,5 @@
+use std::default;
+
 use nanoserde::{DeJson, SerJson, DeRon, SerRon};
 
 pub type OptStr = Option<String>;
@@ -39,9 +41,21 @@ pub struct STextBoxBundle {
 #[derive(DeJson, SerJson, DeRon, SerRon, Clone)]
 pub struct KayakUiData {
     pub assets: Option<SAssets>,
-    pub styles: Option<Vec<SKStyle>>,
+    pub kstyles: Option<Vec<SKStyle>>,
+    pub styles: Option<Vec<SBevyStyle>>,
     pub widgets: Option<SWidgets>,
     pub bundles: Option<SBundles>,
+}
+impl Default for KayakUiData {
+    fn default() -> Self {
+        Self {
+            assets: None,
+            kstyles: None,
+            styles: None,
+            widgets: None,
+            bundles: None
+        }
+    }
 }
 
 #[derive(DeJson, SerJson, DeRon, SerRon, Clone)]

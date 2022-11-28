@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::{KButton, KButtonBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::{SButtonBundle}, kayak_store::KayakStore, ui_button::build_button};
+use crate::{serialized::{SButtonBundle}, kayak_store::KayakStore, ui_button::build_button, kstyle::ui_kstyle::KStyleBuilder};
 
 pub fn build_button_bundle(store: &KayakStore, bb: SButtonBundle) -> Result<KButtonBundle, &'static str>  {
     ButtonBundleBuilder::new(store, bb).build().parse()

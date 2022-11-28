@@ -1,7 +1,7 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{KWindow}, prelude::{KStyle}};
 
-use crate::{ui_parser::Conv, ui_kstyle::KStyleBuilder, serialized::{SWindow}, kayak_store::KayakStore};
+use crate::{ui_parser::Conv, kstyle::ui_kstyle::KStyleBuilder, serialized::{SWindow}, kayak_store::KayakStore};
 
 pub fn build_window(store: &KayakStore, ib: SWindow) -> Result<KWindow, &'static str>  {
     WindowBuilder::new(store, ib).build().parse()

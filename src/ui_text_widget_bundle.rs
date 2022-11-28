@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::{TextWidgetBundle, TextProps}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::{STextWidgetBundle}, kayak_store::KayakStore, ui_text_props::TextPropsBuilder};
+use crate::{kstyle::ui_kstyle::KStyleBuilder, serialized::{STextWidgetBundle}, kayak_store::KayakStore, ui_text_props::TextPropsBuilder};
 
 pub fn build_text_widget_bundle(store: &KayakStore, tab: STextWidgetBundle) -> Result<TextWidgetBundle, &'static str>  {
     TextWidgetBundleBuilder::new(store, tab).build().parse()

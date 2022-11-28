@@ -3,7 +3,7 @@
 mod json_deserializer;
 mod ui_parser;
 mod ui_unit;
-mod ui_kstyle;
+mod kstyle;
 mod ui_bevy_style;
 mod ui_color;
 mod ui_edge;

@@ -1,5 +1,5 @@
 use kayak_ui::{widgets::{KButton}, prelude::{KStyle}};
-use crate::{ui_kstyle::KStyleBuilder, serialized::{SButton}, kayak_store::KayakStore};
+use crate::{serialized::{SButton}, kayak_store::KayakStore, kstyle::ui_kstyle::KStyleBuilder};
 
 pub fn build_button(store: &KayakStore, bb: SButton) -> Result<KButton, &'static str>  {
     ButtonBuilder::new(store, bb).build().parse()

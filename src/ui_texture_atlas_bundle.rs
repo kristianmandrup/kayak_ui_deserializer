@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::{TextureAtlasProps, TextureAtlasBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::{STextureAtlasBundle}, kayak_store::KayakStore, ui_texture_atlas::TextureAtlasPropsBuilder};
+use crate::{kstyle::ui_kstyle::KStyleBuilder, serialized::{STextureAtlasBundle}, kayak_store::KayakStore, ui_texture_atlas::TextureAtlasPropsBuilder};
 
 pub fn build_texture_atlas_bundle(store: &KayakStore, tab: STextureAtlasBundle) -> Result<TextureAtlasBundle, &'static str>  {
     TextureAtlasBundleBuilder::new(store, tab).build().parse()

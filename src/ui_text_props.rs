@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::TextProps, prelude::{Alignment, KStyle}};
 
-use crate::{ui_alignment::to_alignment, ui_parser::Conv, ui_kstyle::KStyleBuilder, serialized::STextProps};
+use crate::{ui_alignment::to_alignment, ui_parser::Conv, kstyle::ui_kstyle::KStyleBuilder, serialized::STextProps};
 
 pub struct TextPropsBuilder {
     node: STextProps

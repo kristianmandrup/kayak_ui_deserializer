@@ -1,6 +1,6 @@
 use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, WidgetName}};
 
-use crate::{ui_kstyle::KStyleBuilder, serialized::{SWindowBundle}, ui_window::WindowBuilder, kayak_store::KayakStore};
+use crate::{kstyle::ui_kstyle::KStyleBuilder, serialized::{SWindowBundle}, ui_window::WindowBuilder, kayak_store::KayakStore};
 
 pub fn build_window_bundle(store: &KayakStore, wb: SWindowBundle) -> Result<WindowBundle, &'static str>  {
     WindowBundleBuilder::new(store, wb).build().parse()

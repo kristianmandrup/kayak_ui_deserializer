@@ -1,7 +1,4 @@
-use std::default;
-
 use nanoserde::{DeJson, SerJson, DeRon, SerRon};
-
 pub type OptStr = Option<String>;
 
 #[derive(DeJson, SerJson, DeRon, SerRon, Clone)]
@@ -248,6 +245,49 @@ pub struct SKStyle {
     pub width: OptStr,
     pub z_index: OptStr,
 }
+impl Default for SKStyle {
+    fn default() -> Self {
+        Self {
+            name: "noname".to_string(),
+            extends: None,
+            background_color: None,
+            border: None,
+            border_color: None,
+            border_radius: None,
+            border_radius_obj: None,
+            bottom: None,
+            col_between: None,
+            color: None,
+            content: None,
+            cursor: None,   
+            font: None,
+            font_size: None,
+            height: None,
+            layout_type: None,
+            left: None,
+            line_height: None,
+            max_height: None,
+            max_width: None,
+            min_height: None,
+            min_width: None,
+            offset: None,
+            offset_obj: None,
+            padding: None,
+            padding_obj: None,
+            padding_top: None,
+            padding_bottom: None,
+            padding_left: None,
+            padding_right: None,
+            position_type: None,
+            right: None,
+            row_between: None,
+            top: None,
+            width: None,
+            z_index: None,
+        }
+    }
+}
+
 
 #[derive(DeJson, SerJson, DeRon, SerRon, Clone)]
 pub struct STextProps {

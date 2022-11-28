@@ -1,4 +1,31 @@
-use bevy::ui::{Style, Display, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent};
+use bevy::ui::{Style, Display, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Val, UiRect, Size, Overflow};
+use crate::serialized::{SUiRect, SSize};
+
+pub fn val_to_str(val: Val) -> String {
+    match val {
+        Val::Undefined => "".to_string(),
+        Val::Auto => "auto".to_string(),
+        Val::Px(px) => format!("{} px", px),
+        Val::Percent(pct) => format!("{} %", pct),    
+    }
+}
+
+pub fn to_sui_rect(prop: UiRect) -> SUiRect {
+    SUiRect {
+        top: Some(val_to_str(prop.top).to_string()),
+        right: Some(val_to_str(prop.right).to_string()),
+        bottom: Some(val_to_str(prop.bottom).to_string()),
+        left: Some(val_to_str(prop.left).to_string()),
+    }
+}
+
+pub fn to_ssize(prop: Size) -> SSize {
+    SSize {
+        width: Some(val_to_str(prop.width).to_string()),
+        height: Some(val_to_str(prop.height).to_string()),
+    }
+}
+
 
 pub struct BevyStyleSerializer {
     node: Style
@@ -104,6 +131,73 @@ impl BevyStyleSerializer {
         }
     }
 
+    fn position(&self) -> SUiRect {
+        let prop = &self.node.position.clone();
+        to_sui_rect(prop.to_owned())
+    }
+
+    fn margin(&self) -> SUiRect {
+        let prop = &self.node.margin.clone();
+        to_sui_rect(prop.to_owned())
+    }
+
+    fn padding(&self) -> SUiRect {
+        let prop = &self.node.padding.clone();
+        to_sui_rect(prop.to_owned())
+    }
+
+    fn border(&self) -> SUiRect {
+        let prop = &self.node.border.clone();
+        to_sui_rect(prop.to_owned())
+    }
+
+    fn flex_grow(&self) -> String {
+        let prop = &self.node.flex_grow.clone();
+        prop.to_string()
+    }
+    
+    fn flex_shrink(&self) -> String {
+        let prop = &self.node.flex_shrink.clone();
+        prop.to_string()
+    }
+
+    fn flex_basis(&self) -> String {
+        let prop = &self.node.flex_basis.clone();
+        val_to_str(prop.to_owned()).to_string()
+    }
+
+    fn size(&self) -> SSize {
+        let prop = &self.node.size.clone();        
+        to_ssize(prop.to_owned())
+    }
+
+    fn min_size(&self) -> SSize {
+        let prop = &self.node.min_size.clone();        
+        to_ssize(prop.to_owned())
+    }
+
+    fn max_size(&self) -> SSize {
+        let prop = &self.node.max_size.clone();        
+        to_ssize(prop.to_owned())
+    }
+
+    fn aspect_ratio(&self) -> String {
+        let prop = &self.node.aspect_ratio.clone();
+        if let Some(val) = prop {
+            val.to_string()
+        } else {
+            "".to_string()
+        }        
+    }
+
+    fn overflow(&self) -> String {
+        let prop = &self.node.overflow.clone();
+        match prop.to_owned() {
+            Overflow::Visible => "visible".to_string(),
+            Overflow::Hidden => "hidden".to_string(),
+        }
+    }
+    
     // pub fn serialize(&self) -> Result<SBevyStyle, &'static str> {
     //     let sstyle = SBevyStyle {}
     //     Ok(sstyle)       

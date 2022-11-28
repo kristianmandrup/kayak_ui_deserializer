@@ -1,6 +1,6 @@
 use bevy::{prelude::{Vec3, Transform, Quat}};
 
-use crate::{serialized::{STransform, SVec3, SQuat}, ui_bevy_style::to_f32};
+use crate::{serialized::{STransform, SVec3, SQuat}, ui_bevy_style::builder::to_f32};
 
 pub fn to_vec3(vec3: SVec3) -> Option<Vec3> {
     let vec = vec![vec3.x, vec3.y, vec3.z];

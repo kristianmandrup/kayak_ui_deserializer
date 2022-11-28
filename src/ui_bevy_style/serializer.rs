@@ -1,5 +1,5 @@
 use bevy::ui::{Style, Display, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Val, UiRect, Size, Overflow};
-use crate::serialized::{SUiRect, SSize};
+use crate::serialized::{SUiRect, SSize, SBevyStyle};
 
 pub fn val_to_str(val: Val) -> String {
     match val {
@@ -198,8 +198,38 @@ impl BevyStyleSerializer {
         }
     }
     
-    // pub fn serialize(&self) -> Result<SBevyStyle, &'static str> {
-    //     let sstyle = SBevyStyle {}
-    //     Ok(sstyle)       
-    // }    
+    pub fn serialize(&self) -> Result<SBevyStyle, &'static str> {
+        let sstyle = SBevyStyle {
+            extends: None,
+            display: Some(self.display().to_string()),
+            position_type: Some(self.position_type().to_string()),
+            direction: Some(self.direction().to_string()),
+            flex_direction: Some(self.flex_direction().to_string()),
+            flex_wrap: Some(self.flex_wrap().to_string()),
+            align_items: Some(self.align_items().to_string()),
+            align_self: Some(self.align_self().to_string()),
+            align_content: Some(self.align_content().to_string()),
+            justify_content: Some(self.justify_content().to_string()),
+            position: None,
+            position_obj: Some(self.position()),
+            margin: None,
+            margin_obj: Some(self.margin()),
+            padding: None,
+            padding_obj: Some(self.padding()),
+            border: None,
+            border_obj: Some(self.border()),
+            flex_grow: Some(self.flex_grow()),
+            flex_shrink: Some(self.flex_shrink()),
+            flex_basis: Some(self.flex_basis()),
+            size: None,
+            size_obj: Some(self.size()),
+            min_size: None,
+            min_size_obj: Some(self.min_size()),
+            max_size: None,
+            max_size_obj: Some(self.max_size()),
+            aspect_ratio: Some(self.aspect_ratio()),
+            overflow: Some(self.overflow())
+        };
+        Ok(sstyle)       
+    }    
 }

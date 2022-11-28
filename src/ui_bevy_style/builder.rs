@@ -1,6 +1,6 @@
 use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Size, Val, UiRect, Overflow};
 
-use crate::{serialized::SBevyStyle, ui_rect::{UiRectBuilder, to_val, rect_from_str}, ui_size::{SizeBuilder, size_from_str}};
+use crate::{serialized::{SBevyStyle}, ui_rect::{UiRectBuilder, to_val, rect_from_str}, ui_size::{SizeBuilder, size_from_str}};
 
 pub fn to_f32(optstr: &Option<String>) -> Option<f32> {
     if let Some(str) = optstr {
@@ -24,8 +24,6 @@ pub fn build_rect_from_str(optstr: &Option<String>) -> Option<UiRect> {
 
 }
 
-
-// Style
 pub struct BevyStyleBuilder {
     node: SBevyStyle
 }
@@ -49,7 +47,7 @@ impl BevyStyleBuilder {
     }
 
     fn position_type(&self) -> Option<PositionType> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.position_type.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "relative" => Some(PositionType::Relative),
@@ -62,7 +60,7 @@ impl BevyStyleBuilder {
     }
 
     fn direction(&self) -> Option<Direction> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.direction.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "inherit" => Some(Direction::Inherit),
@@ -76,7 +74,7 @@ impl BevyStyleBuilder {
     }
 
     fn flex_direction(&self) -> Option<FlexDirection> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.flex_direction.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "row" => Some(FlexDirection::Row),
@@ -93,7 +91,7 @@ impl BevyStyleBuilder {
     }
 
     fn flex_wrap(&self) -> Option<FlexWrap> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.flex_wrap.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "nowrap" => Some(FlexWrap::NoWrap),
@@ -109,7 +107,7 @@ impl BevyStyleBuilder {
     }
     
     fn align_items(&self) -> Option<AlignItems> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.align_items.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "flexstart" => Some(AlignItems::FlexStart),
@@ -127,7 +125,7 @@ impl BevyStyleBuilder {
     }
 
     fn align_self(&self) -> Option<AlignSelf> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.align_self.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "auto" => Some(AlignSelf::Auto),
@@ -144,7 +142,7 @@ impl BevyStyleBuilder {
     }
 
     fn align_content(&self) -> Option<AlignContent> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.align_content.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "flexstart" => Some(AlignContent::FlexStart),
@@ -165,7 +163,7 @@ impl BevyStyleBuilder {
     }
 
     fn justify_content(&self) -> Option<JustifyContent> {
-        let prop = &self.node.display.clone();
+        let prop = &self.node.justify_content.clone();
         if let Some(val) = prop.to_owned() {
             match val.as_str() {
                 "flexstart" => Some(JustifyContent::FlexStart),

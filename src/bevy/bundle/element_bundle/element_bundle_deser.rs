@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::{Element, ElementBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{serialized::SElementBundle, kayak::{store::KayakStore, kstyle::kstyle_deser::deserialize_kstyle}};
+use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::deserialize_kstyle}};
+
+use super::selement_bundle::SElementBundle;
 
 
 pub fn build_element_bundle(store: &KayakStore, bb: SElementBundle) -> Result<ElementBundle, &'static str>  {

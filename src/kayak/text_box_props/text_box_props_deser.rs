@@ -1,6 +1,8 @@
 use kayak_ui::widgets::TextBoxProps;
 
-use crate::{ui_parser::Conv, serialized::STextBoxProps};
+use crate::{ui_parser::Conv};
+
+use super::stext_box_props::STextBoxProps;
 
 pub fn deserialize_text_box_props(tbp: STextBoxProps) -> Result<TextBoxProps, &'static str>  {
     TextBoxPropsDeser::new(tbp).deserialize()

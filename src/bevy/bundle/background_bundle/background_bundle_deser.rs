@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::{Background, BackgroundBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{serialized::SBackgroundBundle, kayak::{store::KayakStore, kstyle::kstyle_deser::{deserialize_kstyle}}};
+use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::{deserialize_kstyle}}};
+
+use super::sbackground_bundle::SBackgroundBundle;
 
 
 pub fn build_background_bundle(store: &KayakStore, bb: SBackgroundBundle) -> Result<BackgroundBundle, &'static str>  {

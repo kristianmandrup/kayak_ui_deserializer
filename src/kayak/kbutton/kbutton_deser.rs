@@ -1,5 +1,7 @@
 use kayak_ui::{widgets::{KButton}, prelude::{KStyle}};
-use crate::{serialized::{SButton}, kayak::{store::KayakStore, kstyle::kstyle_deser::KStyleDeser}};
+use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::KStyleDeser}};
+
+use super::skbutton::SButton;
 
 pub fn deserialize_button(store: &KayakStore, bb: SButton) -> Result<KButton, &'static str>  {
     KButtonDeser::new(store, bb).build().parse()

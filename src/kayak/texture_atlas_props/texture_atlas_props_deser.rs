@@ -1,7 +1,9 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{TextureAtlasProps}};
 
-use crate::{ui_parser::Conv, serialized::{STextureAtlasProps}};
+use crate::{ui_parser::Conv};
+
+use super::stexture_atlas_props::STextureAtlasProps;
 
 pub fn deserialize_texture_atlas_props(tab: STextureAtlasProps) -> Result<TextureAtlasProps, &'static str>  {
     TextureAtlasPropsDeser::new(tab).deserialize()

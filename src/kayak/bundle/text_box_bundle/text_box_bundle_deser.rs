@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::{TextBoxBundle, TextBoxProps}, prelude::{KStyle, WidgetName}};
 
-use crate::{kayak::{store::KayakStore, text_box_props::text_box_props_deser::deserialize_text_box_props, kstyle::kstyle_deser::deserialize_kstyle}, serialized::STextBoxBundle};
+use crate::{kayak::{store::KayakStore, text_box_props::text_box_props_deser::deserialize_text_box_props, kstyle::kstyle_deser::deserialize_kstyle}};
+
+use super::stext_box_bundle::STextBoxBundle;
 
 
 pub fn deserialize_text_box_bundle(store: &KayakStore, bb: STextBoxBundle) -> Result<TextBoxBundle, &'static str>  {

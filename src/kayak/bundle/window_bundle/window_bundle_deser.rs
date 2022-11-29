@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::{WindowBundle, KWindow}, prelude::{KStyle, WidgetName}};
 
-use crate::{kayak::{store::KayakStore, window::window_deser::deserialize_window, kstyle::kstyle_deser::deserialize_kstyle}, serialized::SWindowBundle};
+use crate::{kayak::{store::KayakStore, window::window_deser::deserialize_window, kstyle::kstyle_deser::deserialize_kstyle}};
+
+use super::swindow_bundle::SWindowBundle;
 
 pub fn build_window_bundle(store: &KayakStore, wb: SWindowBundle) -> Result<WindowBundle, &'static str>  {
     WindowBundleDeser::new(store, wb).build().parse()

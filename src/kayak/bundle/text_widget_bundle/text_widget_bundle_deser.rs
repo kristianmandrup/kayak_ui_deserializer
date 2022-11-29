@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::{TextWidgetBundle, TextProps}, prelude::{KStyle, WidgetName}};
 
-use crate::{kayak::{store::KayakStore, text_props::text_props_deser::deserialize_text_props, kstyle::kstyle_deser::deserialize_kstyle}, serialized::STextWidgetBundle};
+use crate::{kayak::{store::KayakStore, text_props::text_props_deser::deserialize_text_props, kstyle::kstyle_deser::deserialize_kstyle}};
+
+use super::stext_widget_bundle::STextWidgetBundle;
 
 pub fn deserialize_text_widget_bundle(store: &KayakStore, tab: STextWidgetBundle) -> Result<TextWidgetBundle, &'static str>  {
     TextWidgetBundleDeser::new(store, tab).build().deserialize()

@@ -1,7 +1,9 @@
 use bevy::{prelude::{Handle, Image, AssetServer}, ui::{UiImage}};
 use kayak_ui::{widgets::KImage};
 
-use crate::{ui_parser::Conv, serialized::{SImage}, kayak::store::KayakStore};
+use crate::{ui_parser::Conv, kayak::store::KayakStore};
+
+use super::simage::SImage;
 
 pub fn deserialize_image(store: &KayakStore, ib: SImage) -> Result<KImage, &'static str>  {
     ImageDeser::new(store, ib).deserialize_kimage()

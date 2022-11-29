@@ -2,7 +2,9 @@ use std::{marker::PhantomData, str::FromStr, fmt::Debug};
 
 use kayak_ui::prelude::Edge;
 use morphorm::Units;
-use crate::{ui_parser::Conv, serialized::{OptStr, SEdge}, morphorm::units::UiUnit};
+use crate::{ui_parser::Conv, morphorm::units::UiUnit, serialized::OptStr};
+
+use super::sedge::SEdge;
 
 
 pub fn to_edge_units(prop: OptStr) -> Edge<Units> {

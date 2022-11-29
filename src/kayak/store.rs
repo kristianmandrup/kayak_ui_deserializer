@@ -2,10 +2,11 @@ use std::collections::HashMap;
 
 use bevy::{prelude::{ImageBundle, AssetServer}, ui::Style};
 use kayak_ui::{prelude::KStyle, widgets::{KButton, TextWidgetBundle, TextBoxBundle, WindowBundle, TextureAtlasBundle, KButtonBundle, BackgroundBundle, ClipBundle, ElementBundle}};
-
-use crate::{serialized::{SKStyle, SBevyStyle}};
+use crate::bevy::style::sstyle::SBevyStyle;
 
 use self::{widgets::StoredWidgets, bundles::StoredBundles, assets::StoredAssets};
+
+use super::kstyle::skstyle::SKStyle;
 
 pub mod assets;
 pub mod bundles;

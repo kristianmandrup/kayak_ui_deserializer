@@ -1,6 +1,8 @@
 use kayak_ui::prelude::Corner;
 
-use crate::{ui_parser::Conv, serialized::{SCorner}};
+use crate::{ui_parser::Conv};
+
+use super::scorner::SCorner;
 
 
 fn part_to_string(part: &str) -> Option<String> {

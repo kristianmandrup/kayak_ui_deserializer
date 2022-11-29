@@ -17,7 +17,9 @@
 use bevy::prelude::{ Handle, Image};
 use kayak_ui::{widgets::NinePatch, prelude::Edge};
 
-use crate::{serialized::SNinePatch, kayak::{store::KayakStore, edge::edge_deser::EdgeDeser}, bevy::image::image_deser::{deserialize_image_handle}};
+use crate::{kayak::{store::KayakStore, edge::edge_deser::EdgeDeser}, bevy::image::image_deser::{deserialize_image_handle}};
+
+use super::snine_patch::SNinePatch;
 
 pub fn deserialize_nine_patch(store: &KayakStore, ib: SNinePatch) -> Result<NinePatch, &'static str>  {
     NinePatchDeser::new(store, ib).deserialize()

@@ -1,6 +1,8 @@
 use bevy::ui::{Size, Val};
 
-use crate::{serialized::SSize, bevy::ui_rect::ui_rect_deser::to_val};
+use crate::{bevy::ui_rect::ui_rect_deser::to_val};
+
+use super::ssize::SSize;
 
 fn part_to_string(part: &str) -> Option<String> {
     if part.is_empty() { None } else { Some(part.to_string()) }

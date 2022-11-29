@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::TextProps, prelude::{Alignment, KStyle}};
 
-use crate::{ui_parser::Conv, serialized::STextProps, kayak::{store::KayakStore, alignment::to_alignment, kstyle::kstyle_deser::deserialize_kstyle}};
+use crate::{ui_parser::Conv, kayak::{store::KayakStore, alignment::to_alignment, kstyle::kstyle_deser::deserialize_kstyle}};
+
+use super::stext_props::STextProps;
 
 pub fn deserialize_text_props(store: &KayakStore, tp: STextProps) -> Result<TextProps, &'static str>  {
     TextPropsDeser::new(store, tp).deserialize()

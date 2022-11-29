@@ -1,6 +1,8 @@
 use bevy::ui::{Display, Style, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Size, Val, UiRect, Overflow};
 
-use crate::{serialized::{SBevyStyle}, bevy::{ui_rect::ui_rect_deser::{rect_from_str, deserialize_ui_rect, to_val}, size::size_deser::{deserialize_size, size_from_str}}};
+use crate::{bevy::{ui_rect::ui_rect_deser::{rect_from_str, deserialize_ui_rect, to_val}, size::size_deser::{deserialize_size, size_from_str}}};
+
+use super::sstyle::SBevyStyle;
 
 pub fn to_f32(optstr: &Option<String>) -> Option<f32> {
     if let Some(str) = optstr {

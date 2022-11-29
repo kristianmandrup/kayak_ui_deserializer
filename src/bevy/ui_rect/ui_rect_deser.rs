@@ -1,7 +1,7 @@
-
 use bevy::ui::{Val, UiRect};
 use regex::Regex;
-use crate::{serialized::{SUiRect}};
+
+use super::sui_rect::SUiRect;
 
 pub fn to_val(val: String) -> Val {
     let px_re = Regex::new(r"(\d+)\s*px").unwrap();

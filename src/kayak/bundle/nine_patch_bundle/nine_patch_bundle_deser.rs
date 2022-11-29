@@ -16,7 +16,9 @@
 
 use kayak_ui::{widgets::{NinePatch, NinePatchBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{serialized::SNinePatchBundle, kayak::{store::KayakStore, nine_patch::nine_patch_deser::deserialize_nine_patch, kstyle::kstyle_deser::deserialize_kstyle}};
+use crate::{kayak::{store::KayakStore, nine_patch::nine_patch_deser::deserialize_nine_patch, kstyle::kstyle_deser::deserialize_kstyle}};
+
+use super::snine_patch_bundle::SNinePatchBundle;
 
 
 pub fn build_nine_patch_bundle(store: &KayakStore, bb: SNinePatchBundle) -> Result<NinePatchBundle, &'static str>  {

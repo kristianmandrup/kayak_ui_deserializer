@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::{TextureAtlasProps, TextureAtlasBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{serialized::{STextureAtlasBundle}, kayak::{store::KayakStore, texture_atlas_props::texture_atlas_props_deser::deserialize_texture_atlas_props, kstyle::kstyle_deser::deserialize_kstyle}};
+use crate::{kayak::{store::KayakStore, texture_atlas_props::texture_atlas_props_deser::deserialize_texture_atlas_props, kstyle::kstyle_deser::deserialize_kstyle}};
+
+use super::stexture_atlas_bundle::STextureAtlasBundle;
 
 pub fn build_texture_atlas_bundle(store: &KayakStore, tab: STextureAtlasBundle) -> Result<TextureAtlasBundle, &'static str>  {
     TextureAtlasBundleDeser::new(store, tab).build().parse()

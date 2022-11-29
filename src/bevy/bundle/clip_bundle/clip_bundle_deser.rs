@@ -1,6 +1,8 @@
 use kayak_ui::{widgets::{Clip, ClipBundle}, prelude::{KStyle, WidgetName}};
 
-use crate::{serialized::SClipBundle, kayak::{store::KayakStore, kstyle::kstyle_deser::{deserialize_kstyle}}};
+use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::{deserialize_kstyle}}};
+
+use super::sclip_bundle::SClipBundle;
 
 
 pub fn build_clip_bundle(store: &KayakStore, cb: SClipBundle) -> Result<ClipBundle, &'static str>  {

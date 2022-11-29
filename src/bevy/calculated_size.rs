@@ -1,8 +1,5 @@
 use bevy::ui::{Val, CalculatedSize};
-
-use crate::{serialized::SSize};
-
-use super::ui_rect::ui_rect_deser::to_val;
+use super::{ui_rect::ui_rect_deser::to_val, size::ssize::SSize};
 
 pub fn deserialize_calc_size(ss: SSize) -> Result<CalculatedSize, &'static str>  {
     CalcSizeDeser::new(ss).deserialize()

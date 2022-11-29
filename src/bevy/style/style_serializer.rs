@@ -1,5 +1,8 @@
 use bevy::ui::{Style, Display, PositionType, Direction, FlexDirection, FlexWrap, AlignItems, AlignSelf, AlignContent, JustifyContent, Val, UiRect, Size, Overflow};
-use crate::serialized::{SUiRect, SSize, SBevyStyle};
+
+use crate::bevy::{ui_rect::sui_rect::SUiRect, size::ssize::SSize};
+
+use super::sstyle::SBevyStyle;
 
 pub fn val_to_str(val: Val) -> String {
     match val {

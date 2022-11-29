@@ -1,7 +1,9 @@
 use bevy::prelude::Vec2;
 use kayak_ui::{widgets::{KWindow}, prelude::{KStyle}};
 
-use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::deserialize_kstyle}, serialized::SWindow, ui_parser::Conv};
+use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::deserialize_kstyle}, ui_parser::Conv};
+
+use super::swindow::SWindow;
 
 pub fn deserialize_window(store: &KayakStore, ib: SWindow) -> Result<KWindow, &'static str>  {
     WindowDeser::new(store, ib).build().deserialize()

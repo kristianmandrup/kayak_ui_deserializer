@@ -1,6 +1,8 @@
 use bevy::{prelude::{ImageBundle, Visibility, ComputedVisibility, Transform}, ui::{UiImage, Style, FocusPolicy, CalculatedSize, BackgroundColor, widget::ImageMode}};
 
-use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::str_to_color}, serialized::SImageBundle, bevy::{image::image_deser::deserialize_image_ui, style::style_deser::deserialize_style, transform::deserialize_transform, calculated_size::deserialize_calc_size}};
+use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::str_to_color}, bevy::{image::image_deser::deserialize_image_ui, style::style_deser::deserialize_style, calculated_size::deserialize_calc_size, transform::transform_deser::deserialize_transform}};
+
+use super::simage_bundle::SImageBundle;
 
 
 pub fn build_image_bundle(store: &KayakStore, ib: SImageBundle) -> Result<ImageBundle, &'static str>  {

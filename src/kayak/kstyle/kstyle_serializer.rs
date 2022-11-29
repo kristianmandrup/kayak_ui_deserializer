@@ -1,6 +1,6 @@
 use kayak_ui::prelude::KStyle;
 
-use crate::serialized::SKStyle;
+use super::skstyle::SKStyle;
 
 pub struct KStyleSerializer {
     node: KStyle

@@ -2,7 +2,9 @@ use bevy::prelude::Color;
 use kayak_ui::prelude::{KPositionType, Edge, KStyle, Corner, KCursorIcon};
 use morphorm::{Units, LayoutType};
 
-use crate::{ui_parser::{Conv}, serialized::{SKStyle, SEdge}, bevy::{color::color_deser::parse_color, corner::corner_deser::{CornerDeser, deserialize_corner}, cursor_icon::to_cursor_icon}, morphorm::{layout_type::to_layout_type, units::UiUnit}, kayak::edge::edge_deser::{EdgeDeser, to_edge_units}};
+use crate::{ui_parser::{Conv}, bevy::{color::color_deser::parse_color, corner::corner_deser::{CornerDeser, deserialize_corner}, cursor_icon::to_cursor_icon}, morphorm::{layout_type::to_layout_type, units::UiUnit}, kayak::edge::{edge_deser::{EdgeDeser, to_edge_units}, sedge::SEdge}};
+
+use super::skstyle::SKStyle;
 
 pub fn str_to_color(prop: &Option<String>) -> Option<Color> {
     let str = prop.to_owned();

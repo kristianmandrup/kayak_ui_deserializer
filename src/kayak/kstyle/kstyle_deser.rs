@@ -1,6 +1,6 @@
 use bevy::prelude::Color;
-use kayak_ui::prelude::{KPositionType, Edge, KStyle, Corner, KCursorIcon};
-use morphorm::{Units, LayoutType};
+use kayak_ui::prelude::{KPositionType, Edge, KStyle, Corner, KCursorIcon, Units};
+use morphorm::{LayoutType};
 
 use crate::{ui_parser::{Conv}, bevy::{color::color_deser::parse_color, corner::corner_deser::{CornerDeser, deserialize_corner}, cursor_icon::to_cursor_icon}, morphorm::{layout_type::to_layout_type, units::UiUnit}, kayak::edge::{edge_deser::{EdgeDeser, to_edge_units}, sedge::SEdge}};
 
@@ -201,7 +201,7 @@ impl KStyleDeser {
         }
     }
 
-    fn padding_obj(&self) -> Option<Edge<Units>> {
+    fn padding_obj(&self) -> Edge<Units> {
         let optobj = &self.node.padding_obj.clone();
         obj_to_edge(optobj)
     }

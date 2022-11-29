@@ -1,4 +1,4 @@
-use kayak_ui::prelude::KStyle;
+use kayak_ui::prelude::{KStyle, KPositionType};
 
 use crate::{bevy::{color::color_deser::color_to_str, corner::corner_deser::corner_to_str}, serialized::OptStr, morphorm::{units::units_to_str, layout_type::layout_type_to_str}, kayak::edge::edge_deser::{edge_to_str, edge_units_to_str}};
 
@@ -131,6 +131,19 @@ impl KStyleSerializer {
         Some(units_to_str(prop))
     }    
 
+    // fn pointer_events(&self) -> OptStr {
+    //     let prop = self.node.pointer_events.resolve();
+    //     Some(pointer_events_to_str(prop))
+    // }    
+
+    fn position_type(&self) -> &str {
+        let prop = &self.node.position_type.resolve();
+        match prop.to_owned() {
+            KPositionType::ParentDirected => "parent-directed",
+            KPositionType::SelfDirected => "self-directed",
+        }    
+    }    
+
     fn right(&self) -> OptStr {
         let prop = self.node.right.resolve();
         Some(units_to_str(prop))
@@ -180,6 +193,7 @@ impl KStyleSerializer {
         let padding_right = self.padding_right();
         let padding_bottom = self.padding_bottom();
         let padding_left = self.padding_left();
+        let position_type = self.position_type();
         let right = self.right();
         let row_between = self.row_between();
         let top = self.top();
@@ -206,10 +220,12 @@ impl KStyleSerializer {
             max_height,
             max_width,
             offset,
+            padding,
             padding_top,
             padding_right,
             padding_bottom,
             padding_left,
+            position_type,
             right,
             row_between,
             top,

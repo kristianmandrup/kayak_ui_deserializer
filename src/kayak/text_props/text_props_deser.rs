@@ -67,10 +67,10 @@ impl<'a> TextPropsDeser<'a> {
         }
     }
 
-    fn user_styles(&self) -> Option<KStyle> {
-        let prop = &self.node.user_styles.clone();
-        deserialize_kstyle(prop.to_owned()).ok()
-    }
+    // fn user_styles(&self) -> Option<KStyle> {
+    //     let prop = &self.node.user_styles.clone();
+    //     deserialize_kstyle(prop.to_owned()).ok()
+    // }
 
     fn word_wrap(&self) -> Option<bool> {
         self.node.word_wrap.clone().unwrap().trim().parse().ok()
@@ -83,7 +83,7 @@ impl<'a> TextPropsDeser<'a> {
         let show_cursor = self.show_cursor();
         let size = self.size();
         let alignment = self.alignment();
-        let user_styles = self.user_styles();
+        // let user_styles = self.user_styles();
         let word_wrap = self.word_wrap();
         let mut text_props = TextProps::default();
         if let Some(val) = content.clone() {
@@ -102,9 +102,9 @@ impl<'a> TextPropsDeser<'a> {
         if let Some(val) = alignment {
             text_props.alignment = val;    
         }
-        if let Some(val) = user_styles {
-            text_props.user_styles = val;    
-        }
+        // if let Some(val) = user_styles {
+        //     text_props.user_styles = val;    
+        // }
         if let Some(val) = word_wrap {
             text_props.word_wrap = val;    
         }

@@ -1,7 +1,6 @@
 use std::{marker::PhantomData, str::FromStr, fmt::Debug};
 
-use kayak_ui::prelude::Edge;
-use morphorm::Units;
+use kayak_ui::prelude::{Edge, Units};
 use crate::{ui_parser::Conv, morphorm::units::{UiUnit, units_to_str}, serialized::OptStr};
 
 use super::sedge::SEdge;
@@ -59,8 +58,12 @@ fn edge_from_str(str: String) -> SEdge {
     }
 }
 
-pub fn deserialize_edge<T>(edge: SEdge) -> Result<Edge<T>, &'static str> where T: Copy + Default + PartialEq + FromStr + Debug  {
-    EdgeDeser::new(edge).deserialize()
+pub fn deserialize_edge_units(edge: SEdge) -> Result<Edge<Units>, &'static str> {
+    EdgeDeser::new::<Units>(edge).deserialize()
+}
+
+pub fn deserialize_edge_f32(edge: SEdge) -> Result<Edge<f32>, &'static str> {
+    EdgeDeser::new::<f32>(edge).deserialize()
 }
 
 pub struct EdgeDeser<T> {
@@ -107,12 +110,12 @@ impl<T> EdgeDeser<T> where T: Copy + Default + PartialEq + FromStr + Debug {
         self.to_type(&self.node.bottom.clone())
     }
 
-    pub fn deserialize(&self) -> Result<Edge<T>, &'static str> {        
+    pub fn deserialize_units(&self) -> Result<Edge<Units>, &'static str> {        
         let top = self.top();
         let left = self.left();
         let right = self.right();
         let bottom = self.bottom();
-        let mut edge = Edge::default();
+        let mut edge = Edge::<Units>::default();
         if let Some(val) = top {
             edge.top = val;    
         }

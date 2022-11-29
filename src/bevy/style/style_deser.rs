@@ -4,13 +4,18 @@ use crate::{bevy::{ui_rect::ui_rect_deser::{rect_from_str, deserialize_ui_rect, 
 
 use super::sstyle::SBevyStyle;
 
-pub fn to_f32(optstr: &Option<String>) -> Option<f32> {
+pub fn opt_to_f32(optstr: &Option<String>) -> Option<f32> {
     if let Some(str) = optstr {
-        str.trim().parse::<f32>().ok()
+        Some(to_f32(str.to_owned()))
     } else {
         None
     }                    
 }
+
+pub fn to_f32(str: String) -> f32 {
+    str.trim().parse::<f32>().ok().unwrap()
+}
+
 
 pub fn build_rect_from_str(optstr: &Option<String>) -> Option<UiRect> {
     if let Some(val) = optstr {
@@ -266,12 +271,12 @@ impl BevyStyleDeser {
 
     pub fn flex_grow(&self) -> Option<f32> {
         let prop = &self.node.flex_grow.clone();
-        to_f32(prop)
+        opt_to_f32(prop)
     }
 
     pub fn flex_shrink(&self) -> Option<f32> {
         let prop = &self.node.flex_shrink.clone();
-        to_f32(prop)
+        opt_to_f32(prop)
     }
 
     pub fn flex_basis(&self) -> Option<Val> {
@@ -342,7 +347,7 @@ impl BevyStyleDeser {
 
     pub fn aspect_ratio(&self) -> Option<f32> {
         let prop = &self.node.aspect_ratio.clone();
-        to_f32(prop)
+        opt_to_f32(prop)
     }
 
     pub fn overflow(&self) -> Option<Overflow> {

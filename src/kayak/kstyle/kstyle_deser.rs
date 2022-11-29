@@ -1,8 +1,7 @@
 use bevy::prelude::Color;
-use kayak_ui::prelude::{KPositionType, Edge, KStyle, Corner, KCursorIcon, Units};
-use morphorm::{LayoutType};
+use kayak_ui::prelude::{KPositionType, Edge, KStyle, Corner, KCursorIcon, Units, LayoutType};
 
-use crate::{ui_parser::{Conv}, bevy::{color::color_deser::parse_color, corner::corner_deser::{CornerDeser, deserialize_corner}, cursor_icon::to_cursor_icon}, morphorm::{layout_type::to_layout_type, units::UiUnit}, kayak::edge::{edge_deser::{EdgeDeser, to_edge_units}, sedge::SEdge}};
+use crate::{ui_parser::{Conv}, bevy::{color::color_deser::parse_color, corner::corner_deser::{CornerDeser, deserialize_corner}, cursor_icon::to_cursor_icon}, kayak::{edge::{sedge::SEdge, edge_f32_deser::{EdgeDeserF32}, edge_units_deser::to_edge_units}, layout_type::to_layout_type, units::UiUnit}};
 
 use super::skstyle::SKStyle;
 
@@ -15,7 +14,7 @@ pub fn str_to_color(prop: &Option<String>) -> Option<Color> {
     }            
 }
 
-pub fn obj_to_edge(optobj: &Option<SEdge>) -> Option<Edge<Units>> {
+pub fn obj_to_edge_units(optobj: &Option<SEdge>) -> Option<Edge<Units>> {
     if let Some(obj) = optobj.clone() {
         let top= UiUnit::new(obj.top.to_owned()).parse();
         let left= UiUnit::new(obj.left.to_owned()).parse();
@@ -63,7 +62,7 @@ impl KStyleDeser {
     fn border(&self) -> Option<Edge<f32>> {
         if let Some(val) = self.node.border.clone() {
             let edge = val.clone();
-            EdgeDeser::create_from_str(edge).deserialize().ok()    
+            EdgeDeserF32::create_from_str(edge).deserialize().ok()    
         } else {
             None
         }
@@ -185,7 +184,7 @@ impl KStyleDeser {
 
     fn offset_obj(&self) -> Option<Edge<Units>> {
         let optobj = &self.node.offset_obj.clone();
-        obj_to_edge(optobj)
+        obj_to_edge_units(optobj)
     }
 
     fn offset(&self) -> Option<Edge<Units>> {
@@ -194,16 +193,16 @@ impl KStyleDeser {
             Some(obj)
         } else {
             if let Some(_) = prop {
-                Some(to_edge_units(prop.clone()))
+                to_edge_units(prop.clone())
             } else {
                 None
             }            
         }
     }
 
-    fn padding_obj(&self) -> Edge<Units> {
+    fn padding_obj(&self) -> Option<Edge<Units>> {
         let optobj = &self.node.padding_obj.clone();
-        obj_to_edge(optobj)
+        obj_to_edge_units(optobj)
     }
 
     fn padding(&self) -> Option<Edge<Units>> {
@@ -212,7 +211,7 @@ impl KStyleDeser {
             Some(obj)
         } else {
             if let Some(_) = prop {
-                Some(to_edge_units(prop.clone()))
+                to_edge_units(prop.clone())
             } else {
                 None
             }
@@ -360,9 +359,9 @@ impl KStyleDeser {
         if let Some(val) = height {
             styled.height = val.into();    
         }    
-        if let Some(val) = layout_type {
-            styled.layout_type = val.into();    
-        }    
+        // if let Some(val) = layout_type {
+        //     styled.layout_type = val;    
+        // }    
         if let Some(val) = left {
             styled.left = val.into();    
         }    

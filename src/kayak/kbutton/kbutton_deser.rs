@@ -37,9 +37,9 @@ impl<'a> KButtonDeser<'a> {
         let styles = self.styles();
         // let widget_name = self.widget_name();
         let mut button = KButton::default();
-        if let Some(val) = styles {
-            button.user_styles = val;    
-        }
+        // if let Some(val) = styles {
+        //     button.user_styles = val;    
+        // }
         // bb.widget_name = WidgetName(widget_name);    
         Ok(button)
     }

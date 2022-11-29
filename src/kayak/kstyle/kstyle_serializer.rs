@@ -1,6 +1,6 @@
 use kayak_ui::prelude::{KStyle, KPositionType};
 
-use crate::{bevy::{color::color_deser::color_to_str, corner::corner_deser::corner_to_str}, serialized::OptStr, morphorm::{units::units_to_str, layout_type::layout_type_to_str}, kayak::edge::edge_deser::{edge_to_str, edge_units_to_str}};
+use crate::{bevy::{color::color_deser::color_to_str, corner::corner_deser::corner_to_str}, serialized::OptStr, kayak::{edge::{edge_f32_deser::{edge_to_str}, edge_units_deser::edge_units_to_str}, units::units_to_str, layout_type::layout_type_to_str}};
 
 use super::skstyle::SKStyle;
 
@@ -225,7 +225,7 @@ impl KStyleSerializer {
             padding_right,
             padding_bottom,
             padding_left,
-            position_type,
+            // position_type,
             right,
             row_between,
             top,

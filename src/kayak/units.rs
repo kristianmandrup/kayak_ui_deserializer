@@ -1,18 +1,8 @@
-use morphorm::Units;
+use kayak_ui::prelude::Units;
 use regex::Regex;
 
 use crate::serialized::OptStr;
 
-// pub enum Units {
-//     /// A number of pixels
-//     Pixels(f32),
-//     /// A percentage of the parent dimension
-//     Percentage(f32),
-//     /// A factor of the remaining free space
-//     Stretch(f32),
-//     /// Automatically determine the value
-//     Auto,
-// }
 pub fn units_to_str(units: Units) -> String {
     match units {
         Units::Pixels(num) => format!("{} px", num),        
@@ -22,18 +12,18 @@ pub fn units_to_str(units: Units) -> String {
     }
 }
 
-pub fn to_units(val: String) -> Option<Units> {
+pub fn to_units(val: String) -> Units {
     let px_re = Regex::new(r"(\d+)\s*px").unwrap();
     let pct_re = Regex::new(r"(\d+)\s*%").unwrap();
     let em_re = Regex::new(r"(\d+)\s*em").unwrap();
     if let Some(num) = extract_f32(px_re, val.clone()) {
-        return Some(Units::Pixels(num))
+        return Units::Pixels(num)
     } else if let Some(num) = extract_f32(pct_re, val.clone()) {
-        return Some(Units::Percentage(num))
+        return Units::Percentage(num)
     } else if let Some(num) = extract_f32(em_re, val.clone()) {
-        return Some(Units::Stretch(num))
+        return Units::Stretch(num)
     } else {
-        None
+        Units::Auto
     }
 }
 
@@ -69,7 +59,7 @@ impl UiUnit {
 
     pub fn parse(&self) -> Option<Units>  {
         if let Some(str) = self.str.clone() {
-            to_units(str)
+            Some(to_units(str))
         } else {
             None
         }

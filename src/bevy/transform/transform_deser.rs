@@ -1,13 +1,13 @@
 use bevy::{prelude::{Vec3, Transform, Quat}};
 
-use crate::bevy::style::style_deser::to_f32;
+use crate::bevy::style::style_deser::{to_f32, opt_to_f32};
 
 use super::stransform::{SVec3, SQuat, STransform};
 
 pub fn to_vec3(vec3: SVec3) -> Option<Vec3> {
     let vec = vec![vec3.x, vec3.y, vec3.z];
     let col = vec.iter().map(|str| { 
-        to_f32(str)
+        opt_to_f32(str)
     });
     let nums: Vec<Option<f32>> = col.collect();
      let tuples = (nums[0], nums[1], nums[2]);
@@ -20,7 +20,7 @@ pub fn to_vec3(vec3: SVec3) -> Option<Vec3> {
 pub fn to_quat(quat: SQuat) -> Option<Quat> {
     let vec = vec![quat.x, quat.y, quat.z, quat.w];
     let col = vec.iter().map(|str| { 
-        to_f32(str)
+        opt_to_f32(&str)
     });
     let nums: Vec<Option<f32>> = col.collect();
      let tuples = (nums[0], nums[1], nums[2], nums[3]);

@@ -1,5 +1,7 @@
 pub mod kstyle;
 pub mod kbutton;
+pub mod layout_type;
+pub mod units;
 pub mod nine_patch;
 pub mod text_props;
 pub mod text_box_props;

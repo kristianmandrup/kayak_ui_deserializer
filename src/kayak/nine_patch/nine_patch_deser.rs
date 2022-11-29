@@ -17,7 +17,7 @@
 use bevy::prelude::{ Handle, Image};
 use kayak_ui::{widgets::NinePatch, prelude::Edge};
 
-use crate::{kayak::{store::KayakStore, edge::edge_deser::EdgeDeser}, bevy::image::image_deser::{deserialize_image_handle}};
+use crate::{kayak::{store::KayakStore, edge::edge_f32_deser::EdgeDeserF32}, bevy::image::image_deser::{deserialize_image_handle}};
 
 use super::snine_patch::SNinePatch;
 
@@ -49,7 +49,7 @@ impl<'a> NinePatchDeser<'a> {
     fn border(&self) -> Option<Edge<f32>> {
         if let Some(val) = self.node.border.clone() {
             let edge = val.clone();
-            EdgeDeser::create_from_str(edge).deserialize().ok()    
+            EdgeDeserF32::create_from_str(edge).deserialize().ok()    
         } else {
             None
         }

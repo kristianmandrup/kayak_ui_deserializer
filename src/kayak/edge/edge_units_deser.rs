@@ -1,19 +1,25 @@
 use std::{marker::PhantomData, str::FromStr, fmt::Debug};
 
 use kayak_ui::prelude::{Edge, Units};
-use crate::{ui_parser::Conv, morphorm::units::{UiUnit, units_to_str}, serialized::OptStr};
+use crate::{ui_parser::Conv, serialized::OptStr, kayak::units::{to_units, units_to_str}};
 
 use super::sedge::SEdge;
 
 
-pub fn to_edge_units(prop: OptStr) -> Edge<Units> {
-    let unit= UiUnit::new(prop).parse().unwrap();
-    Edge {
-        top: unit,
-        left: unit,
-        right: unit,
-        bottom: unit 
-    }    
+pub fn to_edge_units(prop: OptStr) -> Option<Edge<Units>> {
+    if let Some(str) = prop {
+        let unit= to_units(str);
+        let edge = Edge {
+            top: unit,
+            left: unit,
+            right: unit,
+            bottom: unit 
+        };
+        Some(edge)
+    } else {
+        None
+    }
+    // let unit= UiUnit::new(prop).parse().unwrap();
 }
 
 pub fn edge_to_str(e: Edge<f32>) -> String {
@@ -58,59 +64,68 @@ fn edge_from_str(str: String) -> SEdge {
     }
 }
 
-pub fn deserialize_edge_units(edge: SEdge) -> Result<Edge<Units>, &'static str> {
-    EdgeDeser::new::<Units>(edge).deserialize()
+pub fn deserialize_edge(edge: SEdge) -> Result<Edge<Units>, &'static str> {
+    EdgeDeserUnits::new(edge).deserialize()
 }
 
-pub fn deserialize_edge_f32(edge: SEdge) -> Result<Edge<f32>, &'static str> {
-    EdgeDeser::new::<f32>(edge).deserialize()
-}
+// pub fn deserialize_edge_f32(edge: SEdge) -> Result<Edge<f32>, &'static str> {
+//     EdgeDeser::new<f32>(edge).deserialize()
+// }
 
-pub struct EdgeDeser<T> {
-    node: SEdge,
-    phantom: PhantomData<T>,
+pub struct EdgeDeserUnits {
+    node: SEdge
 }
-impl<T> EdgeDeser<T> where T: Copy + Default + PartialEq + FromStr + Debug {
+impl EdgeDeserUnits {
     pub fn new(node: SEdge) -> Self {
         Self {
             node,
-            phantom: PhantomData
-
         }
     }
 
     pub fn create_from_str(str: String) -> Self {
         Self {
             node: edge_from_str(str),
-            phantom: PhantomData
         }
     }
 
-    fn to_type(&self, prop: &Option<String>) -> Option<T> {
-        if let Some(str) = Conv::get_prop(prop) {
-            Conv(str).to_type::<T>()
+    fn top(&self) -> Option<Units> {
+        if let Some(str) = &self.node.top.clone() {
+            let units = to_units(str.to_owned());
+            Some(units)    
         } else {
             None
-        }                    
+        }
     }
 
-    fn top(&self) -> Option<T> {
-        self.to_type(&self.node.top.clone())
+    fn left(&self) -> Option<Units> {
+        if let Some(str) = &self.node.left.clone() {
+            let units = to_units(str.to_owned());
+            Some(units)    
+        } else {
+            None
+        }
     }
 
-    fn left(&self) -> Option<T> {
-        self.to_type(&self.node.left.clone())
+    fn right(&self) -> Option<Units> {
+        if let Some(str) = &self.node.right.clone() {
+            let units = to_units(str.to_owned());
+            Some(units)    
+        } else {
+            None
+        }
+
     }
 
-    fn right(&self) -> Option<T> {
-        self.to_type(&self.node.right.clone())
+    fn bottom(&self) -> Option<Units> {
+        if let Some(str) = &self.node.bottom.clone() {
+            let units = to_units(str.to_owned());
+            Some(units)    
+        } else {
+            None
+        }
     }
 
-    fn bottom(&self) -> Option<T> {
-        self.to_type(&self.node.bottom.clone())
-    }
-
-    pub fn deserialize_units(&self) -> Result<Edge<Units>, &'static str> {        
+    pub fn deserialize(&self) -> Result<Edge<Units>, &'static str> {        
         let top = self.top();
         let left = self.left();
         let right = self.right();
@@ -131,5 +146,4 @@ impl<T> EdgeDeser<T> where T: Copy + Default + PartialEq + FromStr + Debug {
 
         Ok(edge)            
     }
-    // top: node.top
 }

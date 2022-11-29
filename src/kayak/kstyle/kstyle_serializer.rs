@@ -111,15 +111,50 @@ impl KStyleSerializer {
         Some(edge_units_to_str(prop))
     }    
 
-    // padding_bottom
-    // padding_left
-    // padding_right
-    // padding_top
-    // right
-    // row_between
-    // top
-    // width
-    // z_index
+    fn padding_bottom(&self) -> OptStr {
+        let prop = self.node.padding_bottom.resolve();
+        Some(units_to_str(prop))
+    }    
+
+    fn padding_left(&self) -> OptStr {
+        let prop = self.node.padding_left.resolve();
+        Some(units_to_str(prop))
+    }    
+
+    fn padding_right(&self) -> OptStr {
+        let prop = self.node.padding_right.resolve();
+        Some(units_to_str(prop))
+    }    
+
+    fn padding_top(&self) -> OptStr {
+        let prop = self.node.padding_top.resolve();
+        Some(units_to_str(prop))
+    }    
+
+    fn right(&self) -> OptStr {
+        let prop = self.node.right.resolve();
+        Some(units_to_str(prop))
+    }    
+
+    fn row_between(&self) -> OptStr {
+        let prop = self.node.col_between.resolve();
+        Some(units_to_str(prop))
+    }
+
+    fn top(&self) -> OptStr {
+        let prop = self.node.top.resolve();
+        Some(units_to_str(prop))
+    }    
+
+    fn width(&self) -> OptStr {
+        let prop = self.node.height.resolve();
+        Some(units_to_str(prop))
+    }
+
+    fn z_index(&self) -> OptStr {
+        let line_height = self.node.z_index.resolve();
+        Some(line_height.to_string())
+    }
 
     pub fn serialize(&self) -> Result<SKStyle, &'static str> {
         let background_color = self.background_color();
@@ -141,6 +176,16 @@ impl KStyleSerializer {
         let min_width = self.min_width();
         let offset = self.offset();
         let padding = self.padding();
+        let padding_top = self.padding_top();
+        let padding_right = self.padding_right();
+        let padding_bottom = self.padding_bottom();
+        let padding_left = self.padding_left();
+        let right = self.right();
+        let row_between = self.row_between();
+        let top = self.top();
+        let row_between = self.row_between();
+        let width = self.width();
+        let z_index = self.z_index();
 
         let kstyle = SKStyle {            
             background_color,
@@ -161,8 +206,15 @@ impl KStyleSerializer {
             max_height,
             max_width,
             offset,
-            padding,
-
+            padding_top,
+            padding_right,
+            padding_bottom,
+            padding_left,
+            right,
+            row_between,
+            top,
+            width,
+            z_index,
             ..Default::default() 
         };
         Ok(kstyle)

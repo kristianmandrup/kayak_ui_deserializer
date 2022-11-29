@@ -13,6 +13,15 @@ use crate::serialized::OptStr;
 //     /// Automatically determine the value
 //     Auto,
 // }
+pub fn units_to_str(units: Units) -> String {
+    match units {
+        Units::Pixels(num) => format!("{} px", num),        
+        Units::Percentage(num) => format!("{} %", num),
+        Units::Stretch(num) => format!("{} em", num),   
+        _ => "auto".to_string()
+    }
+}
+
 pub fn to_units(val: String) -> Option<Units> {
     let px_re = Regex::new(r"(\d+)\s*px").unwrap();
     let pct_re = Regex::new(r"(\d+)\s*%").unwrap();

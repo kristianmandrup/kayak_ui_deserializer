@@ -8,3 +8,11 @@ pub fn to_layout_type(str: String) -> LayoutType {
         _ => panic!("Invalid layout type")
     }
 }
+
+pub fn layout_type_to_str(lt: LayoutType) -> String {
+    match lt {
+        LayoutType::Row => "row".to_string(),
+        LayoutType::Column => "column".to_string(),
+        LayoutType::Grid => "grid".to_string(),
+    }
+}

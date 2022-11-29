@@ -10,3 +10,4 @@ pub mod alignment;
 pub mod window;
 pub mod deserializer;
 pub mod store;
+pub mod serializer;

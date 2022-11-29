@@ -22,7 +22,11 @@ fn all_corner(str: String) -> SCorner {
     }
 }
 
-fn corner_from_str(str: String) -> SCorner {
+pub fn corner_to_str(c: Corner<f32>) -> String {
+    format!("{} {} {} {}", c.top_left, c.top_right, c.bottom_left, c.bottom_right)
+}
+
+pub fn corner_from_str(str: String) -> SCorner {
     let parts = str.split(' ').collect::<Vec<&str>>();
     if parts.len() <= 1 {
         all_corner(parts[0].to_string().clone())

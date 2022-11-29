@@ -2,7 +2,7 @@ use std::{marker::PhantomData, str::FromStr, fmt::Debug};
 
 use kayak_ui::prelude::Edge;
 use morphorm::Units;
-use crate::{ui_parser::Conv, morphorm::units::UiUnit, serialized::OptStr};
+use crate::{ui_parser::Conv, morphorm::units::{UiUnit, units_to_str}, serialized::OptStr};
 
 use super::sedge::SEdge;
 
@@ -16,6 +16,15 @@ pub fn to_edge_units(prop: OptStr) -> Edge<Units> {
         bottom: unit 
     }    
 }
+
+pub fn edge_to_str(e: Edge<f32>) -> String {
+    format!("{} {} {} {}", e.top, e.right, e.bottom, e.left)
+}
+
+pub fn edge_units_to_str(e: Edge<Units>) -> String {
+    format!("{} {} {} {}", units_to_str(e.top), units_to_str(e.right), units_to_str(e.bottom), units_to_str(e.left))
+}
+
 
 fn part_to_string(part: &str) -> Option<String> {
     if part.is_empty() { None } else { Some(part.to_string()) }

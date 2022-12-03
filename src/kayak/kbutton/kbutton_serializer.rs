@@ -1,16 +1,30 @@
 use kayak_ui::widgets::KButton;
+use super::skbutton::SKButton;
 
-use crate::kayak::store::KayakStore;
+pub fn serialize_kbutton(bundle: KButton) -> Result<SKButton, &'static str>  {
+    KButtonSerializer::new(bundle).serialize()
+}
 
-pub struct KButtonSerializer<'a> {
-    store: &'a KayakStore,
+pub struct KButtonSerializer {
     node: KButton,
 }
-impl<'a> KButtonSerializer<'a> {
-    pub fn new(store: &'a KayakStore, node: KButton) -> Self {
+impl KButtonSerializer {
+    pub fn new(node: KButton) -> Self {
         Self {
-            store,
             node
         }
+    }
+
+    fn text(&self) -> String {
+        let prop = &self.node.text.clone();
+        prop.to_owned()
+    }
+
+    pub fn serialize(&self) -> Result<SKButton, &'static str> {
+        let text = self.text();
+        let mut button = SKButton {
+            text,
+        };
+        Ok(button)
     }
 }

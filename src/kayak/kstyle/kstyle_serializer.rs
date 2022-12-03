@@ -4,6 +4,10 @@ use crate::{bevy::{color::color_deser::color_to_str, corner::corner_deser::corne
 
 use super::skstyle::SKStyle;
 
+pub fn serialize_kstyle(style: KStyle) -> Result<SKStyle, &'static str>  {
+    KStyleSerializer::new(style).serialize()
+}
+
 pub struct KStyleSerializer {
     node: KStyle
 }

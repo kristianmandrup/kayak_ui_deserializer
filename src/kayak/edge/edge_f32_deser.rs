@@ -1,7 +1,5 @@
-use std::{marker::PhantomData, str::FromStr, fmt::Debug};
-
-use kayak_ui::prelude::{Edge, Units};
-use crate::{ui_parser::Conv, serialized::OptStr, kayak::units::to_units, bevy::style::style_deser::to_f32};
+use kayak_ui::prelude::{Edge};
+use crate::{ui_parser::Conv, serialized::OptStr, bevy::style::style_deser::to_f32};
 
 use super::sedge::SEdge;
 

@@ -1,9 +1,17 @@
+use std::default;
+
 use nanoserde::{DeJson, SerJson, DeRon, SerRon};
 
-use crate::kayak::kstyle::skstyle::SKStyle;
-
 #[derive(DeJson, SerJson, DeRon, SerRon, Clone)]
-pub struct SButton {
-    pub name: String,
-    pub styles: Option<SKStyle>,
+pub struct SKButton {
+    // pub name: String,
+    pub text: String,
+    // pub styles: Option<SKStyle>,
+}
+impl Default for SKButton {
+    fn default() -> SKButton {
+        SKButton {
+            text: "button".to_owned(),
+        }
+    }
 }

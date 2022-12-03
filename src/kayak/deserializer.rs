@@ -3,7 +3,7 @@ use nanoserde::{DeJson};
 
 use crate::{bevy::bundle::{image_bundle::{image_bundle_deser::build_image_bundle, simage_bundle::SImageBundle}, background_bundle::{background_bundle_deser::build_background_bundle, sbackground_bundle::SBackgroundBundle}, clip_bundle::{clip_bundle_deser::build_clip_bundle, sclip_bundle::SClipBundle}, element_bundle::{element_bundle_deser::build_element_bundle, selement_bundle::SElementBundle}}, kayakui_data::KayakUiData, serialized::SAssets};
 
-use super::{store::KayakStore, kstyle::kstyle_deser::deserialize_kstyle, kbutton::{kbutton_deser::deserialize_button, skbutton::SButton}, bundle::{kbutton_bundle::{kbutton_bundle_deser::build_button_bundle, skbutton_bundle::SButtonBundle}, window_bundle::{window_bundle_deser::build_window_bundle, swindow_bundle::SWindowBundle}, texture_atlas_bundle::{texture_atlas_bundle_deser::build_texture_atlas_bundle, stexture_atlas_bundle::STextureAtlasBundle}, nine_patch_bundle::{nine_patch_bundle_deser::build_nine_patch_bundle, snine_patch_bundle::SNinePatchBundle}, text_widget_bundle::{text_widget_bundle_deser::deserialize_text_widget_bundle, stext_widget_bundle::STextWidgetBundle}, text_box_bundle::{text_box_bundle_deser::deserialize_text_box_bundle, stext_box_bundle::STextBoxBundle}}};
+use super::{store::KayakStore, kstyle::kstyle_deser::deserialize_kstyle, kbutton::{kbutton_deser::deserialize_button, skbutton::SKButton}, bundle::{kbutton_bundle::{kbutton_bundle_deser::build_button_bundle, skbutton_bundle::SKButtonBundle}, window_bundle::{window_bundle_deser::build_window_bundle, swindow_bundle::SWindowBundle}, texture_atlas_bundle::{texture_atlas_bundle_deser::build_texture_atlas_bundle, stexture_atlas_bundle::STextureAtlasBundle}, nine_patch_bundle::{nine_patch_bundle_deser::build_nine_patch_bundle, snine_patch_bundle::SNinePatchBundle}, text_widget_bundle::{text_widget_bundle_deser::deserialize_text_widget_bundle, stext_widget_bundle::STextWidgetBundle}, text_box_bundle::{text_box_bundle_deser::deserialize_text_box_bundle, stext_box_bundle::STextBoxBundle}}};
 
 pub struct KayakBuilder {
     // pub asset_server: &'a AssetServer,
@@ -26,7 +26,7 @@ impl KayakBuilder {
 
     pub fn build(&mut self) -> &Self {
         self.build_styles();
-        self.build_widgets();
+        // self.build_widgets();
         self.build_bundles();
         self.build_assets();
         self
@@ -76,14 +76,14 @@ impl KayakBuilder {
         self
     }
 
-    pub fn build_widgets(&mut self) -> &Self {
-        if let Some(items) = self.data.widgets.to_owned() {
-            if let Some(buttons) = items.buttons {
-                self.build_buttons(buttons);     
-            }            
-        }
-        self
-    }
+    // pub fn build_widgets(&mut self) -> &Self {
+    //     if let Some(items) = self.data.widgets.to_owned() {
+    //         if let Some(buttons) = items.buttons {
+    //             self.build_buttons(buttons);     
+    //         }            
+    //     }
+    //     self
+    // }
 
     pub fn build_bundles(&mut self) -> &Self {
         if let Some(items) = self.data.bundles.to_owned() {
@@ -121,16 +121,16 @@ impl KayakBuilder {
         self                              
     }
 
-    pub fn build_buttons(&mut self, buttons: Vec<SButton>) -> &Self { 
-        for item in buttons {
-            let name = item.clone().name;
-            let button = deserialize_button(&self.store, item).unwrap();
-            self.store.widgets.buttons.insert(name, button);
-        }
-        self
-    }
+    // pub fn build_buttons(&mut self, buttons: Vec<SKButton>) -> &Self { 
+    //     for item in buttons {
+    //         // let name = item.clone().;
+    //         let button = deserialize_button(&self.store, item).unwrap();
+    //         self.store.widgets.buttons.insert(name, button);
+    //     }
+    //     self
+    // }
     
-    pub fn build_button_bundles(&mut self, button_bundles: Vec<SButtonBundle>) -> &Self { 
+    pub fn build_button_bundles(&mut self, button_bundles: Vec<SKButtonBundle>) -> &Self { 
         for item in button_bundles {
             let name = item.to_owned().name;
             let button_bundle = build_button_bundle(&self.store, item).unwrap();

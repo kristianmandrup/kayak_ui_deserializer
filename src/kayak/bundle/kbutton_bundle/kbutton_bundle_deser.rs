@@ -2,18 +2,18 @@ use kayak_ui::{widgets::{KButton, KButtonBundle}, prelude::{KStyle, WidgetName}}
 
 use crate::{kayak::{store::KayakStore, kstyle::kstyle_deser::deserialize_kstyle, kbutton::kbutton_deser::deserialize_button}};
 
-use super::skbutton_bundle::SButtonBundle;
+use super::skbutton_bundle::SKButtonBundle;
 
-pub fn build_button_bundle(store: &KayakStore, bb: SButtonBundle) -> Result<KButtonBundle, &'static str>  {
+pub fn build_button_bundle(store: &KayakStore, bb: SKButtonBundle) -> Result<KButtonBundle, &'static str>  {
     KButtonBundleDeser::new(store, bb).build().parse()
 }
 
 pub struct KButtonBundleDeser<'a> {
     store: &'a KayakStore,
-    node: SButtonBundle,
+    node: SKButtonBundle,
 }
 impl<'a> KButtonBundleDeser<'a> {
-    pub fn new(store: &'a KayakStore, node: SButtonBundle) -> Self {
+    pub fn new(store: &'a KayakStore, node: SKButtonBundle) -> Self {
         Self {
             store,
             node

@@ -5,5 +5,6 @@ use crate::{kayak::{kstyle::skstyle::SKStyle, nine_patch::snine_patch::SNinePatc
 pub struct SNinePatchBundle {    
     pub nine_patch: Option<SNinePatch>,
     pub styles: Option<SKStyle>,
+    // pub computed_styles: Option<SKStyle>,
     pub name: String,
 }
